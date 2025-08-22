@@ -1,0 +1,1032 @@
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% ===== Vietnamese + Encoding =====
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+
+% ===== Page layout & typography =====
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{microtype}
+
+% ===== Graphics, tables, math =====
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{detect-all,round-mode=places,round-precision=2}
+\usepackage{amsmath,amssymb,mathtools}
+
+% ===== Lists & formatting =====
+\usepackage{enumitem}
+\setlist{noitemsep,leftmargin=2em}
+
+% ===== TOC & Lists of figures/tables =====
+\usepackage{tocloft}
+\setlength{\cftbeforechapskip}{0.5em}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+% ===== Hyperlinks & clever references =====
+\usepackage{xcolor}
+\definecolor{Link}{RGB}{0,0,128}
+\definecolor{Cite}{RGB}{0,102,0}
+\definecolor{URL}{RGB}{128,0,0}
+\usepackage[
+    unicode,
+    pdfencoding=auto,
+    colorlinks=true,
+    linkcolor=Link,
+    citecolor=Cite,
+    urlcolor=URL
+]{hyperref}
+\usepackage{cleveref}
+
+% ===== Header/Footer =====
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
+
+% ===== Code listings (Python) =====
+\usepackage{listings}
+\lstdefinestyle{py}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  frame=single,
+  breaklines=true
+}
+
+% ===== Glossaries / Acronyms (optional) =====
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newacronym{apc}{APC}{Adaptive Phase Control}
+\newacronym{rl}{RL}{Reinforcement Learning}
+\newacronym{sumo}{SUMO}{Simulation of Urban MObility}
+\newacronym{traci}{TraCI}{Traffic Control Interface}
+
+% ===== Bibliography (biblatex with IEEE style) =====
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{reference.bib} % Đặt đúng tên file .bib
+
+% ===== Title info =====
+\title{\textbf{Hệ Thống Điều Khiển Đèn Giao Thông Thông Minh\\Dựa Trên Phương Pháp Lai APC và Học Tăng Cường}}
+\author{Tên Sinh viên}
+\date{\today}
+
+\begin{document}
+% ===== Title page =====
+\maketitle
+
+% ===== Front matter =====
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ===== Danh mục từ viết tắt và thuật ngữ chuyên ngành =====
+\addcontentsline{toc}{chapter}{Danh mục từ viết tắt và thuật ngữ chuyên ngành}
+
+% In danh mục từ viết tắt (acronyms)
+\printglossary[type=\acronymtype,title={Từ viết tắt phổ biến}]
+
+% Danh sách thuật ngữ chuyên ngành
+\section*{Thuật ngữ chuyên ngành}
+\begin{description}[leftmargin=2.5em,style=nextline]
+    \item[\textbf{Spillback}] Hiện tượng ùn tắc dội ngược: Khi hàng chờ tại một nút giao thông kéo dài vượt qua điểm đầu nút giao, làm cản trở hoặc chặn luôn dòng xe ở nút giao phía trước. Spillback gây ra hiệu ứng dây chuyền, lan rộng tắc nghẽn trong mạng lưới đô thị.
+    \item[\textbf{Gridlock}] Kẹt lưới giao thông: Toàn bộ các nút giao đều bị kẹt, xe không thể di chuyển qua bất kỳ hướng nào do xung đột dòng xe cắt nhau.
+    \item[\textbf{Starvation}] Đói phục vụ: Một làn hoặc hướng giao thông bị bỏ qua quá lâu, dẫn đến hàng chờ kéo dài không được phục vụ, thường xảy ra khi chính sách ưu tiên quá mức cho các hướng khác.
+    \item[\textbf{Protected left}] Pha rẽ trái bảo vệ: Pha đèn tín hiệu được thiết kế riêng để cho phép rẽ trái an toàn, không bị xung đột với dòng đi thẳng đối diện.
+    \item[\textbf{Adaptive Phase Control (APC)}] Điều khiển pha thích nghi: Phương pháp điều chỉnh thời lượng các pha đèn dựa trên trạng thái giao thông thực tế (hàng chờ, số xe dừng, v.v.).
+    \item[\textbf{Reinforcement Learning (RL)}] Học tăng cường: Kỹ thuật học máy cho phép hệ thống điều khiển tín hiệu học từ phần thưởng/hình phạt dựa trên kết quả thực tế của hành động.
+    \item[\textbf{Green wave}] Làn sóng xanh: Chuỗi các đèn tín hiệu được điều phối để xe chạy liên tục qua nhiều nút giao mà không phải dừng lại.
+    \item[\textbf{Phase duration}] Thời lượng pha: Khoảng thời gian một pha đèn (xanh/vàng/đỏ) được duy trì trước khi chuyển sang pha tiếp theo.
+    \item[\textbf{Supabase}] Nền tảng cơ sở dữ liệu đám mây, dùng lưu trữ trạng thái, nhật ký sự kiện và bảng Q-learning cho hệ thống điều khiển.
+    \item[\textbf{SUMO}] Simulation of Urban Mobility: Phần mềm mô phỏng giao thông vi mô, dùng kiểm thử các thuật toán điều khiển tín hiệu.
+    \item[\textbf{TraCI}] Traffic Control Interface: Giao thức kết nối giữa Python và SUMO, cho phép điều khiển và lấy dữ liệu mô phỏng theo thời gian thực.
+    \item[\textbf{Q-table}] Bảng giá trị Q trong Q-learning: Lưu trữ giá trị kỳ vọng cho mỗi trạng thái và hành động, dùng để ra quyết định tối ưu cho agent học tăng cường.
+    \item[\textbf{Pending requests}] Hàng đợi yêu cầu: Danh sách các yêu cầu chuyển pha đèn đang chờ xử lý, thường được xếp theo mức độ ưu tiên và thời gian.
+\end{description}
+
+% ===== Abstract =====
+\chapter*{Tóm tắt}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+Đèn giao thông đóng vai trò then chốt trong việc điều tiết lưu thông đô thị, song các hệ thống truyền thống thường thiếu khả năng thích ứng với biến động giao thông thực tế. Trong những năm gần đây, các phương pháp điều khiển thích nghi đã được nghiên cứu, nhưng vẫn còn tồn tại những hạn chế như hiện tượng nhấp nháy pha, xử lý tình huống khẩn cấp chưa hiệu quả và khó mở rộng cho nhiều nút giao.
+
+Để khắc phục những vấn đề này, nghiên cứu đề xuất một bộ điều khiển nút giao thông thông minh được triển khai trên môi trường mô phỏng \gls{sumo}, kết nối qua \gls{traci}, kết hợp kỹ thuật học tăng cường và cơ chế lưu trữ trạng thái trên nền tảng đám mây Supabase. Bộ điều khiển có khả năng tự động điều chỉnh thời lượng đèn xanh dựa trên số lượng xe dừng, chiều dài hàng chờ và lưu lượng tức thời, đồng thời bảo đảm an toàn thông qua việc chèn pha vàng và duy trì tối thiểu thời gian đèn xanh.
+
+Ngoài ra, hệ thống còn tích hợp cơ chế ưu tiên cho phương tiện khẩn cấp, quản lý ùn tắc và hỗ trợ rẽ trái an toàn thông qua hàng đợi yêu cầu có cấu trúc. Kết quả mô phỏng thực nghiệm cho thấy mô hình đề xuất giúp giảm đáng kể thời gian chờ trung bình và cải thiện lưu lượng so với phương pháp điều khiển tín hiệu cố định. Điều này chứng minh tính hiệu quả, linh hoạt và tiềm năng ứng dụng của hệ thống trong quản lý giao thông đô thị thông minh.
+
+\clearpage
+\pagenumbering{arabic}
+
+% =========================
+% CHƯƠNG 1
+% =========================
+\input{chap1.tex}
+
+% =========================
+% CHƯƠNG 2
+% =========================
+\input{chap2.tex}
+
+% =========================
+% CHƯƠNG 3
+% =========================
+\input{chap3.tex}
+% =========================
+% CHƯƠNG 4
+% =========================
+\input{chap4.tex}
+% =========================
+% CHƯƠNG 5
+% =========================
+\chapter{Điều khiển pha thích nghi (APC)}
+
+\section{Nguyên lý thiết kế và kiến trúc}
+
+Bộ điều khiển pha thích nghi (Adaptive Phase Controller - APC) được thiết kế theo nguyên lý điều khiển phân tán với khả năng tự quyết định cục bộ cho từng nút giao thông. Kiến trúc này cho phép mỗi nút giao hoạt động độc lập trong khi vẫn có thể phối hợp với các nút lân cận thông qua cơ chế trao đổi thông tin. APC kết hợp giữa điều khiển dựa trên luật (rule-based control) để đảm bảo an toàn và điều khiển thích ứng (adaptive control) để tối ưu hiệu suất.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-21-074754.png}
+    \caption{Kiến trúc tổng thể của bộ điều khiển APC với các thành phần chính và luồng dữ liệu}
+    \label{fig:apc_architecture}
+\end{figure}
+
+\subsection{Khởi tạo và cấu hình hệ thống}
+
+Quá trình khởi tạo APC được thực hiện qua constructor với các tham số quan trọng:
+
+\begin{lstlisting}[style=py, caption={Khởi tạo AdaptivePhaseController}]
+def __init__(self, lane_ids, tls_id, alpha=1.0, 
+             min_green=30, max_green=80,
+             r_base=0.5, r_adjust=0.1, 
+             severe_congestion_threshold=0.8,
+             large_delta_t=20):
+    self.lane_ids = lane_ids
+    self.tls_id = tls_id
+    # Đăng ký subscription với TraCI
+    for lid in self.lane_ids:
+        traci.lane.subscribe(lid, [
+            traci.constants.LAST_STEP_VEHICLE_HALTING_NUMBER,
+            traci.constants.LAST_STEP_MEAN_SPEED,
+            traci.constants.LAST_STEP_VEHICLE_NUMBER,
+            traci.constants.LAST_STEP_VEHICLE_ID_LIST,
+        ])
+\end{lstlisting}
+
+\textbf{Quá trình khởi tạo bao gồm các bước chính:}
+
+\begin{enumerate}
+    \item \textbf{Thiết lập subscription với TraCI:} Hệ thống đăng ký theo dõi các metrics quan trọng cho từng làn đường được quản lý, bao gồm số lượng xe dừng, tốc độ trung bình, tổng số xe và danh sách ID phương tiện. Cơ chế subscription giúp tối ưu băng thông bằng cách chỉ nhận dữ liệu cần thiết.
+    
+    \item \textbf{Khởi tạo cấu trúc dữ liệu:} Các container quan trọng được khởi tạo:
+    \begin{itemize}
+        \item \texttt{apc\_state}: Dictionary lưu trữ trạng thái toàn cục với events queue (maxlen=5000) và danh sách phases
+        \item \texttt{pending\_requests}: Hàng đợi yêu cầu chuyển pha với cơ chế ưu tiên
+        \item \texttt{phase\_cache}: Cache thông tin pha với TTL 30 giây để giảm truy vấn database
+        \item \texttt{blocked\_left\_memory}: Dictionary theo dõi lịch sử làn rẽ trái bị chặn
+    \end{itemize}
+    
+    \item \textbf{Kết nối database:} Khởi tạo \texttt{PatchedAsyncSupabaseWriter} với interval 60 giây và batch size 100 records để đồng bộ dữ liệu không đồng bộ lên cloud.
+    
+    \item \textbf{Tải trạng thái từ Supabase:} Phương thức \texttt{\_load\_apc\_state\_supabase()} được gọi để khôi phục trạng thái từ lần chạy trước, đảm bảo tính liên tục của hệ thống.
+    
+    \item \textbf{Đồng bộ pha với SUMO:} \texttt{preload\_phases\_from\_sumo()} đảm bảo tất cả các pha trong logic đèn được ghi nhận và có base duration phù hợp.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.65\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-21-084042.png}
+        \caption{Khởi tạo và thiết lập}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.65\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-21-084132.png}
+        \caption{Khôi phục trạng thái và hoàn tất}
+    \end{subfigure}
+    \caption{Quy trình khởi tạo AdaptivePhaseController.}
+    \label{fig:apc_init_flow}
+\end{figure}
+\subsection{Cấu trúc dữ liệu và tham số điều khiển}
+
+APC sử dụng hệ thống tham số phân cấp để điều chỉnh hành vi:
+
+\subsubsection{Tham số thời gian}
+\begin{itemize}
+    \item \texttt{min\_green} (mặc định 30s): Thời gian tối thiểu cho mỗi pha xanh, đảm bảo an toàn và công bằng
+    \item \texttt{max\_green} (mặc định 80s): Giới hạn trên để tránh monopoly một hướng
+    \item \texttt{cycle\_length} (mặc định 90s): Chu kỳ tham chiếu cho điều phối corridor
+    \item \texttt{low\_demand\_extend\_cap} (4s): Giới hạn mở rộng khi nhu cầu thấp
+\end{itemize}
+
+\subsubsection{Tham số điều khiển thích ứng}
+\begin{itemize}
+    \item \texttt{alpha} (1.0): Hệ số học trong công thức điều chỉnh $\Delta t = \alpha(R - R_{target})$
+    \item \texttt{r\_base} (0.5): Giá trị reward cơ sở cho thuật toán học
+    \item \texttt{r\_adjust} (0.1): Hệ số điều chỉnh R\_target động
+    \item \texttt{weights} (vector 4D): Trọng số cho [density, speed, wait, queue] trong hàm reward
+\end{itemize}
+
+\subsubsection{Ngưỡng phát hiện sự kiện}
+
+\subsubsection{Cấu trúc dữ liệu chính}
+
+\textbf{Activation State:} Dictionary theo dõi pha đang hoạt động:
+\begin{lstlisting}[style=py]
+self.activation = {
+    "phase_idx": None,        # Chi so pha hien tai
+    "start_time": 0.0,        # Thoi diem bat dau
+    "base_duration": None,    # Thoi luong co so
+    "desired_total": None     # Thoi luong mong muon
+}
+\end{lstlisting}
+
+\textbf{Pending Requests Queue:} Danh sách các yêu cầu chuyển pha được sắp xếp theo priority và timestamp:
+\begin{lstlisting}[style=py]
+request = {
+    "phase_idx": int,         # Pha muc tieu
+    "priority": int,          # Muc uu tien (1-11)
+    "priority_type": str,     # Loai: emergency, starvation...
+    "extension_duration": float,  # Thoi luong yeu cau
+    "timestamp": float        # Thoi diem tao yeu cau
+}
+\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width= 1.1\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-22-072612.png}
+    \caption{Cấu trúc hàng đợi yêu cầu với mức độ ưu tiên}
+    \label{fig:priority_queue}
+\end{figure}
+\subsection{Tích hợp với TraCI và SUMO}
+
+Việc tích hợp với SUMO thông qua TraCI được thực hiện qua nhiều lớp abstraction:
+
+\subsubsection{Subscription Mechanism}
+APC sử dụng TraCI subscription để nhận dữ liệu real-time hiệu quả:
+
+\begin{lstlisting}[style=py, caption={Xử lý subscription results}]
+def get_lane_stats(self, lane_id):
+    res = traci.lane.getSubscriptionResults(lane_id) or {}
+    q = float(res.get(
+        traci.constants.LAST_STEP_VEHICLE_HALTING_NUMBER,
+        traci.lane.getLastStepHaltingNumber(lane_id)
+    ))
+    v = float(res.get(
+        traci.constants.LAST_STEP_MEAN_SPEED,
+        traci.lane.getLastStepMeanSpeed(lane_id)
+    ))
+    return q, w, v, dens
+\end{lstlisting}
+
+\subsubsection{Logic Cache System}
+Để giảm overhead communication, APC implement cache cho traffic light logic:
+
+\begin{lstlisting}[style=py, caption={Cơ chế cache logic}]
+def _get_logic(self):
+    now = traci.simulation.getTime()
+    if self._logic_cache is None or \
+       now - self._logic_cache_at > self._logic_cache_ttl:
+        self._logic_cache = get_current_logic(self.tls_id)
+        self._logic_cache_at = now
+    return self._logic_cache
+\end{lstlisting}
+
+Cache có TTL 0.5 giây và được invalidate khi có thay đổi cấu trúc pha. Hệ thống còn hỗ trợ shared cache ở controller level để tối ưu cho nhiều APC instances.
+
+\subsubsection{Safe Control Wrappers}
+Mọi lệnh điều khiển được wrap trong các hàm an toàn:
+
+\begin{lstlisting}[style=py, caption={Safe phase control}]
+def _apply_phase(self, phase_idx, duration):
+    # Clamp phase index
+    safe_idx = self._safe_phase_index(phase_idx, 
+                                      force_reload=True)
+    if safe_idx is None:
+        return False
+    
+    # Try controller-level setter first
+    if hasattr(self, "controller"):
+        ok = self.controller._safe_set_phase(
+            self.tls_id, safe_idx, duration
+        )
+        if ok:
+            return True
+            
+    # Fallback to direct control
+    return safe_set_phase(self.tls_id, safe_idx, duration)
+\end{lstlisting}
+
+Cơ chế này đảm bảo:
+\begin{itemize}
+    \item Phase index luôn nằm trong giới hạn hợp lệ
+    \item Duration được giới hạn trong khoảng [min\_green, max\_green]
+    \item Xử lý graceful khi SUMO reject lệnh điều khiển
+    \item Đồng bộ state giữa APC và SUMO
+\end{itemize}
+Thiết kế tích hợp này cho phép APC hoạt động ổn định trong môi trường mô phỏng phức tạp, xử lý được các trường hợp đặc biệt như chỉ số pha vượt giới hạn, thay đổi cấu trúc mạng, và lỗi kết nối với supabse.
+\section{Quản lý logic pha đèn tín hiệu}
+
+Quản lý logic pha đèn tín hiệu là thành phần cốt lõi đảm bảo hoạt động an toàn và hiệu quả của hệ thống điều khiển. APC implement một hệ thống quản lý logic đa tầng với cơ chế cache thông minh, kiểm soát chuyển pha an toàn và xử lý xung đột tự động.
+
+\subsection{Cơ chế cache và tối ưu truy xuất}
+
+Hệ thống cache được thiết kế theo mô hình hai tầng nhằm giảm thiểu overhead communication với SUMO trong khi vẫn đảm bảo tính nhất quán của dữ liệu.
+
+\subsubsection{Cache cục bộ APC}
+
+Mỗi instance APC duy trì cache riêng cho traffic light logic với TTL (Time To Live) 0.5 giây:
+
+\begin{lstlisting}[style=py, caption={Implementation của logic cache cục bộ}]
+def _get_logic(self):
+    now = traci.simulation.getTime()
+    # Kiểm tra cache validity
+    if self._logic_cache is None or \
+       now - self._logic_cache_at > self._logic_cache_ttl:
+        try:
+            # Fetch fresh logic từ SUMO
+            self._logic_cache = get_current_logic(self.tls_id)
+            self._logic_cache_at = now
+        except Exception:
+            self._logic_cache = None
+    return self._logic_cache
+\end{lstlisting}
+
+Cache hoạt động theo nguyên tắc:
+\begin{itemize}
+    \item \textbf{Lazy loading}: Logic chỉ được fetch khi cần thiết
+    \item \textbf{Time-based invalidation}: Tự động expire sau 0.5 giây
+    \item \textbf{Explicit invalidation}: Force refresh khi có mutation
+\end{itemize}
+\vspace{3cm}
+\subsubsection{Shared cache ở Controller level}
+Khi nhiều APC cùng hoạt động, hệ thống sử dụng shared cache để tối ưu:
+
+\begin{lstlisting}[style=py, caption={Shared cache mechanism (chỉ với tls\_id: E3)}]
+def _get_logic(self):
+    controller = getattr(self, "controller", None)
+    if controller and hasattr(controller, "tl_logic_cache"):
+        entry = controller.tl_logic_cache.get(self.tls_id)
+        if entry and (now - entry.get("at", -1)) <= self._logic_cache_ttl:
+            return entry.get("logic")
+        # Update shared cache
+        logic = get_current_logic(self.tls_id)
+        controller.tl_logic_cache[self.tls_id] = {
+            "logic": logic, 
+            "at": now
+        }
+        return logic
+\end{lstlisting}
+
+\vspace{1cm}
+
+\begin{figure}[H]
+    \centering
+    % Chỉ thể hiện APC Instance với tls_id: E3
+    \includegraphics[width=0.85\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-044929.png}
+    \caption{Kiến trúc cache hai tầng cho traffic light logic chỉ với APC: E3}
+    \label{fig:cache_architecture}
+\end{figure}
+
+\subsubsection{Cache invalidation strategy}
+
+Hệ thống implement invalidation thông minh để đảm bảo consistency:
+
+\begin{lstlisting}[style=py, caption={Cache invalidation mechanism}]
+def _invalidate_logic_cache(self, tl_id=None):
+    # Invalidate local cache
+    self._logic_cache = None
+    self._logic_cache_at = -1.0
+    
+    # Propagate to controller level
+    controller = getattr(self, "controller", None)
+    if controller and hasattr(controller, "_invalidate_logic_cache"):
+        controller._invalidate_logic_cache(self.tls_id)
+\end{lstlisting}
+Cache bị invalidate trong các trường hợp:
+\begin{enumerate}
+    \item Sau khi thêm/xóa/sửa pha (logic mutation)
+    \item Khi phát hiện inconsistency với SUMO
+    \item Theo yêu cầu explicit từ coordinator
+    \item Khi topology mạng thay đổi
+\end{enumerate}
+
+\subsection{Điều khiển chuyển pha an toàn}
+
+Việc chuyển pha được thực hiện qua nhiều lớp kiểm tra an toàn để đảm bảo không vi phạm ràng buộc và tránh xung đột.
+
+\subsubsection{Phase index validation}
+
+Trước khi áp dụng bất kỳ phase nào, hệ thống validate index:
+
+\begin{lstlisting}[style=py, caption={Safe phase index clamping}]
+def _safe_phase_index(self, idx, force_reload=False):
+    try:
+        if force_reload:
+            self._invalidate_logic_cache()
+        logic = self._get_logic()
+        if not logic or len(logic.getPhases()) <= 0:
+            return None
+        n = len(logic.getPhases())
+        # Clamp to valid range
+        return max(0, min(idx, n - 1))
+    except Exception:
+        return None
+\end{lstlisting}
+
+\subsubsection{Multi-layer phase application}
+
+Hệ thống áp dụng phase qua nhiều lớp fallback:
+
+\begin{lstlisting}[style=py, caption={Hierarchical phase application}]
+def _apply_phase(self, phase_idx, duration):
+    # Layer 1: Validate and clamp
+    safe_idx = self._safe_phase_index(phase_idx, force_reload=True)
+    if safe_idx is None:
+        return False
+    
+    # Layer 2: Try controller-level setter
+    controller = getattr(self, "controller", None)
+    if controller:
+        ok = controller._safe_set_phase(
+            self.tls_id, safe_idx, duration
+        )
+        if ok:
+            return True
+    
+    # Layer 3: Direct SUMO control
+    ok2 = safe_set_phase(self.tls_id, safe_idx, duration)
+    return ok2
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-064822.png}
+        \caption*{(a) Kiểm tra & xác thực chỉ số pha}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-064805.png}
+        \caption*{(b) Xử lý thiết lập, hàng đợi và cập nhật trạng thái}
+    \end{minipage}
+    \caption{Sơ đồ quy trình kiểm soát chuyển pha: (a) kiểm tra chỉ số pha, (b) xử lý thiết lập và cập nhật trạng thái}
+    \label{fig:phase_control_pair}
+\end{figure}
+
+\subsubsection{Minimum green enforcement}
+
+Hệ thống enforce thời gian xanh tối thiểu để đảm bảo an toàn:
+
+\begin{lstlisting}[style=py, caption={Minimum green time enforcement}]
+def enforce_min_green(self):
+    current_sim_time = traci.simulation.getTime()
+    elapsed = current_sim_time - self.last_phase_switch_sim_time
+    
+    if elapsed < self.min_green:
+        logger.info(f"[MIN_GREEN ENFORCED] {self.tls_id}: "
+                   f"Only {elapsed:.2f}s since last switch")
+        return False  # Block phase change
+    return True
+\end{lstlisting}
+
+Các exception cho min\_green:
+\begin{itemize}
+    \item Emergency vehicle detection
+    \item Protected left turn activation
+    \item Critical starvation (>3× max\_green wait time)
+\end{itemize}
+
+\subsection{Chèn pha đèn vàng tự động}
+
+Hệ thống tự động phát hiện và chèn pha vàng khi chuyển từ xanh sang đỏ, đảm bảo an toàn giao thông.
+
+\subsubsection{Yellow phase detection algorithm}
+
+Thuật toán xác định khi nào cần pha vàng:
+
+\begin{lstlisting}[style=py, caption={Yellow phase necessity detection}]
+def insert_yellow_phase_if_needed(self, from_phase, to_phase):
+    if from_phase == to_phase:
+        return False
+        
+    logic = self._get_logic()
+    from_state = logic.phases[from_phase].state
+    to_state = logic.phases[to_phase].state
+    
+    # Check each signal head for G->R transition
+    yellow_needed = False
+    yellow = list(from_state)
+    for i in range(min(len(from_state), len(to_state))):
+        if from_state[i].upper() == 'G' and \
+           to_state[i].upper() == 'R':
+            yellow[i] = 'y'
+            yellow_needed = True
+    
+    if not yellow_needed:
+        return False
+\end{lstlisting}
+
+\subsubsection{Dynamic yellow phase creation}
+
+Khi không tồn tại pha vàng phù hợp, hệ thống tạo động:
+
+\begin{lstlisting}[style=py, caption={Dynamic yellow phase creation}]
+    yellow_state_str = ''.join(yellow)
+    
+    # Search for existing yellow phase
+    yellow_idx = None
+    for idx, ph in enumerate(logic.phases):
+        if ph.state == yellow_state_str:
+            yellow_idx = idx
+            break
+    
+    if yellow_idx is None and self.create_yellow_if_missing:
+        # Create new yellow phase
+        phases = list(logic.phases)
+        yellow_phase = traci.trafficlight.Phase(3.0, yellow_state_str)
+        
+        if len(phases) < 12:  # SUMO limit
+            phases.append(yellow_phase)
+            new_idx = len(phases) - 1
+        else:
+            # Overwrite least used phase
+            new_idx = self.find_phase_to_overwrite(yellow_state_str)
+            phases[new_idx] = yellow_phase
+            
+        # Apply new logic
+        new_logic = traci.trafficlight.Logic(
+            logic.programID, logic.type, 
+            logic.currentPhaseIndex, phases
+        )
+        traci.trafficlight.setCompleteRedYellowGreenDefinition(
+            self.tls_id, new_logic
+        )
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-070255.png}
+    \caption{Sơ đồ chuyển trạng thái với pha vàng tự động}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Xử lý và ngăn chặn xung đột pha}
+
+Hệ thống implement nhiều cơ chế để phát hiện và ngăn chặn xung đột pha nguy hiểm.
+
+\subsubsection{Conflict detection matrix}
+
+Xây dựng ma trận xung đột cho các movement:
+
+\begin{lstlisting}[style=py, caption={Phase conflict detection}]
+def detect_phase_conflicts(self, phase_state):
+    controlled_links = traci.trafficlight.getControlledLinks(self.tls_id)
+    conflicts = []
+    
+    for i, link_i in enumerate(controlled_links):
+        if phase_state[i].upper() != 'G':
+            continue
+            
+        for j, link_j in enumerate(controlled_links):
+            if i == j or phase_state[j].upper() != 'G':
+                continue
+                
+            # Check for conflicting movements
+            if self.movements_conflict(link_i, link_j):
+                conflicts.append((i, j))
+                
+    return conflicts
+\end{lstlisting}
+
+\subsubsection{Rate limiting for logic mutations}
+
+Ngăn chặn rapid phase changes gây flicker:
+
+\begin{lstlisting}[style=py, caption={Logic mutation rate limiting}]
+def _can_mutate_logic(self):
+    now = traci.simulation.getTime()
+    cooldown = 2.0  # seconds
+    
+    if now - self._last_logic_mutation < cooldown:
+        logger.info(f"[RATE-LIMIT] Skipping logic mutation; "
+                   f"cooldown {cooldown}s")
+        return False
+        
+    self._last_logic_mutation = now
+    return True
+\end{lstlisting}
+
+\subsubsection{Quy tắc thiết lập pha đèn}
+
+Hệ thống đảm bảo các quy tắc an toàn:
+
+\begin{enumerate}
+    \item \textbf{No all-red prevention}: Mọi pha phải có ít nhất một pha xanh
+    \item \textbf{Conflicting movement check}: Không cho phép pha xanh đồng thời cho các hướng xung đột
+    \item \textbf{Yellow transition requirement}: Bắt buộc yellow giữa các pha xanh xung đột
+    \item \textbf{Maximum phase count}: Giới hạn 12 pha theo mặc định hệ thông giả lập SUMO
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-074409.png}
+    \caption{Ma trận xung đột pha cho nút giao 4 hướng}
+    \label{fig:conflict_matrix}
+\end{figure}
+\subsubsection{Cơ chế phục hồi}
+
+Khi phát hiện vi phạm, hệ thống tự động khôi phục:
+
+\begin{lstlisting}[style=py, caption={Automatic conflict resolution}]
+def ensure_phases_have_green(self):
+    logic = self._get_logic()
+    changed = False
+    
+    for idx, phase in enumerate(logic.getPhases()):
+        if 'G' not in phase.state:
+            # Find first red and convert to green
+            state_list = list(phase.state)
+            for i, ch in enumerate(state_list):
+                if ch == 'r':
+                    state_list[i] = 'G'
+                    break
+                    
+            new_state = ''.join(state_list)
+            logger.info(f"[PATCH] Phase {idx} had no green, "
+                       f"fixing: {phase.state} $\rightarrow$ {new_state}")
+            self.overwrite_phase(idx, new_state, phase.duration)
+            changed = True
+            
+    if changed:
+        logger.info("[PATCH] All phases now have at least one green")
+\end{lstlisting}
+
+Hệ thống quản lý logic pha này đảm bảo hoạt động an toàn, hiệu quả và khả năng phục hồi cao cho điều khiển đèn giao thông trong mọi điều kiện vận hành.
+
+\section{Điều chỉnh thời lượng pha động}
+
+Mục tiêu của phần này là mô tả rõ cách bộ điều khiển APC điều chỉnh thời lượng pha xanh theo thời gian thực dựa trên phần thưởng vận hành, ràng buộc an toàn, nhu cầu tức thời và cơ chế tránh nhấp nháy. Phần cài đặt tương ứng trong mã nguồn nằm chủ yếu ở các hàm:
+\begin{itemize}
+    \item \texttt{calculate\_reward()}, \texttt{compute\_reward\_and\_bonus()} -- tính toán phần thưởng tổng hợp từ mật độ, tốc độ, thời gian chờ và hàng chờ.
+    \item \texttt{calculate\_delta\_t\_and\_penalty()} -- chuyển phần thưởng thành \(\Delta t\) (thời gian mở rộng/rút ngắn) với làm mượt và phạt điều chỉnh lớn.
+    \item \texttt{apply\_extension\_delta()} và \texttt{\_maybe\_update\_phase\_remaining()} -- áp dụng \(\Delta t\) vào pha đang hoạt động, cập nhật remaining time một cách an toàn.
+    \item \texttt{enforce\_min\_green()} -- đảm bảo ràng buộc thời gian xanh tối thiểu; các ngoại lệ cho ưu tiên.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\rule[0pt]{0pt}{0.35\textwidth}\rule[0.8\textwidth]{0pt}{0pt}}
+    \caption{Placeholder: Sơ đồ tổng quan pipeline điều chỉnh thời lượng pha động (Reward $\rightarrow$ Delta-t $\rightarrow$ Extension)}
+    \label{fig:dynamic_timing_pipeline}
+\end{figure}
+
+\subsection{Thuật toán điều chỉnh delta-t}
+
+Thuật toán chuyển đổi phần thưởng (\(R\)) thành giá trị điều chỉnh thời lượng \(\Delta t\) được thiết kế để:
+\begin{enumerate}
+    \item Phản ứng theo sai lệch so với mục tiêu (\(R - R_{\text{target}}\)),
+    \item Làm mượt bằng hàm \(\tanh\) để tránh bước nhảy lớn,
+    \item Áp dụng phạt khi điều chỉnh quá lớn so với ngưỡng an toàn đã định.
+\end{enumerate}
+
+\paragraph{Công thức chính}
+\[
+\text{raw\_}\Delta t = \alpha \cdot (R - R_{\text{target}}), \quad
+\Delta t = s \cdot \tanh\left(\frac{\text{raw\_}\Delta t}{s}\right), \quad
+\Delta t \in [\Delta t_{\min}, \Delta t_{\max}]
+\]
+Trong đó \(\alpha\) là hệ số học/điều chỉnh, \(s\) là thang làm mượt (ví dụ 20), và \([\Delta t_{\min}, \Delta t_{\max}]\) là giới hạn kẹp để tránh điều chỉnh cực đoan. Phạt cho điều chỉnh lớn:
+\[
+\text{penalty} = \max \left(0, \left| \text{raw\_}\Delta t \right| - \Delta t_{\text{large}} \right)
+\]
+
+\begin{lstlisting}[style=py, caption={Trích đoạn: Tính delta-t và penalty}, label={lst:delta_t}]
+def calculate_delta_t_and_penalty(self, R):
+    raw_delta_t = self.alpha * (R - self.R_target)
+    penalty = max(0, abs(raw_delta_t) - self.large_delta_t)
+    ext_t = 20 * np.tanh(raw_delta_t / 20)
+    delta_t = np.clip(ext_t, -20, 20)
+    return raw_delta_t, delta_t, penalty
+\end{lstlisting}
+
+Giá trị \(R_{\text{target}}\) được cập nhật động để bám theo xu hướng hiệu năng gần đây:
+\begin{lstlisting}[style=py, caption={Cập nhật R_target động}]
+def update_R_target(self, window=10):
+    if len(self.reward_history) < window or self.phase_count % 10 != 0:
+        return
+    avg_R = np.mean(list(self.reward_history)[-window:])
+    self.R_target = self.r_base + self.r_adjust * (avg_R - self.r_base)
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\rule[0pt]{0pt}{0.35\textwidth}\rule[0.8\textwidth]{0pt}{0pt}}
+    \caption{Placeholder: Biểu đồ ánh xạ R $\rightarrow$ raw-$\Delta t$ $\rightarrow$ $\Delta t$ sau làm mượt và kẹp biên}
+    \label{fig:delta_t_mapping}
+\end{figure}
+
+\subsection{Cơ chế extension và cập nhật remaining time}
+
+Khi \(\Delta t\) đã được xác định, APC áp dụng thời lượng mới theo hai lớp:
+\begin{enumerate}
+    \item Tính \emph{desired\_total} cho kích hoạt hiện tại: \(\text{desired\_total} = \text{base\_duration} + \Delta t\), có kẹp về \([\texttt{min\_green}, \texttt{max\_green}]\).
+    \item Cập nhật \emph{remaining time} chỉ khi khác biệt đáng kể (vượt \emph{buffer}) để tránh spam lệnh.
+\end{enumerate}
+
+Cơ chế ưu tiên ngăn kéo đuôi khi nhu cầu hiện tại thấp (\texttt{low\_demand\_extend\_cap}):
+\begin{lstlisting}[style=py, caption={Áp dụng extension tương ứng với delta-t}, label={lst:apply_ext}]
+def apply_extension_delta(self, delta_t, buffer=0.5):
+    base = self.activation["base_duration"] or self.min_green
+    desired_total = float(np.clip(base + float(delta_t), self.min_green, self.max_green))
+    if self._phase_has_low_current_demand(min_total_halted=self.low_demand_min_halted):
+        elapsed = self._get_phase_elapsed()
+        desired_total = min(desired_total, elapsed + self.low_demand_extend_cap)
+    self._maybe_update_phase_remaining(desired_total, buffer=0.3)
+    return desired_total
+\end{lstlisting}
+
+Cập nhật remaining time có kiểm soát:
+\begin{lstlisting}[style=py, caption={Cập nhật remaining time an toàn}, label={lst:update_remaining}]
+def _maybe_update_phase_remaining(self, desired_total, buffer=0.5):
+    elapsed = self._get_phase_elapsed()
+    remaining = self._get_phase_remaining()
+    desired_remaining = max(0.0, float(desired_total) - elapsed)
+    if abs(remaining - desired_remaining) > float(buffer):
+        traci.trafficlight.setPhaseDuration(self.tls_id, desired_remaining)
+        self.activation["desired_total"] = float(desired_total)
+        # Cập nhật nhật ký và Supabase
+        current_phase = traci.trafficlight.getPhase(self.tls_id)
+        total_after_update = elapsed + desired_remaining
+        phase_record = self.load_phase_from_supabase(current_phase)
+        base = phase_record.get("base_duration", self.min_green) if phase_record else self.min_green
+        extended_time = max(0.0, total_after_update - base)
+        self.update_phase_duration_record(current_phase, total_after_update, extended_time)
+\end{lstlisting}
+
+\noindent APC cũng phát ra telemetry extension theo ngưỡng để phục vụ trực quan hóa:
+\begin{lstlisting}[style=py, caption={Telemetry extension ngưỡng 0.5s}]
+def emit_extension_telemetry(self, threshold=0.5):
+    # ... tính extended và phát sự kiện nếu thay đổi đáng kể ...
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\rule[0pt]{0pt}{0.35\textwidth}\rule[0.8\textwidth]{0pt}{0pt}}
+    \caption{Placeholder: Lưu đồ áp dụng extension và cập nhật remaining time với buffer}
+    \label{fig:extension_flow}
+\end{figure}
+
+\subsection{Ràng buộc \texttt{min\_green} và \texttt{max\_green}}
+
+Mọi \emph{desired\_total} đều bị kẹp trong \([\texttt{min\_green}, \texttt{max\_green}]\). Đồng thời, bộ điều khiển chặn chuyển pha nếu chưa đủ \texttt{min\_green}, trừ các ngoại lệ ưu tiên:
+\begin{itemize}
+    \item Phát hiện phương tiện khẩn cấp,
+    \item Kích hoạt \emph{protected left} thực sự,
+    \item \emph{Critical starvation} (thời gian chờ vượt ngưỡng nghiêm trọng).
+\end{itemize}
+
+\begin{lstlisting}[style=py, caption={Enforce thời gian xanh tối thiểu với ngoại lệ}, label={lst:min_green}]
+def enforce_min_green(self):
+    current_sim_time = traci.simulation.getTime()
+    elapsed = current_sim_time - self.last_phase_switch_sim_time
+    if elapsed < self.min_green:
+        return False
+    return True
+\end{lstlisting}
+
+Ngoài ra, khi nhu cầu hiện tại xuống thấp, APC sẽ chỉ cho phép kéo đuôi ngắn (mặc định \texttt{low\_demand\_extend\_cap} = 4s) để giải phóng vòng nhanh, giảm \emph{empty greens}. Mọi cập nhật remaining time đều đi qua bộ đệm \emph{buffer} để tránh spam lệnh và nhấp nháy.
+
+\subsection{Tính toán thời lượng tối ưu theo nhu cầu}
+
+Bên cạnh cơ chế \(\Delta t\), APC cung cấp các phép tính thời lượng mang tính heuristics theo nhu cầu:
+\begin{itemize}
+    \item \textbf{Theo pha:} \texttt{calculate\_adaptive\_duration(phase\_idx)} dựa tổng hàng chờ trên các lane xanh của pha đó: pha trống sẽ rất ngắn; pha bận rộn mở rộng đến giới hạn.
+    \item \textbf{Theo làn:} \texttt{calculate\_optimal\_green\_time(lane\_id)} dùng thời gian giải tỏa hàng chờ và dung lượng downstream:
+\end{itemize}
+
+\[
+T_{\text{clear}} \approx 2.0 \cdot Q, \qquad
+T_{\text{downstream}} \approx 2.0 \cdot C_{\downarrow}, \qquad
+T^{\star} = \min\left(\texttt{max\_green}, \max\left(\texttt{min\_green}, T_{\text{clear}}, 2T_{\text{downstream}}\right) + k \cdot \lambda_{\text{arr}}\right)
+\]
+với \(Q\) là hàng chờ, \(C_{\downarrow}\) là dung lượng downstream, \(\lambda_{\text{arr}}\) là tốc độ đến, và \(k\) là hệ số nhỏ để phản ánh nhu cầu sắp tới.
+
+\begin{lstlisting}[style=py, caption={Ví dụ: tính thời lượng pha theo nhu cầu}, label={lst:adaptive_duration}]
+def calculate_adaptive_duration(self, phase_idx):
+    base = self.min_green
+    q_total = self._phase_green_total_queue(phase_idx)
+    if q_total == 0:
+        return max(3, self.min_green // 3)
+    elif q_total < 3:
+        return self.min_green
+    else:
+        return min(self.max_green, self.min_green + q_total * 2)
+\end{lstlisting}
+
+Để chọn pha tốt nhất khi chuyển pha, APC sử dụng \texttt{find\_best\_phase\_for\_traffic()} tổng hợp các yếu tố:
+\begin{itemize}
+    \item Hàng chờ lớn nhất (\emph{max queue}) và tổng cầu (\emph{sum queue}),
+    \item Thời gian chờ, starvation, áp lực downstream,
+    \item Phạt mạnh cho \emph{empty greens} và có \emph{hysteresis} (+10\%) để tránh dao động.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\rule[0pt]{0pt}{0.35\textwidth}\rule[0.8\textwidth]{0pt}{0pt}}
+    \caption{Placeholder: Sơ đồ quyết định thời lượng tối ưu theo hàng chờ, tốc độ đến và dung lượng downstream}
+    \label{fig:optimal_time_decision}
+\end{figure}
+
+\paragraph{Tóm tắt vận hành}
+\begin{enumerate}
+    \item Tính \(R\), cập nhật \(R_{\text{target}}\) định kỳ, suy ra \(\Delta t\) với làm mượt, kèm penalty.
+    \item Từ \(\Delta t\), tính \emph{desired\_total}, kẹp theo \texttt{min\_green}/\texttt{max\_green}, xét \emph{low\_demand\_extend\_cap}.
+    \item Cập nhật remaining time nếu chênh lệch vượt \emph{buffer}, ghi nhận vào Supabase và telemetry.
+    \item Khi chuyển pha: chọn pha tối ưu theo nhu cầu, đảm bảo chèn vàng và duy trì \texttt{min\_green} trừ ngoại lệ ưu tiên.
+\end{enumerate}
+\section{Hệ thống quản lý yêu cầu ưu tiên}
+\subsection{Cấu trúc hàng đợi yêu cầu phân cấp}
+\subsection{Xử lý yêu cầu theo mức độ ưu tiên}
+\subsection{Cơ chế stacked requests và batch processing}
+\subsection{Giải quyết xung đột giữa các yêu cầu}
+
+\section{Phát hiện và xử lý tắc nghẽn}
+\subsection{Thuật toán phát hiện congestion patterns}
+\subsection{Tính toán chỉ số severity đa yếu tố}
+\subsection{Dự báo và phòng ngừa tắc nghẽn}
+\subsection{Kích hoạt chế độ congestion mode}
+
+\section{Quản lý rẽ trái bảo vệ thông minh}
+\subsection{Phát hiện blocked left turn với xung đột}
+\subsection{Tạo pha protected left động}
+\subsection{Cơ chế memory và guard deadline}
+\subsection{Tối ưu thời lượng protected left phase}
+
+\section{Xử lý tình huống khẩn cấp}
+\subsection{Phát hiện phương tiện ưu tiên}
+\subsection{Emergency rebalancing cho lane imbalance}
+\subsection{Xử lý starvation và critical congestion}
+\subsection{Cơ chế cooldown và ngăn chặn flicker}
+
+\section{Tạo và quản lý pha động}
+\subsection{Thuật toán tạo pha mới tự động}
+\subsection{Overwrite và tái sử dụng pha}
+\subsection{Tối ưu số lượng pha với giới hạn SUMO}
+\subsection{Sinh tập pha tối ưu cho topology}
+
+\section{Tích hợp với hệ thống lưu trữ}
+\subsection{Đồng bộ trạng thái với Supabase}
+\subsection{Cơ chế batch write và retry logic}
+\subsection{Lưu trữ lịch sử điều chỉnh pha}
+\subsection{Event logging và telemetry}
+
+\section{Vòng lặp điều khiển chính}
+\subsection{Luồng xử lý control_step}
+\subsection{Phối hợp với RL agent}
+\subsection{Cập nhật trạng thái lane serving}
+\subsection{Xử lý phase ending và transitions}
+
+\section{Đánh giá hiệu năng và metrics}
+\subsection{Tính toán reward đa mục tiêu}
+\subsection{Điều chỉnh trọng số thích ứng}
+\subsection{Cập nhật R_target động}
+\subsection{Phân tích bonus và penalty}
+
+\section{Tối ưu hóa và cải tiến}
+\subsection{Hysteresis để tránh dao động}
+\subsection{Rate limiting cho logic mutations}
+\subsection{Decay mechanisms cho memory}
+\subsection{Xử lý corner cases và edge conditions}
+% =========================
+% CHƯƠNG 6
+% =========================
+\chapter{Thành phần học tăng cường}
+\section{Kiến trúc Agent Q-learning cải tiến}
+\section{Cơ chế học}
+\section{Thiết kế vector trạng thái}
+\section{Thiết kế hàm thưởng}
+
+% =========================
+% CHƯƠNG 7
+% =========================
+\chapter{Chiến lược điều khiển lai}
+\section{Khung tích hợp}
+\section{Luồng điều khiển}
+\section{Giải quyết xung đột}
+
+% =========================
+% CHƯƠNG 8
+% =========================
+\chapter{Quản lý xe ưu tiên}
+\section{Phát hiện xe khẩn cấp}
+\section{Chiến lược ưu tiên}
+\section{Phân tích tác động hiệu năng}
+
+% =========================
+% CHƯƠNG 9
+% =========================
+\chapter{Quản lý dữ liệu}
+\section{Tích hợp Supabase}
+\section{Lưu trữ Q-Table}
+\section{Hệ thống ghi log sự kiện}
+
+% =========================
+% CHƯƠNG 10
+% =========================
+\chapter{Chi tiết triển khai}
+\section{Cài đặt và cấu hình}
+\section{Tham số cấu hình}
+\section{Cấu trúc mã nguồn}
+
+% =========================
+% CHƯƠNG 11
+% =========================
+\chapter{Mô hình thí nghiệm}
+\section{Môi trường mô phỏng}
+\section{Cấu hình cơ bản}
+\section{Thí nghiệm kiểm soát}
+
+% =========================
+% CHƯƠNG 12
+% =========================
+\chapter{Đánh giá hiệu năng và so sánh}
+\section{Các chỉ số đánh giá}
+\section{So sánh định lượng và định tính}
+\section{Đánh giá theo kịch bản}
+\section{Phân tích đường cong học tập}
+
+% =========================
+% CHƯƠNG 13
+% =========================
+\chapter{Kết quả và thảo luận}
+\section{Phát hiện chính}
+\section{Phân tích hành vi hệ thống}
+\section{Hạn chế và thách thức}
+
+% =========================
+% CHƯƠNG 14
+% =========================
+\chapter{Trực quan hóa và giám sát}
+\section{Bảng điều khiển thời gian thực}
+\section{Công cụ phân tích}
+
+% =========================
+% CHƯƠNG 15
+% =========================
+\chapter{Hướng phát triển tương lai}
+\section{Điều phối đa nút giao}
+\section{Tích hợp học tăng cường sâu}
+\section{Giao tiếp xe--hạ tầng}
+\section{Dự báo giao thông}
+\section{Mở rộng dựa trên điện toán đám mây}
+
+% =========================
+% CHƯƠNG 16
+% =========================
+\chapter{Kết luận}
+\section{Tóm tắt kết quả}
+\section{Tác động đến quản lý giao thông}
+\section{Ứng dụng thực tiễn}
+\section{Khuyến nghị cuối cùng}
+
+% ===== Bibliography =====
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+\printbibliography[title={Tài liệu tham khảo}]
+
+% ===== Appendices =====
+\appendix
+
+\chapter{Tài liệu mã nguồn}
+% Đảm bảo đã thêm \usepackage{listings} và cấu hình style trong phần preamble
+% Ví dụ chèn file mã nguồn chính:
+% \lstinputlisting[style=py,caption={Bộ điều khiển Lane7b.py}]{Lane7b.py}
+
+\chapter{Hướng dẫn cài đặt}
+% Hướng dẫn cài Python, SUMO, cấu hình TraCI, tham số...
+
+\chapter{Dữ liệu thí nghiệm}
+% Link/ mô tả dữ liệu, cấu hình traffic demand...
+
+\chapter{Thuật ngữ}
+% Giải thích các thuật ngữ chuyên ngành bổ sung.
+
+% ======= Bảng phụ lục chi tiết schema =======
+\chapter{Phụ lục: Lược đồ bảng phase\_records}
+\input{appendix_phase_records.tex}
+
+\end{document}
