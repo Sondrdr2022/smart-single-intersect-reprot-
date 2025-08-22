@@ -1,0 +1,163 @@
+
+% =========================
+% CHƯƠNG 3
+% =========================
+\chapter{Tổng quan tài liệu}
+\section{Các phương pháp điều khiển giao thông truyền thống}
+
+Hệ thống điều khiển tín hiệu giao thông truyền thống thường dựa trên hai phương pháp chính: điều khiển theo chu kỳ cố định (fixed-time control) và điều khiển kích hoạt (actuated control) \cite{Papageorgiou2003, Eom2020}. 
+
+\subsection{Điều khiển chu kỳ cố định}
+
+Hệ thống điều khiển chu kỳ cố định hoạt động dựa trên các chu trình tín hiệu được xác định trước, tính toán từ dữ liệu giao thông lịch sử. Phương pháp này thường sử dụng các công thức tối ưu hóa như phương pháp Webster để xác định độ dài chu kỳ và phân chia thời gian cho các pha tín hiệu \cite{Webster1958, Urbanik2015, Shingate2020}. 
+
+Ưu điểm của hệ thống cố định bao gồm:
+\begin{itemize}
+    \item Thiết kế đơn giản, dễ triển khai và bảo trì
+    \item Chi phí đầu tư và vận hành thấp
+    \item Độ tin cậy cao do không phụ thuộc vào cảm biến
+    \item Được áp dụng rộng rãi trên toàn cầu
+\end{itemize}
+
+Tuy nhiên, phương pháp này tồn tại những hạn chế đáng kể:
+\begin{itemize}
+    \item Thiếu khả năng thích ứng với biến động giao thông thời gian thực
+    \item Thường xuyên xảy ra hiện tượng lãng phí thời gian đèn xanh khi lưu lượng thấp
+    \item Hình thành hàng chờ dài trong giờ cao điểm hoặc khi có sự kiện bất thường
+    \item Không thể xử lý hiệu quả các tình huống khẩn cấp hoặc sự cố giao thông
+\end{itemize}
+
+Những hạn chế này đã được nhiều nghiên cứu chỉ ra và phân tích chi tiết \cite{Zhao2012, Shaikh2022}.
+
+\subsection{Điều khiển kích hoạt}
+
+Điều khiển kích hoạt (actuated control) sử dụng các cảm biến phát hiện phương tiện để điều chỉnh thời gian tín hiệu trong phạm vi giới hạn định trước. Hệ thống này có thể kéo dài pha đèn xanh khi phát hiện còn nhiều phương tiện hoặc chuyển pha sớm khi không có nhu cầu \cite{Koonce2008, Eom2020}.
+
+Các dạng điều khiển kích hoạt bao gồm:
+\begin{itemize}
+    \item \textbf{Semi-actuated control}: Chỉ lắp cảm biến trên các hướng phụ, hướng chính luôn được ưu tiên
+    \item \textbf{Fully-actuated control}: Tất cả các hướng đều có cảm biến, thời gian tín hiệu được điều chỉnh linh hoạt theo nhu cầu thực tế
+\end{itemize}
+
+Mặc dù linh hoạt hơn điều khiển cố định, phương pháp kích hoạt vẫn bị giới hạn bởi các tham số định trước và không thể tối ưu hóa toàn diện cho mạng lưới giao thông \cite{Mirchandani2001}.
+
+\subsection{Điều khiển phối hợp}
+
+Ngoài hai phương pháp trên, điều khiển phối hợp (coordinated control) đồng bộ hóa tín hiệu giữa nhiều nút giao liên tiếp để tạo "làn sóng xanh", giúp phương tiện di chuyển liên tục qua nhiều giao lộ mà không phải dừng lại \cite{Hunt1981, Lowrie1990}. Hai hệ thống phối hợp nổi tiếng nhất là SCOOT (Split Cycle Offset Optimisation Technique) \cite{Hunt1981} và SCATS (Sydney Coordinated Adaptive Traffic System) \cite{Lowrie1990}. Phương pháp này đặc biệt hiệu quả trên các trục đường chính nhưng đòi hỏi thiết kế phức tạp và khó điều chỉnh khi mạng lưới giao thông có nhiều hướng với lưu lượng cân bằng.
+
+\subsection{Đánh giá chung}
+
+Mặc dù các phương pháp truyền thống đã được triển khai rộng rãi và chứng minh hiệu quả trong nhiều trường hợp, chúng vẫn không đáp ứng được yêu cầu ngày càng cao của giao thông đô thị hiện đại. Sự thiếu linh hoạt trong việc thích ứng với điều kiện giao thông động và phức tạp đã thúc đẩy sự phát triển của các hệ thống điều khiển thích nghi và thông minh hơn, đặc biệt là các phương pháp dựa trên học máy và trí tuệ nhân tạo \cite{Abdulhai2003, Li2016, Shaikh2022}.
+
+\section{Hệ thống điều khiển giao thông thích nghi}
+Các hệ thống thích nghi như SCOOT, SCATS và OPAC đã được phát triển để khắc phục hạn chế của hệ thống cố định \cite{Eom2020}. Những hệ thống này có khả năng điều chỉnh thời gian tín hiệu dựa trên điều kiện giao thông thực tế.
+
+\section{Ứng dụng học tăng cường trong quản lý giao thông}
+Học tăng cường đã cho thấy tiềm năng lớn trong việc tối ưu hóa điều khiển tín hiệu giao thông thông qua khả năng học từ tương tác với môi trường \cite{Eom2020}.
+
+\section{Phương pháp lai trong điều khiển tín hiệu}
+Việc kết hợp nhiều phương pháp điều khiển có thể tận dụng ưu điểm của từng cách tiếp cận, tạo ra hệ thống hiệu quả hơn \cite{Eom2020}.
+
+\section{Phân tích khoảng trống nghiên cứu}
+
+Mặc dù đã có nhiều nghiên cứu về điều khiển tín hiệu giao thông thích nghi và ứng dụng học máy, vẫn tồn tại nhiều khoảng trống quan trọng cần được giải quyết để phát triển hệ thống điều khiển có khả năng ứng dụng thực tế cao.
+
+\subsection{Hạn chế về khả năng mở rộng của thuật toán học tăng cường}
+
+Phần lớn các nghiên cứu hiện tại sử dụng Q-learning với bảng Q rời rạc \cite{Watkins1992, Mannion2016}, phù hợp cho không gian trạng thái và hành động nhỏ. Tuy nhiên, trong môi trường giao thông thực tế với không gian trạng thái lớn và liên tục, phương pháp này gặp phải các hạn chế nghiêm trọng:
+
+\begin{itemize}
+    \item \textbf{Thiếu khả năng khái quát hóa}: Không có hàm xấp xỉ như mạng nơ-ron sâu để tổng quát hóa cho các trạng thái chưa từng gặp, dẫn đến khó khăn trong việc mở rộng sang mạng lưới giao thông lớn \cite{Li2016, Liang2019}.
+    
+    \item \textbf{Biểu diễn trạng thái hạn chế}: Vector trạng thái thường được thiết kế đơn giản, thiếu thông tin về topology mạng, tương tác đa nút và đặc trưng thời gian dài hạn \cite{Wei2019}.
+    
+    \item \textbf{Nguy cơ overfitting}: Tác tử có thể bị quá khớp với kịch bản mô phỏng cụ thể và không chuyển giao tốt sang môi trường thực tế \cite{Gao2017}.
+\end{itemize}
+
+\subsection{Thiếu phương pháp đánh giá chuẩn và kiểm chứng thống kê}
+
+Nhiều nghiên cứu chưa thiết lập quy trình đánh giá khoa học chặt chẽ:
+
+\begin{itemize}
+    \item \textbf{Thiếu benchmark chuẩn}: Không có so sánh hệ thống với các baseline phổ biến như SCOOT, SCATS hoặc các phương pháp RL hiện đại (DQN, PPO, A2C) trên cùng bộ dữ liệu \cite{Hunt1981, Lowrie1990}.
+    
+    \item \textbf{Kiểm chứng thống kê yếu}: Thiếu thủ tục thống kê nghiêm ngặt như chạy nhiều lần với seed khác nhau, tính confidence intervals, và thực hiện kiểm định t-test để xác nhận ý nghĩa thống kê của kết quả \cite{Shaikh2022}.
+    
+    \item \textbf{Đánh giá không toàn diện}: Chỉ tập trung vào một số metrics cơ bản mà bỏ qua các khía cạnh quan trọng như độ ổn định, khả năng thích ứng với biến động \cite{Zhao2020}.
+\end{itemize}
+
+\subsection{Hạn chế trong điều phối đa nút và khả năng mở rộng}
+
+Vấn đề phối hợp giữa nhiều nút giao thông vẫn chưa được giải quyết triệt để:
+
+\begin{itemize}
+    \item \textbf{Thiếu cơ chế phối hợp phân tán}: Các nghiên cứu thường tập trung vào tối ưu đơn nút, thiếu giải pháp cho multi-agent coordination với kiến trúc CTDE (Centralized Training, Decentralized Execution) \cite{Kouvelas2011}.
+    
+    \item \textbf{Khả năng mở rộng hạn chế}: Chưa có thử nghiệm trên mạng lưới lớn (hàng chục đến hàng trăm nút) với xem xét về độ trễ giao tiếp, overhead tính toán \cite{Zhao2012}.
+    
+    \item \textbf{Topology động}: Thiếu nghiên cứu về khả năng thích ứng khi topology mạng thay đổi do sự cố hoặc điều chỉnh hạ tầng.
+\end{itemize}
+
+\subsection{Khoảng cách giữa mô phỏng và thực tế (Sim-to-Real Gap)}
+
+Việc chuyển giao từ môi trường mô phỏng sang thực tế vẫn là thách thức lớn:
+
+\begin{itemize}
+    \item \textbf{Thiếu domain randomization}: Các mô hình không được huấn luyện với biến động về sensor noise, mất gói tin, độ trễ mạng \cite{Lopez2018}.
+    
+    \item \textbf{Phụ thuộc vào mô phỏng}: Hiệu năng phụ thuộc nhiều vào độ chính xác của mô phỏng SUMO, thiếu kiểm thử trên nhiều môi trường mô phỏng khác nhau.
+    
+    \item \textbf{Thiếu tích hợp thực tế}: Chưa có nghiên cứu về kết nối với cảm biến thực, hệ thống V2X hoặc camera giao thông thực tế.
+\end{itemize}
+
+\subsection{Thiếu sót trong thiết kế hàm thưởng và phân tích bias}
+
+Hàm thưởng trong RL thường được thiết kế phức tạp nhưng thiếu phân tích sâu:
+
+\begin{itemize}
+    \item \textbf{Reward shaping không rõ ràng}: Thiếu phân tích về cách các thành phần reward ảnh hưởng đến hành vi học, có thể dẫn đến các bias không mong muốn \cite{Sutton2018}.
+    
+    \item \textbf{Thiếu ablation study}: Không có nghiên cứu tách biệt để đánh giá tác động của từng thành phần trong hàm thưởng.
+    
+    \item \textbf{Vấn đề công bằng}: Khó đảm bảo công bằng giữa các hướng giao thông khi tối ưu hóa đa mục tiêu.
+\end{itemize}
+
+\subsection{Thiếu cơ chế đảm bảo an toàn và ràng buộc cứng}
+
+An toàn là yếu tố then chốt nhưng thường bị bỏ qua:
+
+\begin{itemize}
+    \item \textbf{Thiếu chứng minh hình thức}: Không có cơ chế verification để đảm bảo hệ thống không vi phạm các ràng buộc an toàn cơ bản \cite{Mirchandani2001}.
+    
+    \item \textbf{Kiểm thử stress hạn chế}: Thiếu thử nghiệm với các corner cases, gridlock cực đoan, hoặc sự cố hệ thống.
+    
+    \item \textbf{Xung đột pha}: Chưa có giải pháp triệt để cho việc đảm bảo không xảy ra xung đột pha nguy hiểm.
+\end{itemize}
+
+\subsection{Hiệu quả mẫu và tốc độ hội tụ}
+
+Các thuật toán học tăng cường truyền thống yêu cầu lượng dữ liệu huấn luyện lớn:
+
+\begin{itemize}
+    \item \textbf{Sample inefficiency}: Q-learning cơ bản yêu cầu số lượng lớn episodes để hội tụ, không phù hợp cho học online \cite{Watkins1992}.
+    
+    \item \textbf{Thiếu kỹ thuật tăng cường}: Không áp dụng experience replay, prioritized replay, hoặc model-based RL để cải thiện hiệu quả mẫu \cite{Gao2017}.
+    
+    \item \textbf{Thời gian huấn luyện}: Thiếu báo cáo về thời gian và tài nguyên tính toán cần thiết cho quá trình học.
+\end{itemize}
+
+\subsection{Thiếu khả năng tái tạo và minh bạch}
+
+Nhiều nghiên cứu không cung cấp đủ thông tin để tái tạo kết quả:
+
+\begin{itemize}
+    \item \textbf{Tham số không rõ ràng}: Thiếu documentation về hyperparameters, random seeds, cấu hình chi tiết \cite{Shaikh2022}.
+    
+    \item \textbf{Code không công khai}: Nhiều nghiên cứu không chia sẻ mã nguồn, khiến việc verify và so sánh trở nên khó khăn.
+    
+    \item \textbf{Dữ liệu không chuẩn}: Sử dụng các bộ dữ liệu riêng biệt, không có benchmark dataset chung cho cộng đồng.
+\end{itemize}
+
+\subsection{Kết luận về khoảng trống nghiên cứu}
+
+Những khoảng trống trên cho thấy cần có một cách tiếp cận tổng hợp, kết hợp ưu điểm của điều khiển dựa trên luật (rule-based) với khả năng học và thích ứng của học máy, đồng thời đảm bảo tính an toàn, khả năng mở rộng và ứng dụng thực tế. Nghiên cứu này hướng đến việc giải quyết một phần các khoảng trống quan trọng thông qua việc phát triển hệ thống điều khiển lai APC--RL với các cơ chế an toàn, quản lý ưu tiên và khả năng đồng bộ dữ liệu thời gian thực, tạo nền tảng cho các nghiên cứu mở rộng trong tương lai.

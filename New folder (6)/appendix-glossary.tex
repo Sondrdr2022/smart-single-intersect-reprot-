@@ -1,0 +1,17 @@
+\chapter{Thuật ngữ}
+
+\begin{description}[leftmargin=2.5em,style=nextline]
+    \item[\textbf{Spillback}] Hiện tượng ùn tắc dội ngược: Khi hàng chờ tại một nút giao thông kéo dài vượt qua điểm đầu nút giao, làm cản trở hoặc chặn luôn dòng xe ở nút giao phía trước. Spillback gây ra hiệu ứng dây chuyền, lan rộng tắc nghẽn trong mạng lưới đô thị.
+    \item[\textbf{Gridlock}] Kẹt lưới giao thông: Toàn bộ các nút giao đều bị kẹt, xe không thể di chuyển qua bất kỳ hướng nào do xung đột dòng xe cắt nhau.
+    \item[\textbf{Starvation}] Đói phục vụ: Một làn hoặc hướng giao thông bị bỏ qua quá lâu, dẫn đến hàng chờ kéo dài không được phục vụ, thường xảy ra khi chính sách ưu tiên quá mức cho các hướng khác.
+    \item[\textbf{Protected left}] Pha rẽ trái bảo vệ: Pha đèn tín hiệu được thiết kế riêng để cho phép rẽ trái an toàn, không bị xung đột với dòng đi thẳng đối diện.
+    \item[\textbf{Adaptive Phase Control (APC)}] Điều khiển pha thích nghi: Phương pháp điều chỉnh thời lượng các pha đèn dựa trên trạng thái giao thông thực tế (hàng chờ, số xe dừng, v.v.).
+    \item[\textbf{Reinforcement Learning (RL)}] Học tăng cường: Kỹ thuật học máy cho phép hệ thống điều khiển tín hiệu học từ phần thưởng/hình phạt dựa trên kết quả thực tế của hành động.
+    \item[\textbf{Green wave}] Làn sóng xanh: Chuỗi các đèn tín hiệu được điều phối để xe chạy liên tục qua nhiều nút giao mà không phải dừng lại.
+    \item[\textbf{Phase duration}] Thời lượng pha: Khoảng thời gian một pha đèn (xanh/vàng/đỏ) được duy trì trước khi chuyển sang pha tiếp theo.
+    \item[\textbf{Supabase}] Nền tảng cơ sở dữ liệu đám mây, dùng lưu trữ trạng thái, nhật ký sự kiện và bảng Q-learning cho hệ thống điều khiển.
+    \item[\textbf{SUMO}] Simulation of Urban Mobility: Phần mềm mô phỏng giao thông vi mô, dùng kiểm thử các thuật toán điều khiển tín hiệu.
+    \item[\textbf{TraCI}] Traffic Control Interface: Giao thức kết nối giữa Python và SUMO, cho phép điều khiển và lấy dữ liệu mô phỏng theo thời gian thực.
+    \item[\textbf{Q-table}] Bảng giá trị Q trong Q-learning: Lưu trữ giá trị kỳ vọng cho mỗi trạng thái và hành động, dùng để ra quyết định tối ưu cho agent học tăng cường.
+    \item[\textbf{Pending requests}] Hàng đợi yêu cầu: Danh sách các yêu cầu chuyển pha đèn đang chờ xử lý, thường được xếp theo mức độ ưu tiên và thời gian.
+\end{description}

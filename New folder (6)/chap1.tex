@@ -1,0 +1,52 @@
+% =========================
+% CHƯƠNG 1
+% =========================
+\chapter{Tổng quan dự án}
+
+\section{Giới thiệu dự án}
+Trong bối cảnh đô thị hóa nhanh chóng, các thành phố lớn ngày càng đối mặt với tình trạng ùn tắc giao thông nghiêm trọng. Sự gia tăng đột biến của phương tiện cá nhân, kết hợp với tốc độ mở rộng hạ tầng giao thông chưa theo kịp, đã tạo ra những áp lực lớn đối với hệ thống điều tiết lưu lượng. Ùn tắc không chỉ gây ra sự lãng phí thời gian mà còn kéo theo nhiều hệ quả tiêu cực khác như tiêu hao nhiên liệu, phát thải khí thải nhà kính, gia tăng ô nhiễm môi trường và ảnh hưởng xấu đến sức khỏe cộng đồng. Bên cạnh đó, các tình huống khẩn cấp như xe cứu thương, cứu hỏa hoặc cảnh sát gặp khó khăn khi di chuyển qua các nút giao đông đúc càng làm bộc lộ hạn chế của hệ thống điều khiển tín hiệu hiện tại.
+
+Các hệ thống đèn tín hiệu giao thông truyền thống thường được lập trình dựa trên chu kỳ cố định, được xác định sẵn từ dữ liệu trung bình lịch sử. Tuy nhiên, phương pháp này thiếu tính linh hoạt, không thể thích ứng kịp thời với biến động lưu lượng thực tế vốn thay đổi liên tục theo thời gian, vị trí và điều kiện giao thông. Kết quả là ở những hướng có mật độ phương tiện thấp, thời gian đèn xanh bị lãng phí, trong khi ở những hướng có lưu lượng cao lại hình thành hàng chờ dài và ùn tắc kéo dài. Sự cứng nhắc này khiến hiệu quả vận hành của mạng lưới giao thông giảm đáng kể và đặt ra yêu cầu cấp bách về một giải pháp điều khiển tín hiệu thông minh, thích ứng theo thời gian thực.
+
+Để giải quyết vấn đề trên, dự án này phát triển một \textbf{hệ thống điều khiển đèn giao thông thông minh}, kết hợp giữa \textbf{điều khiển pha thích nghi (Adaptive Phase Control – APC)} và \textbf{học tăng cường (Reinforcement Learning – RL)}. APC cung cấp nền tảng điều khiển theo luật, cho phép điều chỉnh độ dài pha đèn dựa trên các ngưỡng hàng chờ hoặc số lượng xe dừng. Trong khi đó, RL mang lại khả năng học hỏi từ trải nghiệm, tối ưu dần chiến lược điều khiển thông qua cơ chế phần thưởng – hình phạt, giúp hệ thống thích nghi linh hoạt hơn với các tình huống giao thông phức tạp.
+
+Hệ thống được kiểm thử trong môi trường mô phỏng \textbf{SUMO}, kết nối thông qua \textbf{TraCI}, đồng thời tích hợp \textbf{Supabase} để lưu trữ và đồng bộ dữ liệu trên nền tảng đám mây. Cách tiếp cận này không chỉ cho phép đánh giá hiệu năng của bộ điều khiển trong các kịch bản đa dạng mà còn mở ra khả năng mở rộng sang quy mô thực tế, hỗ trợ phân tích dữ liệu dài hạn và triển khai trong các hệ thống giao thông đô thị thông minh trong tương lai.
+
+\section{Thành tựu chính}
+\begin{itemize}
+    \item Xây dựng bộ điều khiển lai \textbf{APC–RL} điều chỉnh chu kỳ đèn theo trạng thái giao thông.
+    \item Cơ chế \textbf{ưu tiên phương tiện khẩn cấp}.
+    \item Thuật toán \textbf{phát hiện và xử lý tắc nghẽn} (giảm spillback).
+    \item \textbf{Rẽ trái bảo vệ} với pha bảo vệ động.
+    \item Kết nối Supabase để \textbf{sao lưu trạng thái} và phân tích.
+\end{itemize}
+
+\section{Tóm tắt cải thiện hiệu năng}
+Theo nghiên cứu của Eom và Kim \cite{Eom2020}, các hệ thống điều khiển tín hiệu thích nghi có thể cải thiện đáng kể hiệu suất giao thông. Kết quả thực nghiệm của dự án này cho thấy:
+
+\begin{itemize}
+    \item \textbf{Điều chỉnh pha:} trung bình +13.9s (kéo dài 87.1\%, rút ngắn 10.4\%), tối đa +88s / $-70$s.
+    \item \textbf{Thời gian chờ:} giảm từ \textbf{2061.5s} (mặc định) xuống \textbf{1412.7s} (APC–RL) $\Rightarrow$ \textbf{-31.5\%}.
+    \item \textbf{Hàng chờ:} 49.1 xe (APC–RL) so với 51.6 xe (mặc định).
+    \item \textbf{Tốc độ trung bình:} 1.2 m/s (APC–RL) vs 0.8 m/s (mặc định).
+\end{itemize}
+
+\section{Tổng quan công nghệ sử dụng} 
+Hệ thống điều khiển được xây dựng dựa trên sự tích hợp của nhiều công nghệ phần mềm và công cụ mô phỏng, đảm bảo khả năng xử lý dữ liệu thời gian thực, học tăng cường và trực quan hóa kết quả. Cụ thể: 
+\begin{itemize} 
+  \item \textbf{SUMO (Simulation of Urban MObility)}: công cụ mô phỏng giao thông mã nguồn mở, dùng để xây dựng mạng lưới đường phố, luồng xe, và kiểm thử các chiến lược điều khiển tín hiệu. 
+   \item \textbf{TraCI (Traffic Control Interface)}: giao thức cầu nối giữa Python và SUMO, cho phép điều khiển đèn tín hiệu theo từng bước thời gian, lấy dữ liệu trạng thái như độ dài hàng chờ, thời gian chờ, tốc độ xe.
+    \item \textbf{Python}: ngôn ngữ lập trình chính của hệ thống. Các thành phần quan trọng bao gồm: 
+    \begin{itemize} 
+      \item Bộ điều khiển pha thích nghi (Adaptive Phase Controller - APC) với logic tính toán thời lượng pha. 
+      \item Agent Q-learning tăng cường (Enhanced Q-Learning Agent) cho việc ra quyết định tối ưu dựa trên trạng thái giao thông.
+      \item Bộ quản lý vòng lặp chính để phối hợp giữa hai thành phần trên (hybrid APC–RL).
+    \end{itemize} 
+    \item \textbf{Supabase}: nền tảng cơ sở dữ liệu đám mây, được dùng để lưu trữ bảng Q-learning (Q-table), nhật ký các sự kiện điều khiển, dữ liệu trạng thái giao thông, đồng thời hỗ trợ đồng bộ dữ liệu trong thời gian thực.
+    \item \textbf{Các thư viện Python hỗ trợ}:
+    \begin{itemize} 
+      \item \texttt{NumPy} và \texttt{Pandas} cho xử lý ma trận trạng thái, dữ liệu hàng chờ và tính toán thống kê. 
+       \item \texttt{Matplotlib} để trực quan hóa kết quả mô phỏng: hàng chờ, thời gian chờ, tốc độ trung bình và phân tích điều chỉnh pha. 
+       \item \texttt{Supabase-py} để kết nối và quản lý dữ liệu đám mây.
+       \item \texttt{Pickle} dùng lưu trữ/tải lại bảng Q-learning dưới dạng file nhị phân. \end{itemize} 
+    \end{itemize}
