@@ -1,0 +1,14 @@
+\chapter*{Tóm tắt}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+Đèn giao thông đóng vai trò then chốt trong việc điều tiết lưu thông đô thị, song các hệ thống truyền thống thường thiếu khả năng thích ứng với biến động giao thông thực tế. Trong những năm gần đây, các phương pháp điều khiển thích nghi đã được nghiên cứu, nhưng vẫn còn tồn tại những hạn chế như hiện tượng nhấp nháy pha, xử lý tình huống khẩn cấp chưa hiệu quả và khó mở rộng cho nhiều nút giao.
+
+Để khắc phục những vấn đề này, nghiên cứu đề xuất một bộ điều khiển nút giao thông thông minh được triển khai trên môi trường mô phỏng \gls{sumo}, kết nối qua \gls{traci}, kết hợp kỹ thuật học tăng cường và cơ chế lưu trữ trạng thái trên nền tảng đám mây Supabase. Bộ điều khiển có khả năng tự động điều chỉnh thời lượng đèn xanh dựa trên số lượng xe dừng, chiều dài hàng chờ và lưu lượng tức thời, đồng thời bảo đảm an toàn thông qua việc chèn pha vàng và duy trì tối thiểu thời gian đèn xanh.
+
+Ngoài ra, hệ thống còn tích hợp cơ chế ưu tiên cho phương tiện khẩn cấp, quản lý ùn tắc và hỗ trợ rẽ trái an toàn thông qua hàng đợi yêu cầu có cấu trúc. Kết quả mô phỏng thực nghiệm cho thấy mô hình đề xuất giúp giảm đáng kể thời gian chờ trung bình và cải thiện lưu lượng so với phương pháp điều khiển tín hiệu cố định. Điều này chứng minh tính hiệu quả, linh hoạt và tiềm năng ứng dụng của hệ thống trong quản lý giao thông đô thị thông minh.
+
+\clearpage
+\pagenumbering{arabic}\appendix
+\chapter{Tài liệu mã nguồn}
+% Đảm bảo đã thêm \usepackage{listings} và cấu hình style trong phần preamble
+% Ví dụ chèn file mã nguồn chính:
+% \lstinputlisting[style=py,caption={Bộ điều khiển Lane7b.py}]{Lane7b.py}

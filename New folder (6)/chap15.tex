@@ -2,8 +2,66 @@
 % CHƯƠNG 15
 % =========================
 \chapter{Hướng phát triển tương lai}
+
 \section{Điều phối đa nút giao}
+
+Hiện tại, bộ điều khiển mới chỉ quản lý một nút giao đơn lẻ. Trong tương lai, việc mở rộng hệ thống để điều phối đồng thời nhiều nút giao sẽ giúp tối ưu hóa lưu lượng và giảm tắc nghẽn trên toàn mạng lưới đô thị. Các hệ thống như SCOOT~\cite{Hunt1981}, SCATS~\cite{Lowrie1990} đã chứng minh hiệu quả của điều khiển phối hợp đa nút giao. Để đạt được điều này, cần xây dựng mô-đun quản lý đa nút, phát hiện cụm tắc nghẽn và phối hợp pha giữa các nút, từ đó tạo “làn sóng xanh” động cho các tuyến đường chính.
+
+\vspace{0.3cm}
+\noindent\textit{Lưu ý: Các nội dung về ImprovedCorridorCoordinator và corridor/multi-intersection coordination mới chỉ nằm trong định hướng nghiên cứu, chưa được triển khai trong phiên bản hiện tại.}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Sơ đồ mở rộng điều phối multi-intersection, greenwave]}
+    \vspace{2.5cm}}}
+    \caption{Ý tưởng kiến trúc điều phối đa nút giao thông}
+\end{figure}
+
 \section{Tích hợp học tăng cường sâu}
-\section{Giao tiếp xe--hạ tầng}
+
+Các nghiên cứu gần đây~\cite{Wei2019,Li2016,Liang2019,Genders2016,Gao2017,Shingate2020} cho thấy học tăng cường sâu (Deep RL) có khả năng tối ưu hóa tín hiệu giao thông ở quy mô lớn, vượt giới hạn của Q-learning truyền thống~\cite{Watkins1992,Mannion2016}. Hệ thống hiện tại mới dùng Q-learning cho một nút giao. Trong tương lai, việc tích hợp các thuật toán như DQN, PPO, A2C, hoặc multi-agent RL sẽ giúp hệ thống thích nghi tốt hơn với biến động thực tế và dễ mở rộng sang nhiều nút giao. Các kỹ thuật như experience replay, prioritized replay~\cite{Gao2017,Sutton2018} sẽ tăng hiệu quả mẫu và độ tin cậy.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Minh họa kiến trúc agent RL sâu và buffer]}
+    \vspace{2cm}}}
+    \caption{Kiến trúc agent RL sâu}
+\end{figure}
+
+\section{Giao tiếp xe-hạ tầng (V2I)}
+
+Giao tiếp hai chiều giữa phương tiện và hạ tầng (V2I) là hướng phát triển quan trọng để nâng cao khả năng thích ứng và phục vụ ưu tiên~\cite{Michailidis2023,Chamberlain2017}. Tích hợp V2X sẽ giúp bộ điều khiển nhận diện xe khẩn cấp, cập nhật trạng thái giao thông thực tế từ phương tiện, và phối hợp điều khiển hiệu quả hơn.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Sơ đồ giao tiếp V2I, data flow giữa xe và controller]}
+    \vspace{2cm}}}
+    \caption{Ý tưởng giao tiếp hai chiều giữa xe và hạ tầng}
+\end{figure}
+
 \section{Dự báo giao thông}
+
+Dự báo giao thông ngắn hạn giúp nâng cao chất lượng điều khiển tín hiệu~\cite{Li2016,Wei2019,Zhao2020,Lopez2018}. Tích hợp các mô hình RNN/LSTM sẽ cho phép bộ điều khiển dự báo hàng chờ, tốc độ, lưu lượng dựa trên dữ liệu thời gian thực, từ đó điều chỉnh chính sách linh hoạt hơn.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Pipeline ý tưởng dự báo traffic bằng LSTM]}
+    \vspace{2cm}}}
+    \caption{Ý tưởng pipeline dự báo traffic}
+\end{figure}
+
 \section{Mở rộng dựa trên điện toán đám mây}
+
+Điện toán đám mây cho phép lưu trữ, phân tích dữ liệu lớn và đồng bộ trạng thái hệ thống~\cite{Lopez2018}. Trong tương lai, hệ thống có thể mở rộng lưu trữ hàng triệu sự kiện, trạng thái bộ điều khiển, phục vụ phân tích hiệu năng và giám sát thời gian thực từ xa. Các kỹ thuật như bảo mật cấp dòng, batch retry logic, local cache~\cite{Wei2019} sẽ đảm bảo an toàn và phục hồi khi mất kết nối.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Kiến trúc cloud Supabase, dashboard, API]}
+    \vspace{2cm}}}
+    \caption{Ý tưởng kiến trúc điện toán đám mây cho hệ thống}
+\end{figure}

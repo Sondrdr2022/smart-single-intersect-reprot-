@@ -2,7 +2,140 @@
 % CHƯƠNG 6
 % =========================
 \chapter{Thành phần học tăng cường}
+
 \section{Kiến trúc Agent Q-learning cải tiến}
+
+Agent Q-learning trong hệ thống điều khiển giao thông thông minh được xây dựng với cấu trúc tối ưu cho môi trường nút giao đơn.
+
+\begin{lstlisting}[style=py,caption={Lớp EnhancedQLearningAgent}]
+class EnhancedQLearningAgent:
+    def __init__(self, state_size, action_size, adaptive_controller, ...):
+        self.state_size = state_size
+        self.max_action_space = max_action_space
+        self.action_size = min(action_size, max_action_space)
+        self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
+        self.epsilon = epsilon
+        ...
+        self.q_table = {}
+        self.mode = mode
+        self.coordinator = coordinator
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Placeholder: Sơ đồ kiến trúc agent Q-learning kết nối với APC và coordinator]}
+    \vspace{2.5cm}}}
+    \caption{Kiến trúc agent Q-learning và mối liên kết với APC}
+\end{figure}
+
 \section{Cơ chế học}
+
+Agent sử dụng Q-learning với hàm cập nhật bảng Q, epsilon-greedy cho chiến lược chọn hành động, và cơ chế optimistic initialization giúp khuyến khích khám phá. Ngoài ra, agent có thể nhận các mask ràng buộc hành động từ coordinator để đảm bảo hợp tác toàn cục.
+
+\begin{lstlisting}[style=py,caption={Hàm cập nhật Q-table}]
+def update_q_table(self, state, action, reward, next_state, tl_id=None, ...):
+    sk, nsk = self._state_to_key(state, tl_id), self._state_to_key(next_state, tl_id)
+    for k in [sk, nsk]:
+        if k not in self.q_table or len(self.q_table[k]) < self.max_action_space:
+            arr = np.full(self.max_action_space, self.optimistic_init)
+            self.q_table[k] = arr
+    q, nq = self.q_table[sk][action], np.max(self.q_table[nsk][:self.max_action_space])
+    new_q = q + self.learning_rate * (reward + self.discount_factor * nq - q)
+    self.q_table[sk][action] = new_q
+\end{lstlisting}
+
+\begin{lstlisting}[style=py,caption={Chiến lược chọn hành động epsilon-greedy và coordinator mask}]
+def get_action(self, state, tl_id=None, action_size=None, valid_actions_mask=None, ...):
+    ...
+    # Epsilon-greedy
+    if self.mode == "train" and np.random.rand() < self.epsilon:
+        valid_idxs = np.where(mask)[0]
+        suggested_phase = int(np.random.choice(valid_idxs)) if len(valid_idxs) > 0 else 0
+    else:
+        suggested_phase = int(np.argmax(masked_qs))
+    # Coordinator override neu co
+    if self.coordinator is not None and tl_id is not None:
+        if not self.coordinator.should_allow_phase(tl_id, suggested_phase):
+            suggested_phase = self.coordinator.get_next_phase(tl_id)
+    return suggested_phase
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Placeholder: Diagram luồng cập nhật Q-table và chọn hành động với epsilon-greedy]}
+    \vspace{2.5cm}}}
+    \caption{Quy trình học và chọn hành động của agent}
+\end{figure}
+
 \section{Thiết kế vector trạng thái}
+
+Vector trạng thái của agent được mã hóa đa chiều, phản ánh đặc trưng giao thông tại nút giao. Một vector thông thường gồm các thành phần như: hàng chờ, tốc độ trung bình, thời gian chờ, trạng thái pha hiện tại, tổng số pha, hàng chờ rẽ trái/phải...
+
+\begin{lstlisting}[style=py,caption={Tạo vector trạng thái đầu vào cho agent}]
+state = np.array([
+    queues.max() if queues.size else 0,
+    queues.mean() if queues.size else 0,
+    speeds.min() if speeds.size else 0,
+    speeds.mean() if speeds.size else 0,
+    waits.max() if waits.size else 0,
+    waits.mean() if waits.size else 0,
+    current_phase / max(n_phases - 1, 1), n_phases,
+    float(left_q), float(right_q)
+])
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.65\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Placeholder: Sơ đồ cấu trúc vector trạng thái agent Q-learning]}
+    \vspace{2.2cm}}}
+    \caption{Cấu trúc vector trạng thái cho agent Q-learning}
+\end{figure}
+
 \section{Thiết kế hàm thưởng}
+
+Hàm thưởng (reward) được tổng hợp từ nhiều chỉ số: mật độ (density), tốc độ (speed), thời gian chờ (waiting), hàng chờ (queue), cùng các thành phần shaping như bonus/phạt (penalty) cho các tình huống đặc biệt (ví dụ: ưu tiên xe khẩn cấp, giải tỏa rẽ trái bị chặn, v.v.). Trọng số của từng thành phần được điều chỉnh động dựa trên thống kê metric gần nhất để đảm bảo agent thích nghi tốt với trạng thái giao thông thực tế.
+
+Công thức hàm thưởng tổng quát áp dụng trong bộ điều khiển như sau:
+\[
+R = 100 \times \left(
+    -w_1 \cdot D
+    + w_2 \cdot V
+    - w_3 \cdot W
+    - w_4 \cdot Q
+    + \text{bonus}
+    - \text{penalty}
+\right)
+\]
+Trong đó:
+\begin{itemize}
+    \item $D$ -- mật độ xe (density), đại diện cho mức độ lấp đầy làn
+    \item $V$ -- tốc độ trung bình của xe trên làn
+    \item $W$ -- thời gian chờ trung bình của các phương tiện
+    \item $Q$ -- số lượng xe dừng/hàng chờ trên làn
+    \item $w_1, w_2, w_3, w_4$ -- trọng số động, cập nhật theo metric gần nhất
+    \item \text{bonus} -- phần thưởng bổ sung cho các hành động tốt (giải tỏa ưu tiên, phục vụ lane starvation, v.v.)
+    \item \text{penalty} -- phạt cho các trạng thái không mong muốn (ví dụ: rẽ trái bị blocked, congestion, v.v.)
+\end{itemize}
+Các trọng số $w_1, w_2, w_3, w_4$ được agent cập nhật động thông qua hàm \texttt{adjust\_weights()} dựa trên cửa sổ dữ liệu metric gần nhất.
+
+\begin{lstlisting}[style=py,caption={Công thức tính reward đa mục tiêu}]
+R = 100 * (
+    -self.weights[0] * avg_metrics[0] +
+    self.weights[1] * avg_metrics[1] -
+    self.weights[2] * avg_metrics[2] -
+    self.weights[3] * avg_metrics[3] +
+    bonus - penalty
+)
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.65\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Placeholder: Block diagram các yếu tố cấu thành reward agent]}
+    \vspace{2.2cm}}}
+    \caption{Các yếu tố cấu thành hàm thưởng agent Q-learning}
+\end{figure}

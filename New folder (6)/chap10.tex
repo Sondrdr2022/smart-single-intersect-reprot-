@@ -2,6 +2,192 @@
 % CHƯƠNG 10
 % =========================
 \chapter{Chi tiết triển khai}
+
 \section{Cài đặt và cấu hình}
+
+Hệ thống bộ điều khiển đèn giao thông thông minh được triển khai dựa trên Python 3.8+, sử dụng SUMO làm môi trường mô phỏng và Supabase làm backend lưu trữ dữ liệu. Để đảm bảo hoạt động ổn định và mở rộng, quá trình cài đặt và cấu hình được chia thành các bước sau:
+
+\subsection{Cài đặt môi trường}
+
+\begin{enumerate}
+    \item \textbf{Cài đặt Python và các thư viện phụ thuộc:}
+    \begin{verbatim}
+    pip install numpy pandas matplotlib supabase-py traci
+    \end{verbatim}
+
+    \item \textbf{Cài đặt SUMO:} 
+    Download bản SUMO phù hợp từ \url{https://sumo.dlr.de/docs/Downloads.html}, cài đặt và cấu hình biến môi trường \texttt{SUMO\_HOME}.
+
+    \item \textbf{Cài đặt và sử dụng NETEDIT:}
+    NETEDIT là công cụ trực quan của SUMO dùng để tạo, sửa, thiết kế mạng lưới giao thông, nút giao, logic đèn, và xuất các file cấu hình cho mô phỏng. Người dùng có thể vẽ topology, khai báo các làn, tuyến, nút, và thiết lập các chu trình pha đèn tín hiệu trực tiếp trên giao diện đồ họa.
+    Việc sử dụng NETEDIT giúp đảm bảo tính trực quan, giảm lỗi cấu hình thủ công và dễ dàng kiểm tra topology trước khi chạy mô phỏng.
+
+    \item \textbf{Cấu hình Supabase backend:}
+    Tạo project trên Supabase, lấy URL và API key, cấu hình vào file \texttt{config.py}:
+    \begin{lstlisting}[style=py]
+    SUPABASE_URL = "https://<your_project>.supabase.co"
+    SUPABASE_KEY = "your-service-role-key"
+    \end{lstlisting}
+    
+    \item \textbf{Cấu hình file mô phỏng SUMO (.sumocfg):}
+    Thiết kế mạng lưới, các nút giao, tuyến đường, cấu hình traffic demand và logic đèn tương ứng bằng NETEDIT hoặc chỉnh sửa các file XML trực tiếp. File \texttt{.sumocfg} sẽ liên kết tất cả các thành phần trên lại thành một môi trường mô phỏng hoàn chỉnh.
+\end{enumerate}
 \section{Tham số cấu hình}
+
+Các tham số chính kiểm soát hành vi bộ điều khiển được tập trung trong module \texttt{config.py} và constructor của lớp \texttt{AdaptivePhaseController}:
+
+\begin{itemize}
+    \item \texttt{min\_green}, \texttt{max\_green}: Thời gian tối thiểu/tối đa cho pha xanh (an toàn và công bằng).
+    \item \texttt{alpha}: Hệ số học cho điều chỉnh thời lượng pha dựa trên reward.
+    \item \texttt{r\_base}, \texttt{r\_adjust}: Giá trị mục tiêu reward và hệ số điều chỉnh mục tiêu động.
+    \item \texttt{severe\_congestion\_threshold}: Ngưỡng nhận diện tắc nghẽn nghiêm trọng.
+    \item \texttt{pending\_requests}: Danh sách yêu cầu chuyển pha có priority (emergency, starvation, congestion, normal).
+    \item \texttt{weights}: Vector trọng số cho các thành phần reward [density, speed, wait, queue].
+    \item \texttt{low\_demand\_extend\_cap}: Giới hạn kéo dài pha khi nhu cầu thấp.
+    \item \texttt{protected\_left\_min\_queue}: Ngưỡng kích hoạt rẽ trái bảo vệ.
+    \item \texttt{cycle\_length}: Chu kỳ điều phối corridor.
+    \item \texttt{max\_pending\_db\_ops}: Số lượng bản ghi đệm tối đa trước khi flush lên Supabase.
+\end{itemize}
+
+Các tham số trên cho phép điều chỉnh linh hoạt hệ thống, tối ưu hóa cho từng kịch bản giao thông thực tế.
+
 \section{Cấu trúc mã nguồn}
+
+Bộ mã nguồn được tổ chức theo mô hình module, tách biệt các lớp chức năng chính:
+
+\subsection{Sơ đồ kiến trúc module}
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+    \textit{[Diagram Placeholder: Sơ đồ module liên kết giữa UniversalSmartTrafficController, AdaptivePhaseController, EnhancedQLearningAgent, PatchedAsyncSupabaseWriter]}
+    \vspace{3cm}}}
+    \caption{Kiến trúc module tổng thể của hệ thống điều khiển}
+    \label{fig:impl_architecture}
+\end{figure}
+
+\subsection{Các lớp chính}
+\begin{itemize}
+    \item \textbf{UniversalSmartTrafficController}: Bộ điều khiển trung tâm, quản lý một nút giao, khởi tạo các APC, RL agent.
+    \item \textbf{AdaptivePhaseController}: Điều khiển pha thích nghi cho nút giao, quản lý logic pha, hàng đợi yêu cầu, tích hợp RL agent.
+    \item \textbf{EnhancedQLearningAgent}: Tác tử học tăng cường, cập nhật Q-table, chọn hành động tối ưu theo trạng thái.
+    \item \textbf{PatchedAsyncSupabaseWriter}: Đồng bộ dữ liệu bất đồng bộ lên Supabase, hỗ trợ tạo đợt dữ liệu, retry logic, write-behind cache.
+    \item \textbf{SmartIntersectionTrafficDisplay}: Giao diện trực quan hóa trạng thái pha đèn, hàng đợi, sự kiện real-time.
+    % \item \textbf{ImprovedCorridorCoordinator}: (Đã loại bỏ, chỉ là ý tưởng cho hướng phát triển tương lai)
+\end{itemize}
+
+
+\subsection{Luồng điều khiển chính}
+
+Pipeline điều khiển cho mỗi bước mô phỏng:
+\begin{enumerate}
+    \item \textbf{Thu thập dữ liệu}: TraCI đọc trạng thái xe, làn, đèn từ SUMO.
+    \item \textbf{Phân tích và nhận diện sự kiện}: Controller/APC kiểm tra emergency, starvation, congestion, blocked left.
+    \item \textbf{Quản lý hàng đợi yêu cầu}: Yêu cầu chuyển pha được xếp priority, xử lý batch khi pha kết thúc.
+    \item \textbf{Ra quyết định RL}: RL agent nhận trạng thái, mask hợp lệ, chọn pha tối ưu, cập nhật Q-table.
+    \item \textbf{Chuyển pha an toàn}: APC thực hiện chuyển pha, chèn pha vàng tự động nếu cần, enforce min\_green.
+    \item \textbf{Lưu trữ dữ liệu}: Kết quả, phần thưởng, sự kiện ghi log lên Supabase qua batch writer.
+    \item \textbf{Hiển thị trực quan}: TrafficDisplay cập nhật giao diện, biểu đồ thời gian thực.
+\end{enumerate}
+
+\subsection{Ví dụ code: Khởi tạo APC và RL agent}
+\begin{lstlisting}[style=py,caption={Khởi tạo bộ điều khiển và agent RL}]
+tls_list = traci.trafficlight.getIDList()
+for tls_id in tls_list:
+    lane_ids = traci.trafficlight.getControlledLanes(tls_id)
+    apc = AdaptivePhaseController(
+        lane_ids=lane_ids,
+        tls_id=tls_id,
+        alpha=1.0,
+        min_green=10,
+        max_green=60
+    )
+    apc.controller = self
+    self.adaptive_phase_controllers[tls_id] = apc
+
+    n_phases = len(traci.trafficlight.getAllProgramLogics(tls_id)[0].phases)
+    rl_agent = EnhancedQLearningAgent(
+        state_size=12,
+        action_size=n_phases,
+        adaptive_controller=apc,
+        mode=mode
+    )
+    self.rl_agents[tls_id] = rl_agent
+    apc.rl_agent = rl_agent
+\end{lstlisting}
+
+\subsection{Ví dụ code: Quản lý hàng đợi yêu cầu ưu tiên}
+\begin{lstlisting}[style=py,caption={Xếp và xử lý yêu cầu chuyển pha có ưu tiên}]
+def request_phase_change(self, phase_idx, priority_type='normal', extension_duration=None):
+    priority_order = {
+        'protected_left': 11,
+        'emergency': 10,
+        'critical_starvation': 9,
+        'heavy_congestion': 8,
+        'starvation': 5,
+        'normal': 1
+    }
+    req = {
+        "phase_idx": int(phase_idx),
+        "priority": int(priority_order.get(priority_type, 1)),
+        "priority_type": str(priority_type),
+        "extension_duration": extension_duration,
+        "timestamp": float(current_time)
+    }
+    self.pending_requests.append(req)
+    self.pending_requests.sort(key=lambda x: (-x["priority"], x["timestamp"]))
+    # Khi phase ending, chon request uu tien nhat de thuc thi
+\end{lstlisting}
+
+\subsection{Ví dụ code: Điều chỉnh thời lượng pha động}
+\begin{lstlisting}[style=py,caption={Điều chỉnh thời lượng pha theo reward}]
+def adjust_phase_duration(self, delta_t):
+    # Enforce minimum green time
+    if not self.enforce_min_green() and not self.check_priority_conditions():
+        return traci.trafficlight.getPhaseDuration(self.tls_id)
+    current_phase = traci.trafficlight.getPhase(self.tls_id)
+    desired_total = self.apply_extension_delta(delta_t, buffer=0.3)
+    self._maybe_update_phase_remaining(desired_total)
+    # Cap nhat extended_time, ghi log Supabase
+\end{lstlisting}
+
+\subsection{Ví dụ code: Chèn pha vàng tự động}
+\begin{lstlisting}[style=py,caption={Chèn pha vàng khi chuyển pha nguy hiểm}]
+def insert_yellow_phase_if_needed(self, from_phase, to_phase):
+    logic = self._get_logic()
+    from_state = logic.phases[from_phase].state
+    to_state = logic.phases[to_phase].state
+    yellow_needed = False
+    yellow = list(from_state)
+    for i in range(min(len(from_state), len(to_state))):
+        if from_state[i].upper() == 'G' and to_state[i].upper() == 'R':
+            yellow[i] = 'y'
+            yellow_needed = True
+    if not yellow_needed: return False
+    # Tim hoac tao pha vang tuong ung de chuyen pha an toan
+\end{lstlisting}
+
+\subsection{Ví dụ code: Tích hợp Supabase batch writer}
+\begin{lstlisting}[style=py,caption={Đồng bộ dữ liệu lên Supabase bất đồng bộ}]
+class PatchedAsyncSupabaseWriter(threading.Thread):
+    def __init__(self, controller, interval=60.0, max_batch=100):
+        self.controller = controller
+        self.interval = interval
+        self.max_batch = max_batch
+        self._stop_event = threading.Event()
+    def run(self):
+        while not self._stop_event.is_set():
+            self.controller.flush_pending_supabase_writes(max_batch=self.max_batch)
+            time.sleep(self.interval)
+    def stop(self):
+        self._stop_event.set()
+\end{lstlisting}
+
+\subsection{Diagram: Chu trình điều khiển tổng quát}
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
+    \textit{[Diagram Placeholder: Chu trình closed-loop: Dữ liệu → Phân tích sự kiện → Quản lý hàng đợi → RL decision → Chuyển pha an toàn → Lưu trữ → Hiển thị]}
+    \vspace{3cm}}}
+    \caption{Chu trình điều khiển tổng quát của hệ thống}
+    \label{fig:main_control_loop}
+\end{figure}

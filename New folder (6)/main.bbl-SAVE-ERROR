@@ -1,0 +1,1104 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{Eom2020}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=fe3c2b686c3613b5aba1a93464900653}{%
+           family={Eom},
+           familyi={E\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6c0f77fa0d5f568952d579c47791d974}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={B.-I.},
+           giveni={B\bibinithyphendelim I\bibinitperiod}}}%
+      }
+      \strng{namehash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{fullhash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{fullhashraw}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{bibnamehash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{authorbibnamehash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{authornamehash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{authorfullhash}{304cfa890de27596b1d26ff83c54d96e}
+      \strng{authorfullhashraw}{304cfa890de27596b1d26ff83c54d96e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{European Transport Research Review}
+      \field{note}{Accessed: 20 August 2025}
+      \field{number}{50}
+      \field{title}{The Traffic Signal Control Problem for intersections: A review}
+      \field{volume}{12}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.1186/s12544-020-00440-8
+      \endverb
+      \verb{urlraw}
+      \verb https://etrr.springeropen.com/articles/10.1186/s12544-020-00440-8
+      \endverb
+      \verb{url}
+      \verb https://etrr.springeropen.com/articles/10.1186/s12544-020-00440-8
+      \endverb
+    \endentry
+    \entry{Papageorgiou2003}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=2e7396ab24fe576e00b1be59a9a5f3a5}{%
+           family={Papageorgiou},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=0598d26a28e9134fcb6aae2e7371b5ac}{%
+           family={Diakaki},
+           familyi={D\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=53a5f6d124717439b25c1357eabfb06b}{%
+           family={Dinopoulou},
+           familyi={D\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=824d435e8acb65e67ed64ad2f9932168}{%
+           family={Kotsialos},
+           familyi={K\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{f39e602aca4fb6cb7259fc372126c9b5}
+      \strng{fullhash}{0569ae84748762751767849a09bfb113}
+      \strng{fullhashraw}{0569ae84748762751767849a09bfb113}
+      \strng{bibnamehash}{0569ae84748762751767849a09bfb113}
+      \strng{authorbibnamehash}{0569ae84748762751767849a09bfb113}
+      \strng{authornamehash}{f39e602aca4fb6cb7259fc372126c9b5}
+      \strng{authorfullhash}{0569ae84748762751767849a09bfb113}
+      \strng{authorfullhashraw}{0569ae84748762751767849a09bfb113}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the IEEE}
+      \field{number}{12}
+      \field{title}{Review of road traffic control strategies}
+      \field{volume}{91}
+      \field{year}{2003}
+      \field{pages}{2043\bibrangedash 2067}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1109/JPROC.2003.819610
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/1246141
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/1246141
+      \endverb
+    \endentry
+    \entry{Webster1958}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=d071b08312518fe0d820a7d3c2892bae}{%
+           family={Webster},
+           familyi={W\bibinitperiod},
+           given={F.V.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {London, UK}%
+      }
+      \list{publisher}{1}{%
+        {Road Research Laboratory}%
+      }
+      \strng{namehash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{fullhash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{fullhashraw}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{bibnamehash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{authorbibnamehash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{authornamehash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{authorfullhash}{d071b08312518fe0d820a7d3c2892bae}
+      \strng{authorfullhashraw}{d071b08312518fe0d820a7d3c2892bae}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Road Research Technical Paper}
+      \field{note}{The original Webster's method for calculating optimal cycle times}
+      \field{number}{39}
+      \field{title}{Traffic signal settings}
+      \field{year}{1958}
+    \endentry
+    \entry{Urbanik2015}{article}{}{}
+      \name{author}{13}{}{%
+        {{hash=da25f7ea5679419a82906610d0ba34d9}{%
+           family={Urbanik},
+           familyi={U\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+        {{hash=33cbca74ac78f35ded20e9c6f4e7be43}{%
+           family={Tanaka},
+           familyi={T\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=039169742656c9953039b59ea304c8d7}{%
+           family={Lozner},
+           familyi={L\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=175c7316104ba5f23e0dec48207b47b5}{%
+           family={Lindstrom},
+           familyi={L\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=e57d0b1f72e19c844023fb5ae360f752}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=2612c047b19af19cff246c13b860a225}{%
+           family={Quayle},
+           familyi={Q\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8700bdafa5e8d7241164f0f1336deca6}{%
+           family={Beaird},
+           familyi={B\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=685b56eafbd6c5eb8f904e8effd05773}{%
+           family={Tsoi},
+           familyi={T\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d3420d68f852a3468a6655744ba2c55c}{%
+           family={Ryus},
+           familyi={R\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=6c23aee2a8fda5f6f352d5908955b8a9}{%
+           family={Gettman},
+           familyi={G\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=bb83085ed1eb121d5ad8b3416b35e557}{%
+           family={Sunkari},
+           familyi={S\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=80228d7fa528475e4c541872332a734b}{%
+           family={Balke},
+           familyi={B\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=77f64fbebac358b63052a399c27d4f7a}{%
+           family={Bullock},
+           familyi={B\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Transportation Research Board}%
+      }
+      \strng{namehash}{b426b8c5e4b11ccea9332ff33513c48d}
+      \strng{fullhash}{d8eef139bb10bb539240e8505d1f91d1}
+      \strng{fullhashraw}{d8eef139bb10bb539240e8505d1f91d1}
+      \strng{bibnamehash}{b426b8c5e4b11ccea9332ff33513c48d}
+      \strng{authorbibnamehash}{b426b8c5e4b11ccea9332ff33513c48d}
+      \strng{authornamehash}{b426b8c5e4b11ccea9332ff33513c48d}
+      \strng{authorfullhash}{d8eef139bb10bb539240e8505d1f91d1}
+      \strng{authorfullhashraw}{d8eef139bb10bb539240e8505d1f91d1}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{NCHRP Report 812}
+      \field{title}{Signal Timing Manual - Second Edition}
+      \field{year}{2015}
+      \verb{doi}
+      \verb 10.17226/22097
+      \endverb
+      \verb{urlraw}
+      \verb https://www.nap.edu/catalog/22097/signal-timing-manual-second-edition
+      \endverb
+      \verb{url}
+      \verb https://www.nap.edu/catalog/22097/signal-timing-manual-second-edition
+      \endverb
+    \endentry
+    \entry{Shingate2020}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=7a3c426332e8615fec946c4a692d4797}{%
+           family={Shingate},
+           familyi={S\bibinitperiod},
+           given={Kranti},
+           giveni={K\bibinitperiod}}}%
+        {{hash=304af787c04ed080c34139d6b9085998}{%
+           family={Jagdale},
+           familyi={J\bibinitperiod},
+           given={Komal},
+           giveni={K\bibinitperiod}}}%
+        {{hash=bf411b4affa868c3b24b94679f6368ad}{%
+           family={Dias},
+           familyi={D\bibinitperiod},
+           given={Yohann},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IJERT}%
+      }
+      \strng{namehash}{0912bf934e8f9171d4c094ee1edf269d}
+      \strng{fullhash}{1b695a94f1c97bde1fff5a0033af372f}
+      \strng{fullhashraw}{1b695a94f1c97bde1fff5a0033af372f}
+      \strng{bibnamehash}{1b695a94f1c97bde1fff5a0033af372f}
+      \strng{authorbibnamehash}{1b695a94f1c97bde1fff5a0033af372f}
+      \strng{authornamehash}{0912bf934e8f9171d4c094ee1edf269d}
+      \strng{authorfullhash}{1b695a94f1c97bde1fff5a0033af372f}
+      \strng{authorfullhashraw}{1b695a94f1c97bde1fff5a0033af372f}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The advent of the automobile revolution has led to various traffic congestion problems. The framework utilized for coordinating traffic isn't reliant on the ongoing situation of an intersection. This paper presents a system which handles traffic using Artificial Intelligence technique for adapting signal according to the density of traffic thereby automatically increasing or decreasing traffic signal time using Experience Replay mechanism.}
+      \field{issn}{2278-0181}
+      \field{journaltitle}{International Journal of Engineering Research \& Technology (IJERT)}
+      \field{month}{2}
+      \field{number}{02}
+      \field{title}{Adaptive Traffic Control System using Reinforcement Learning}
+      \field{volume}{9}
+      \field{year}{2020}
+      \field{pages}{443\bibrangedash 447}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.17577/IJERTV9IS020159
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ijert.org/adaptive-traffic-control-system-using-reinforcement-learning
+      \endverb
+      \verb{url}
+      \verb https://www.ijert.org/adaptive-traffic-control-system-using-reinforcement-learning
+      \endverb
+      \keyw{Reinforcement Learning,Traffic Light Control System,Experience Replay mechanism,Artificial Intelligence,Deep Neural Networks}
+    \endentry
+    \entry{Zhao2012}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=cb67bc4d94837f6f91e9be1b8acea870}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=933ee6a31dc959e5dfa226f1741956dc}{%
+           family={Dai},
+           familyi={D\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=5ee5d3d5470ac29a2e7c8df70ed54725}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{0c1df2939fb4de7d9d1c3f59e961adc5}
+      \strng{fullhash}{c979fe25336177f6b31a53e965f2887f}
+      \strng{fullhashraw}{c979fe25336177f6b31a53e965f2887f}
+      \strng{bibnamehash}{c979fe25336177f6b31a53e965f2887f}
+      \strng{authorbibnamehash}{c979fe25336177f6b31a53e965f2887f}
+      \strng{authornamehash}{0c1df2939fb4de7d9d1c3f59e961adc5}
+      \strng{authorfullhash}{c979fe25336177f6b31a53e965f2887f}
+      \strng{authorfullhashraw}{c979fe25336177f6b31a53e965f2887f}
+      \field{extraname}{1}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Systems, Man, and Cybernetics, Part C}
+      \field{number}{4}
+      \field{title}{Computational Intelligence in Urban Traffic Signal Control: A Survey}
+      \field{volume}{42}
+      \field{year}{2012}
+      \field{pages}{485\bibrangedash 494}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/TSMCC.2011.2161577
+      \endverb
+    \endentry
+    \entry{Shaikh2022}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=897ef131ed5b1227b5de61f36e8859ab}{%
+           family={Shaikh},
+           familyi={S\bibinitperiod},
+           given={P.W.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=4167a6201e791321ec5ecf6e090fea69}{%
+           family={El-Abd},
+           familyi={E\bibinithyphendelim A\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4fe395a653f167cb9b83105c6da9d90f}{%
+           family={Khanafer},
+           familyi={K\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=86a8e4bb362fc4b9f4f4a8f0468480f5}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{73be1beeeec2e7c1e7fd927ea862ae74}
+      \strng{fullhash}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \strng{fullhashraw}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \strng{bibnamehash}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \strng{authorbibnamehash}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \strng{authornamehash}{73be1beeeec2e7c1e7fd927ea862ae74}
+      \strng{authorfullhash}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \strng{authorfullhashraw}{25ef71ba2cf6cf72ec5f0b91c1982512}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Intelligent Transportation Systems}
+      \field{number}{1}
+      \field{title}{A Review on Swarm Intelligence and Evolutionary Algorithms for Solving the Traffic Signal Control Problem}
+      \field{volume}{23}
+      \field{year}{2022}
+      \field{pages}{48\bibrangedash 63}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1109/TITS.2020.3014296
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/9171428
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/9171428
+      \endverb
+    \endentry
+    \entry{Koonce2008}{article}{}{}
+      \name{author}{9}{}{%
+        {{hash=fcb637c67ed9640b18c8c5c9775b8a61}{%
+           family={Koonce},
+           familyi={K\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=6906e7c7b88270e27e16cdea4f0b5dd6}{%
+           family={Rodegerdts},
+           familyi={R\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=e57d0b1f72e19c844023fb5ae360f752}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=2612c047b19af19cff246c13b860a225}{%
+           family={Quayle},
+           familyi={Q\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8700bdafa5e8d7241164f0f1336deca6}{%
+           family={Beaird},
+           familyi={B\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e1a9120162add55fc60e9a0c247fa160}{%
+           family={Braud},
+           familyi={B\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=5f40995b889c757e14888871e3c94341}{%
+           family={Bonneson},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=abb6ace0506b1adbb2929955b1eaf21b}{%
+           family={Tarnoff},
+           familyi={T\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=da25f7ea5679419a82906610d0ba34d9}{%
+           family={Urbanik},
+           familyi={U\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Washington, DC}%
+      }
+      \list{publisher}{1}{%
+        {Federal Highway Administration}%
+      }
+      \strng{namehash}{16861773b5f28338e78099a2e15e1fe9}
+      \strng{fullhash}{86119eba9965e72e0ccfe2483247991d}
+      \strng{fullhashraw}{86119eba9965e72e0ccfe2483247991d}
+      \strng{bibnamehash}{16861773b5f28338e78099a2e15e1fe9}
+      \strng{authorbibnamehash}{16861773b5f28338e78099a2e15e1fe9}
+      \strng{authornamehash}{16861773b5f28338e78099a2e15e1fe9}
+      \strng{authorfullhash}{86119eba9965e72e0ccfe2483247991d}
+      \strng{authorfullhashraw}{86119eba9965e72e0ccfe2483247991d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{number}{FHWA-HOP-08-024}
+      \field{title}{Traffic Signal Timing Manual}
+      \field{year}{2008}
+    \endentry
+    \entry{Mirchandani2001}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=8e74d6e086d2526143e9a2d7fe9da48e}{%
+           family={Mirchandani},
+           familyi={M\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=699add0aa082f7443fa1c5167cc316c4}{%
+           family={Head},
+           familyi={H\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{fullhash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{fullhashraw}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{bibnamehash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{authorbibnamehash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{authornamehash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{authorfullhash}{3ccccbd9f67263831b14dfc0f768c052}
+      \strng{authorfullhashraw}{3ccccbd9f67263831b14dfc0f768c052}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Transportation Research Part C: Emerging Technologies}
+      \field{number}{6}
+      \field{title}{A Real-Time Traffic Signal Control System: Architecture, Algorithms, and Analysis}
+      \field{volume}{9}
+      \field{year}{2001}
+      \field{pages}{415\bibrangedash 432}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1016/S0968-090X(00)00047-4
+      \endverb
+    \endentry
+    \entry{Hunt1981}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=a4194d379295f5d497a57813a744b23c}{%
+           family={Hunt},
+           familyi={H\bibinitperiod},
+           given={P.B.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=d054fa30bf326ec2bcb617ed4830db4c}{%
+           family={Robertson},
+           familyi={R\bibinitperiod},
+           given={D.I.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=b29db003cb35148dfb40a0c82b1295ec}{%
+           family={Bretherton},
+           familyi={B\bibinitperiod},
+           given={R.D.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=7eeaa55b6c52b6881af91be80aeae488}{%
+           family={Winton},
+           familyi={W\bibinitperiod},
+           given={R.I.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{1f504b2e8edc7072407f28820bc2502d}
+      \strng{fullhash}{e9216d321a80db4a10471ad679be758c}
+      \strng{fullhashraw}{e9216d321a80db4a10471ad679be758c}
+      \strng{bibnamehash}{e9216d321a80db4a10471ad679be758c}
+      \strng{authorbibnamehash}{e9216d321a80db4a10471ad679be758c}
+      \strng{authornamehash}{1f504b2e8edc7072407f28820bc2502d}
+      \strng{authorfullhash}{e9216d321a80db4a10471ad679be758c}
+      \strng{authorfullhashraw}{e9216d321a80db4a10471ad679be758c}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Transport and Road Research Laboratory Report}
+      \field{number}{LR 1014}
+      \field{title}{SCOOT - A Traffic Responsive Method of Coordinating Signals}
+      \field{year}{1981}
+    \endentry
+    \entry{Lowrie1990}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=6df97628a3d87f7b3d14681415a0b35b}{%
+           family={Lowrie},
+           familyi={L\bibinitperiod},
+           given={P.R.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Sydney, Australia}%
+      }
+      \strng{namehash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{fullhash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{fullhashraw}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{bibnamehash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{authorbibnamehash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{authornamehash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{authorfullhash}{6df97628a3d87f7b3d14681415a0b35b}
+      \strng{authorfullhashraw}{6df97628a3d87f7b3d14681415a0b35b}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Roads and Traffic Authority}
+      \field{title}{SCATS - Sydney Coordinated Adaptive Traffic System: A Traffic Responsive Method of Controlling Urban Traffic}
+      \field{year}{1990}
+    \endentry
+    \entry{Abdulhai2003}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=51d2b6f3a6a8d2eee45900155d4bba8b}{%
+           family={Abdulhai},
+           familyi={A\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=6588243f25ac3dbcc1c042084e917e50}{%
+           family={Pringle},
+           familyi={P\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=a9511c76aeed8f0c0355ccdda309dc31}{%
+           family={Karakoulas},
+           familyi={K\bibinitperiod},
+           given={G.J.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{0b3f48141a3d0092f2efb23a15566dc1}
+      \strng{fullhash}{531c05dad15b59e492b3cab311f9988b}
+      \strng{fullhashraw}{531c05dad15b59e492b3cab311f9988b}
+      \strng{bibnamehash}{531c05dad15b59e492b3cab311f9988b}
+      \strng{authorbibnamehash}{531c05dad15b59e492b3cab311f9988b}
+      \strng{authornamehash}{0b3f48141a3d0092f2efb23a15566dc1}
+      \strng{authorfullhash}{531c05dad15b59e492b3cab311f9988b}
+      \strng{authorfullhashraw}{531c05dad15b59e492b3cab311f9988b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Transportation Engineering}
+      \field{number}{3}
+      \field{title}{Reinforcement learning for true adaptive traffic signal control}
+      \field{volume}{129}
+      \field{year}{2003}
+      \field{pages}{278\bibrangedash 285}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1061/(ASCE)0733-947X(2003)129:3(278)
+      \endverb
+      \verb{urlraw}
+      \verb https://ascelibrary.org/doi/10.1061/%28ASCE%290733-947X%282003%29129%3A3%28278%29
+      \endverb
+      \verb{url}
+      \verb https://ascelibrary.org/doi/10.1061/%28ASCE%290733-947X%282003%29129%3A3%28278%29
+      \endverb
+    \endentry
+    \entry{Li2016}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=4c305f909afd2192eedb6f46f0883d14}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=0de2737077111b6acfa34d7dfc914243}{%
+           family={Lv},
+           familyi={L\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=547cad788a39b630dea8387bf0c9e33d}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={F.Y.},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{24171f47d015b0997d5f9bc82b011eae}
+      \strng{fullhash}{3141b37f4ad85558177515e494bcbf24}
+      \strng{fullhashraw}{3141b37f4ad85558177515e494bcbf24}
+      \strng{bibnamehash}{3141b37f4ad85558177515e494bcbf24}
+      \strng{authorbibnamehash}{3141b37f4ad85558177515e494bcbf24}
+      \strng{authornamehash}{24171f47d015b0997d5f9bc82b011eae}
+      \strng{authorfullhash}{3141b37f4ad85558177515e494bcbf24}
+      \strng{authorfullhashraw}{3141b37f4ad85558177515e494bcbf24}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE/CAA Journal of Automatica Sinica}
+      \field{number}{3}
+      \field{title}{Traffic signal timing via deep reinforcement learning}
+      \field{volume}{3}
+      \field{year}{2016}
+      \field{pages}{247\bibrangedash 254}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/JAS.2016.7508798
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/7508798
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/7508798
+      \endverb
+    \endentry
+    \entry{Watkins1992}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=289cc4ef49549181fb3b307e9d22d86e}{%
+           family={Watkins},
+           familyi={W\bibinitperiod},
+           given={C.J.C.H.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=e7766b0c9f7b334a65400b7c120c91ce}{%
+           family={Dayan},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{fullhash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{fullhashraw}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{bibnamehash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{authorbibnamehash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{authornamehash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{authorfullhash}{12d3e317ddfae53fbca0229eb31b7315}
+      \strng{authorfullhashraw}{12d3e317ddfae53fbca0229eb31b7315}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Machine Learning}
+      \field{number}{3-4}
+      \field{title}{Q-learning}
+      \field{volume}{8}
+      \field{year}{1992}
+      \field{pages}{279\bibrangedash 292}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1007/BF00992698
+      \endverb
+    \endentry
+    \entry{Mannion2016}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=9762e45fb1f56b4dec209b39851ab7e3}{%
+           family={Mannion},
+           familyi={M\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=f2f8fb7ed4eece5b506028a4a467ac89}{%
+           family={Duggan},
+           familyi={D\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=eaa71671392ce1536784b3f191a348f5}{%
+           family={Howley},
+           familyi={H\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{dde52b4f62bfedfdb3b65b0b0de84d21}
+      \strng{fullhash}{c1ad8fba73471e480d474d7ed1a83563}
+      \strng{fullhashraw}{c1ad8fba73471e480d474d7ed1a83563}
+      \strng{bibnamehash}{c1ad8fba73471e480d474d7ed1a83563}
+      \strng{authorbibnamehash}{c1ad8fba73471e480d474d7ed1a83563}
+      \strng{authornamehash}{dde52b4f62bfedfdb3b65b0b0de84d21}
+      \strng{authorfullhash}{c1ad8fba73471e480d474d7ed1a83563}
+      \strng{authorfullhashraw}{c1ad8fba73471e480d474d7ed1a83563}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Autonomic Road Transport Support Systems}
+      \field{title}{An Experimental Review of Reinforcement Learning Algorithms for Adaptive Traffic Signal Control}
+      \field{year}{2016}
+      \field{pages}{47\bibrangedash 66}
+      \range{pages}{20}
+    \endentry
+    \entry{Liang2019}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=4b6ac7ff7f59805ae6d962e7ba7c8e1e}{%
+           family={Liang},
+           familyi={L\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod}}}%
+        {{hash=c31294dd4dac5436249e05f56c113d1a}{%
+           family={Du},
+           familyi={D\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod}}}%
+        {{hash=394d641a0626e0504be74152c455899d}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=410adcc66150c86e9bbce93b9085f9c7}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{492304609ebb0e2d2beef5848466389b}
+      \strng{fullhash}{0a13f2589728e8ab872ba4f47e48ca72}
+      \strng{fullhashraw}{0a13f2589728e8ab872ba4f47e48ca72}
+      \strng{bibnamehash}{0a13f2589728e8ab872ba4f47e48ca72}
+      \strng{authorbibnamehash}{0a13f2589728e8ab872ba4f47e48ca72}
+      \strng{authornamehash}{492304609ebb0e2d2beef5848466389b}
+      \strng{authorfullhash}{0a13f2589728e8ab872ba4f47e48ca72}
+      \strng{authorfullhashraw}{0a13f2589728e8ab872ba4f47e48ca72}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Vehicular Technology}
+      \field{number}{2}
+      \field{title}{A Deep Reinforcement Learning Network for Traffic Light Cycle Control}
+      \field{volume}{68}
+      \field{year}{2019}
+      \field{pages}{1243\bibrangedash 1253}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/TVT.2018.2890726
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/8600382
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/8600382
+      \endverb
+    \endentry
+    \entry{Wei2019}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=5844a68d0d982891076ffe7954a725f6}{%
+           family={Wei},
+           familyi={W\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=72a20370005f362f6c4a5c07e38cba08}{%
+           family={Zheng},
+           familyi={Z\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8745dfbfebe94251ce117f403ed8f3c1}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=ae6f64f7b429f6425fbe070323390f1b}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{f7d19dc5e913cbca7b6748c839c56843}
+      \strng{fullhash}{5f941b59bf0fad90a9237911ea7ece9c}
+      \strng{fullhashraw}{5f941b59bf0fad90a9237911ea7ece9c}
+      \strng{bibnamehash}{5f941b59bf0fad90a9237911ea7ece9c}
+      \strng{authorbibnamehash}{5f941b59bf0fad90a9237911ea7ece9c}
+      \strng{authornamehash}{f7d19dc5e913cbca7b6748c839c56843}
+      \strng{authorfullhash}{5f941b59bf0fad90a9237911ea7ece9c}
+      \strng{authorfullhashraw}{5f941b59bf0fad90a9237911ea7ece9c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining}
+      \field{title}{IntelliLight: A Reinforcement Learning Approach for Intelligent Traffic Light Control}
+      \field{year}{2019}
+      \field{pages}{2496\bibrangedash 2505}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/3219819.3220096
+      \endverb
+    \endentry
+    \entry{Gao2017}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=db78cb9680889168cd377cb6775b53dc}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=c683dca86043405be8fb1d3009bc1604}{%
+           family={Shen},
+           familyi={S\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=7bb074c37d04e2fb30a473aa12102ae1}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=ff42c4c1ee15d689577c74797bc5e30b}{%
+           family={Ito},
+           familyi={I\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=df7f6cc0b314cdb972efee46c8a7ca01}{%
+           family={Shiratori},
+           familyi={S\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d3d97ef2ccd8d5bde5e329b7a3f02280}
+      \strng{fullhash}{560c4a4390dd00afb376bd911dbd1648}
+      \strng{fullhashraw}{560c4a4390dd00afb376bd911dbd1648}
+      \strng{bibnamehash}{560c4a4390dd00afb376bd911dbd1648}
+      \strng{authorbibnamehash}{560c4a4390dd00afb376bd911dbd1648}
+      \strng{authornamehash}{d3d97ef2ccd8d5bde5e329b7a3f02280}
+      \strng{authorfullhash}{560c4a4390dd00afb376bd911dbd1648}
+      \strng{authorfullhashraw}{560c4a4390dd00afb376bd911dbd1648}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{arXiv preprint}
+      \field{title}{Adaptive traffic signal control: Deep reinforcement learning algorithm with experience replay and target network}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1705.02755
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1705.02755
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1705.02755
+      \endverb
+    \endentry
+    \entry{Zhao2020}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=d5ff4bd5ca210dc62374b1352daac212}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=3ecf5faffffaeea2ad2777739c1d9ad9}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=33bb4efa1081b1f17b4613c31c37e617}{%
+           family={Shen},
+           familyi={S\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=8d89e71c56d4bef70c3d52dd2dbdb9a8}{%
+           family={Qian},
+           familyi={Q\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{f0b017a1562c07215d8549b750478149}
+      \strng{fullhash}{c148ecad1215f3b0f812fa772e1df2ad}
+      \strng{fullhashraw}{c148ecad1215f3b0f812fa772e1df2ad}
+      \strng{bibnamehash}{c148ecad1215f3b0f812fa772e1df2ad}
+      \strng{authorbibnamehash}{c148ecad1215f3b0f812fa772e1df2ad}
+      \strng{authornamehash}{f0b017a1562c07215d8549b750478149}
+      \strng{authorfullhash}{c148ecad1215f3b0f812fa772e1df2ad}
+      \strng{authorfullhashraw}{c148ecad1215f3b0f812fa772e1df2ad}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Advanced Transportation}
+      \field{title}{Optimizing the junction-tree-based reinforcement learning algorithm for network-wide signal coordination}
+      \field{volume}{2020}
+      \field{year}{2020}
+      \field{pages}{6489027}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1155/2020/6489027
+      \endverb
+      \verb{urlraw}
+      \verb https://www.hindawi.com/journals/jat/2020/6489027/
+      \endverb
+      \verb{url}
+      \verb https://www.hindawi.com/journals/jat/2020/6489027/
+      \endverb
+    \endentry
+    \entry{Kouvelas2011}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=183afd85c64c3b9a74f56acf41b2f828}{%
+           family={Kouvelas},
+           familyi={K\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=849e9a72f586c175944f53558223e422}{%
+           family={Aboudolas},
+           familyi={A\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=2e7396ab24fe576e00b1be59a9a5f3a5}{%
+           family={Papageorgiou},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=e52b36cdf82b8b5c3f5044578b7be410}{%
+           family={Kosmatopoulos},
+           familyi={K\bibinitperiod},
+           given={E.B.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{5e85270b62e97ce788fef73724b6415a}
+      \strng{fullhash}{1c7003166a9e4a423aeeb9671858bd85}
+      \strng{fullhashraw}{1c7003166a9e4a423aeeb9671858bd85}
+      \strng{bibnamehash}{1c7003166a9e4a423aeeb9671858bd85}
+      \strng{authorbibnamehash}{1c7003166a9e4a423aeeb9671858bd85}
+      \strng{authornamehash}{5e85270b62e97ce788fef73724b6415a}
+      \strng{authorfullhash}{1c7003166a9e4a423aeeb9671858bd85}
+      \strng{authorfullhashraw}{1c7003166a9e4a423aeeb9671858bd85}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Intelligent Transportation Systems}
+      \field{number}{3}
+      \field{title}{A hybrid strategy for real-time traffic signal control of urban road networks}
+      \field{volume}{12}
+      \field{year}{2011}
+      \field{pages}{884\bibrangedash 894}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/TITS.2011.2116156
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/5723342
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/5723342
+      \endverb
+    \endentry
+    \entry{Lopez2018}{article}{}{}
+      \name{author}{10}{}{%
+        {{hash=9964eb3b5591dadcdaedb71fd908bfc9}{%
+           family={Lopez},
+           familyi={L\bibinitperiod},
+           given={P.A.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=229c7179bfa7b84dbb6a885abaa2e15d}{%
+           family={Behrisch},
+           familyi={B\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=3932ce65845d77ac4b7b5141291a7ea0}{%
+           family={Bieker-Walz},
+           familyi={B\bibinithyphendelim W\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=01bcc89da6fcc35b7c805705d1290afd}{%
+           family={Erdmann},
+           familyi={E\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=5cde05bf26fcfa0c042936c7aadb5442}{%
+           family={Flötteröd},
+           familyi={F\bibinitperiod},
+           given={Y.P.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=d8f335f50b1390d582fd254766071936}{%
+           family={Hilbrich},
+           familyi={H\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=ebfd9edc149781de9f56e3f40ae32b45}{%
+           family={Lücken},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c929c94179e584ec81efdc913024a7dc}{%
+           family={Rummel},
+           familyi={R\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=9cf4e38a2c30b6addb65e0b179abfe47}{%
+           family={Wagner},
+           familyi={W\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=41af119d0048a148d31995917f2502bd}{%
+           family={Wießner},
+           familyi={W\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{19326c7bb4bb0a75e04a703f3449f317}
+      \strng{fullhash}{53114ebbb844b031b9223d90702ae71e}
+      \strng{fullhashraw}{53114ebbb844b031b9223d90702ae71e}
+      \strng{bibnamehash}{19326c7bb4bb0a75e04a703f3449f317}
+      \strng{authorbibnamehash}{19326c7bb4bb0a75e04a703f3449f317}
+      \strng{authornamehash}{19326c7bb4bb0a75e04a703f3449f317}
+      \strng{authorfullhash}{53114ebbb844b031b9223d90702ae71e}
+      \strng{authorfullhashraw}{53114ebbb844b031b9223d90702ae71e}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Intelligent Transportation Systems Conference (ITSC)}
+      \field{title}{Microscopic Traffic Simulation using SUMO}
+      \field{year}{2018}
+      \field{pages}{2575\bibrangedash 2582}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/ITSC.2018.8569938
+      \endverb
+    \endentry
+    \entry{Sutton2018}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=f6e3bc679b5057a2558857c9c28078b8}{%
+           family={Sutton},
+           familyi={S\bibinitperiod},
+           given={R.S.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fdb3b9edd91ad4fc7c4dc1c212f7f3a9}{%
+           family={Barto},
+           familyi={B\bibinitperiod},
+           given={A.G.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cambridge, MA}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{fullhash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{fullhashraw}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{bibnamehash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{authorbibnamehash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{authornamehash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{authorfullhash}{ae3768ac5e17b9be43bb7551c725803f}
+      \strng{authorfullhashraw}{ae3768ac5e17b9be43bb7551c725803f}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2nd}
+      \field{title}{Reinforcement Learning: An Introduction}
+      \field{year}{2018}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

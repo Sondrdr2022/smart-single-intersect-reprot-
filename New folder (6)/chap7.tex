@@ -2,6 +2,82 @@
 % CHƯƠNG 7
 % =========================
 \chapter{Chiến lược điều khiển lai}
+
 \section{Khung tích hợp}
+
+Chiến lược điều khiển lai của hệ thống được xây dựng dựa trên sự kết hợp giữa điều khiển theo luật (rule-based) và học tăng cường (reinforcement learning, RL). Bộ điều khiển trung tâm UniversalSmartTrafficController đóng vai trò điều phối toàn bộ hoạt động, kết nối với các bộ điều khiển pha thích nghi (AdaptivePhaseController, APC). APC có thể vừa thực thi các logic cứng về an toàn, ưu tiên khẩn cấp, vừa sử dụng agent Q-learning để tối ưu hoá lựa chọn pha trong các điều kiện giao thông thực tế.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Placeholder: Sơ đồ kiến trúc khung chiến lược điều khiển lai: Universal Controller, APC, RL agent, rule-based logic]}
+    \vspace{2.5cm}}}
+    \caption{Khung tích hợp chiến lược điều khiển lai}
+    \label{fig:hybrid_control_framework}
+\end{figure}
+
 \section{Luồng điều khiển}
+
+Luồng điều khiển của hệ thống diễn ra theo chu trình khép kín, phối hợp giữa các thành phần:
+
+\begin{enumerate}
+    \item Bộ điều khiển trung tâm tổng hợp dữ liệu trạng thái giao thông từ tất cả các làn đường, nút giao, phương tiện thông qua TraCI.
+    \item Tại mỗi nút giao, APC thực hiện kiểm tra các điều kiện ưu tiên cứng như emergency vehicle, congestion, starvation, protected left, v.v. Nếu phát hiện điều kiện ưu tiên, logic rule-based sẽ được kích hoạt và override RL agent.
+    \item Nếu không có tình huống đặc biệt, RL agent sẽ nhận trạng thái hiện tại (vector trạng thái), sử dụng Q-learning để chọn pha tối ưu dựa trên lịch sử phần thưởng.
+    \item Quyết định điều khiển (chọn pha và thời lượng) được thực thi qua các hàm an toàn, đảm bảo không vi phạm các ràng buộc vật lý (minimum green, yellow insertion, phase limit, phase flicker, v.v.).
+    \item Kết quả hành động, dữ liệu trạng thái, và phần thưởng được ghi lại lên hệ thống lưu trữ (Supabase) để phục vụ học tăng cường và phân tích hiệu năng.
+\end{enumerate}
+
+\begin{lstlisting}[style=py,caption={Luồng điều khiển trong hàm control\_step}]
+def control_step(self):
+    self.phase_count += 1
+    now = traci.simulation.getTime()
+    # 1. Kiem tra rule-based: emergency, congestion, starvation, protected left
+    # 2. Neu khong co uu tien, goi RL agent de chon pha
+    # 3. Thuc hien chuyen pha, chen yellow neu can, cap nhat trang thai
+    # 4. Ghi log, cap nhat reward, luu vao Supabase
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Placeholder: Flowchart luồng điều khiển lai: kiểm tra ưu tiên, RL agent, phase execution, logging]}
+    \vspace{2.2cm}}}
+    \caption{Flowchart luồng điều khiển của hệ thống lai}
+    \label{fig:hybrid_control_flow}
+\end{figure}
+
 \section{Giải quyết xung đột}
+
+Giải quyết xung đột là vấn đề trọng tâm trong hệ thống điều khiển lai, đặc biệt khi các cơ chế ưu tiên (emergency, starvation, congestion) có thể cạnh tranh hoặc xung đột với học tăng cường. Bộ điều khiển sử dụng hàng đợi yêu cầu (pending requests) có thứ tự ưu tiên rõ ràng để phân loại và xử lý từng trường hợp. Khi xuất hiện xung đột giữa các loại ưu tiên, hệ thống sẽ đánh giá mức độ quan trọng và chọn pha phù hợp nhất, đảm bảo an toàn giao thông và tối ưu hoá hiệu năng.
+
+\begin{lstlisting}[style=py,caption={Xử lý giải quyết xung đột bằng pending\_requests}]
+def request_phase_change(self, phase_idx, priority_type='normal', extension_duration=None):
+    priority_order = {
+        'protected_left': 11,
+        'emergency': 10,
+        'critical_starvation': 9,
+        'heavy_congestion': 8,
+        'starvation': 5,
+        'normal': 1
+    }
+    req = {
+        "phase_idx": int(phase_idx),
+        "priority": int(priority_order.get(priority_type, 1)),
+        "priority_type": str(priority_type),
+        "extension_duration": None if extension_duration is None else float(extension_duration),
+        "timestamp": float(current_time)
+    }
+    self.pending_requests.append(req)
+    self.pending_requests.sort(key=lambda x: (-x["priority"], x["timestamp"]))
+    # Khi phase ending, chon request uu tien nhat de thuc thi
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Placeholder: Sơ đồ hàng đợi ưu tiên giải quyết xung đột: emergency, starvation, RL agent]}
+    \vspace{2.2cm}}}
+    \caption{Quy trình giải quyết xung đột ưu tiên trong điều khiển lai}
+    \label{fig:hybrid_conflict_resolution}
+\end{figure}

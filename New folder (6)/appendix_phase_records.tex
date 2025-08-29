@@ -1,0 +1,64 @@
+% File: appendix_phase_records2.tex
+% Sử dụng file này như một chương phụ lục riêng sau \appendix trong main.tex
+
+\chapter{Phụ lục: Lược đồ bảng \texttt{phase\_records}}
+
+\section*{Lược đồ đầy đủ bảng \texttt{phase\_records}}
+\addcontentsline{toc}{chapter}{Phụ lục: Lược đồ bảng phase\_records}
+\label{app:phase_records_full}
+
+Bảng \texttt{phase\_records} lưu lịch sử chi tiết mọi lần điều chỉnh pha trong hệ thống, bao gồm thông tin thời gian, điều khiển và chỉ số hiệu suất. Bảng này được sử dụng cho phân tích hậu kỳ, huấn luyện RL, kiểm toán và debug.
+
+\vspace{0.5em}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{@{}llp{7.2cm}@{}}
+\toprule
+\textbf{Cột} & \textbf{Kiểu dữ liệu} & \textbf{Mô tả} \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Thông tin cơ bản}}\\
+\midrule
+id            & BIGSERIAL      & Khóa chính tự tăng \\
+tls\_id       & TEXT           & ID của nút giao thông \\
+phase\_idx    & INTEGER        & Chỉ số pha (0--11) \\
+sim\_time     & REAL           & Thời điểm trong mô phỏng (giây) \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Thông số thời gian}}\\
+\midrule
+duration      & REAL           & Thời lượng thực tế của pha (giây) \\
+base\_duration& REAL           & Thời lượng cơ sở theo cấu hình \\
+delta\_t      & REAL           & Mức điều chỉnh sau làm mượt \\
+raw\_delta\_t & REAL           & Mức điều chỉnh ban đầu (trước smoothing) \\
+extended\_time& REAL           & Thời gian mở rộng thêm so với base \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Thông tin điều khiển}}\\
+\midrule
+state\_str    & TEXT           & Chuỗi trạng thái (ví dụ ``GGrrGGrr'') \\
+event\_type   & TEXT           & Loại sự kiện kích hoạt điều chỉnh (emergency, starvation, rl, ...) \\
+weights       & JSONB          & Trọng số các yếu tố điều khiển (density, speed, wait, queue) \\
+lanes         & JSONB          & Danh sách làn được phục vụ (dùng cho phân tích theo làn) \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Đánh giá hiệu suất}}\\
+\midrule
+reward        & REAL           & Phần thưởng tính cho hành động (RL) \\
+penalty       & REAL           & Hình phạt cho điều chỉnh quá mức \\
+bonus         & REAL           & Điểm thưởng/bonus (nếu có) \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Metadata \& auditing}}\\
+\midrule
+created\_at   & TIMESTAMPTZ    & Thời điểm tạo bản ghi \\
+updated\_at   & TIMESTAMPTZ    & Thời điểm cập nhật cuối \\
+\bottomrule
+\end{tabular}
+\caption{Lược đồ đầy đủ của bảng \texttt{phase\_records}}
+\label{tab:phase_records_detailed_full}
+\end{table}
+
+\section*{Ghi chú triển khai}
+\begin{itemize}
+  \item \textbf{Trường JSONB (weights, lanes):} Dùng JSONB để hỗ trợ indexing (GIN) và mở rộng linh hoạt khi cần thêm trường không cố định.
+  \item \textbf{Chỉ mục gợi ý:} \texttt{CREATE INDEX idx\_phase\_records\_tls\_phase ON phase\_records(tls\_id, phase\_idx);} \\
+    \texttt{CREATE INDEX idx\_phase\_records\_simtime ON phase\_records(sim\_time);}
+  \item \textbf{Lưu trữ/archival:} Khi triển khai thực tế, cân nhắc chính sách lưu trữ (giữ dữ liệu tần suất cao trong 3 tháng, sau đó nén/archive).
+\end{itemize}

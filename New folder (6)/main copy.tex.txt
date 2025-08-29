@@ -1,0 +1,282 @@
+\documentclass[12pt,a4paper,oneside]{report}
+\UseRawInputEncoding
+
+% ===== Vietnamese + Encoding =====
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+
+% ===== Page layout & typography =====
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{microtype}
+\setlength{\headheight}{18pt} % Fix fancyhdr warning
+
+% ===== Graphics, tables, math =====
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{mode=match, propagate-math-font=true, round-mode=places, round-precision=2}
+\usepackage{amsmath,amssymb,mathtools}
+
+% ===== Lists & formatting =====
+\usepackage{enumitem}
+\setlist{noitemsep,leftmargin=2em}
+
+% ===== TOC & Lists of figures/tables =====
+\usepackage{tocloft}
+\setlength{\cftbeforechapskip}{0.5em}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+% ===== Hyperlinks & clever references =====
+\usepackage{xcolor}
+\definecolor{Link}{RGB}{0,0,128}
+\definecolor{Cite}{RGB}{0,102,0}
+\definecolor{URL}{RGB}{128,0,0}
+\usepackage[
+    unicode,
+    pdfencoding=auto,
+    colorlinks=true,
+    linkcolor=Link,
+    citecolor=Cite,
+    urlcolor=URL
+]{hyperref}
+\usepackage{cleveref}
+
+% ===== Header/Footer =====
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
+
+% ===== Code listings (Python, JSON) =====
+\usepackage{listings}
+\lstdefinestyle{py}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  frame=single,
+  breaklines=true
+}
+\lstdefinestyle{sql}{
+  language=SQL,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  frame=single,
+  breaklines=true
+}
+\lstdefinestyle{json}{
+  language=,
+  basicstyle=\ttfamily\footnotesize,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  frame=single,
+  breaklines=true
+}
+
+% ===== Glossaries / Acronyms (optional) =====
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\newacronym{apc}{APC}{Adaptive Phase Control}
+\newacronym{rl}{RL}{Reinforcement Learning}
+\newacronym{sumo}{SUMO}{Simulation of Urban MObility}
+\newacronym{traci}{TraCI}{Traffic Control Interface}
+
+% ===== Bibliography (biblatex with IEEE style) =====
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{reference.bib} % Đặt đúng tên file .bib
+
+% ===== Title info =====
+\title{\textbf{Hệ Thống Điều Khiển Đèn Giao Thông Thông Minh\\Dựa Trên Phương Pháp Lai APC và Học Tăng Cường}}
+\author{Tên Sinh viên}
+\date{\today}
+
+\begin{document}
+% ===== Title page =====
+\maketitle
+
+% ===== Front matter =====
+\pagenumbering{roman}
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ===== Danh mục từ viết tắt và thuật ngữ chuyên ngành =====
+\addcontentsline{toc}{chapter}{Danh mục từ viết tắt và thuật ngữ chuyên ngành}
+
+% In danh mục từ viết tắt (acronyms)
+\printglossary[type=\acronymtype,title={Từ viết tắt phổ biến}]
+
+% Danh sách thuật ngữ chuyên ngành
+\section*{Thuật ngữ chuyên ngành}
+\begin{description}[leftmargin=2.5em,style=nextline]
+    \item[\textbf{Spillback}] Hiện tượng ùn tắc dội ngược: Khi hàng chờ tại một nút giao thông kéo dài vượt qua điểm đầu nút giao, làm cản trở hoặc chặn luôn dòng xe ở nút giao phía trước. Spillback gây ra hiệu ứng dây chuyền, lan rộng tắc nghẽn trong mạng lưới đô thị.
+    \item[\textbf{Gridlock}] Kẹt lưới giao thông: Toàn bộ các nút giao đều bị kẹt, xe không thể di chuyển qua bất kỳ hướng nào do xung đột dòng xe cắt nhau.
+    \item[\textbf{Starvation}] Đói phục vụ: Một làn hoặc hướng giao thông bị bỏ qua quá lâu, dẫn đến hàng chờ kéo dài không được phục vụ, thường xảy ra khi chính sách ưu tiên quá mức cho các hướng khác.
+    \item[\textbf{Protected left}] Pha rẽ trái bảo vệ: Pha đèn tín hiệu được thiết kế riêng để cho phép rẽ trái an toàn, không bị xung đột với dòng đi thẳng đối diện.
+    \item[\textbf{Adaptive Phase Control (APC)}] Điều khiển pha thích nghi: Phương pháp điều chỉnh thời lượng các pha đèn dựa trên trạng thái giao thông thực tế (hàng chờ, số xe dừng, v.v.).
+    \item[\textbf{Reinforcement Learning (RL)}] Học tăng cường: Kỹ thuật học máy cho phép hệ thống điều khiển tín hiệu học từ phần thưởng/hình phạt dựa trên kết quả thực tế của hành động.
+    \item[\textbf{Green wave}] Làn sóng xanh: Chuỗi các đèn tín hiệu được điều phối để xe chạy liên tục qua nhiều nút giao mà không phải dừng lại.
+    \item[\textbf{Phase duration}] Thời lượng pha: Khoảng thời gian một pha đèn (xanh/vàng/đỏ) được duy trì trước khi chuyển sang pha tiếp theo.
+    \item[\textbf{Supabase}] Nền tảng cơ sở dữ liệu đám mây, dùng lưu trữ trạng thái, nhật ký sự kiện và bảng Q-learning cho hệ thống điều khiển.
+    \item[\textbf{SUMO}] Simulation of Urban Mobility: Phần mềm mô phỏng giao thông vi mô, dùng kiểm thử các thuật toán điều khiển tín hiệu.
+    \item[\textbf{TraCI}] Traffic Control Interface: Giao thức kết nối giữa Python và SUMO, cho phép điều khiển và lấy dữ liệu mô phỏng theo thời gian thực.
+    \item[\textbf{Q-table}] Bảng giá trị Q trong Q-learning: Lưu trữ giá trị kỳ vọng cho mỗi trạng thái và hành động, dùng để ra quyết định tối ưu cho agent học tăng cường.
+    \item[\textbf{Pending requests}] Hàng đợi yêu cầu: Danh sách các yêu cầu chuyển pha đèn đang chờ xử lý, thường được xếp theo mức độ ưu tiên và thời gian.
+\end{description}
+
+% ===== Abstract =====
+\chapter*{Tóm tắt}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+Đèn giao thông đóng vai trò then chốt trong việc điều tiết lưu thông đô thị, song các hệ thống truyền thống thường thiếu khả năng thích ứng với biến động giao thông thực tế. Trong những năm gần đây, các phương pháp điều khiển thích nghi đã được nghiên cứu, nhưng vẫn còn tồn tại những hạn chế như hiện tượng nhấp nháy pha, xử lý tình huống khẩn cấp chưa hiệu quả và khó mở rộng cho nhiều nút giao.
+
+Để khắc phục những vấn đề này, nghiên cứu đề xuất một bộ điều khiển nút giao thông thông minh được triển khai trên môi trường mô phỏng \gls{sumo}, kết nối qua \gls{traci}, kết hợp kỹ thuật học tăng cường và cơ chế lưu trữ trạng thái trên nền tảng đám mây Supabase. Bộ điều khiển có khả năng tự động điều chỉnh thời lượng đèn xanh dựa trên số lượng xe dừng, chiều dài hàng chờ và lưu lượng tức thời, đồng thời bảo đảm an toàn thông qua việc chèn pha vàng và duy trì tối thiểu thời gian đèn xanh.
+
+Ngoài ra, hệ thống còn tích hợp cơ chế ưu tiên cho phương tiện khẩn cấp, quản lý ùn tắc và hỗ trợ rẽ trái an toàn thông qua hàng đợi yêu cầu có cấu trúc. Kết quả mô phỏng thực nghiệm cho thấy mô hình đề xuất giúp giảm đáng kể thời gian chờ trung bình và cải thiện lưu lượng so với phương pháp điều khiển tín hiệu cố định. Điều này chứng minh tính hiệu quả, linh hoạt và tiềm năng ứng dụng của hệ thống trong quản lý giao thông đô thị thông minh.
+
+\clearpage
+\pagenumbering{arabic}
+
+% =========================
+% CHƯƠNG 1
+% =========================
+\input{chap1.tex}
+
+% =========================
+% CHƯƠNG 2
+% =========================
+\input{chap2.tex}
+
+% =========================
+% CHƯƠNG 3
+% =========================
+\input{chap3.tex}
+% =========================
+% CHƯƠNG 4
+% =========================
+\input{chap4.tex}
+% =========================
+% CHƯƠNG 5
+% =========================
+\input{chap5.tex}
+
+% =========================
+% CHƯƠNG 6
+% =========================
+\input{chap6.tex}
+
+
+% =========================
+% CHƯƠNG 7
+% =========================
+\input{chap7.tex}
+
+
+% =========================
+% CHƯƠNG 8
+% =========================
+\input{chap8.tex}
+
+
+% =========================
+% CHƯƠNG 9
+% =========================
+\input{chap9.tex}
+
+
+% =========================
+% CHƯƠNG 10
+% =========================
+\chapter{Chi tiết triển khai}
+\section{Cài đặt và cấu hình}
+\section{Tham số cấu hình}
+\section{Cấu trúc mã nguồn}
+
+% =========================
+% CHƯƠNG 11
+% =========================
+\chapter{Mô hình thí nghiệm}
+\section{Môi trường mô phỏng}
+\section{Cấu hình cơ bản}
+\section{Thí nghiệm kiểm soát}
+
+% =========================
+% CHƯƠNG 12
+% =========================
+\chapter{Đánh giá hiệu năng và so sánh}
+\section{Các chỉ số đánh giá}
+\section{So sánh định lượng và định tính}
+\section{Đánh giá theo kịch bản}
+\section{Phân tích đường cong học tập}
+
+% =========================
+% CHƯƠNG 13
+% =========================
+\chapter{Kết quả và thảo luận}
+\section{Phát hiện chính}
+\section{Phân tích hành vi hệ thống}
+\section{Hạn chế và thách thức}
+
+% =========================
+% CHƯƠNG 14
+% =========================
+\chapter{Trực quan hóa và giám sát}
+\section{Bảng điều khiển thời gian thực}
+\section{Công cụ phân tích}
+
+% =========================
+% CHƯƠNG 15
+% =========================
+\chapter{Hướng phát triển tương lai}
+\section{Điều phối đa nút giao}
+\section{Tích hợp học tăng cường sâu}
+\section{Giao tiếp xe--hạ tầng}
+\section{Dự báo giao thông}
+\section{Mở rộng dựa trên điện toán đám mây}
+
+% =========================
+% CHƯƠNG 16
+% =========================
+\chapter{Kết luận}
+\section{Tóm tắt kết quả}
+\section{Tác động đến quản lý giao thông}
+\section{Ứng dụng thực tiễn}
+\section{Khuyến nghị cuối cùng}
+
+% ===== Bibliography =====
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+\printbibliography[title={Tài liệu tham khảo}]
+
+% ===== Appendices =====
+\appendix
+
+\chapter{Tài liệu mã nguồn}
+% Đảm bảo đã thêm \usepackage{listings} và cấu hình style trong phần preamble
+% Ví dụ chèn file mã nguồn chính:
+% \lstinputlisting[style=py,caption={Bộ điều khiển Lane7b.py}]{Lane7b.py}
+
+\chapter{Hướng dẫn cài đặt}
+% Hướng dẫn cài Python, SUMO, cấu hình TraCI, tham số...
+
+\chapter{Dữ liệu thí nghiệm}
+% Link/ mô tả dữ liệu, cấu hình traffic demand...
+
+%\chapter{Thuật ngữ}
+% Giải thích các thuật ngữ chuyên ngành bổ sung.
+
+% ======= Bảng phụ lục chi tiết schema =======
+\chapter{Phụ lục: Lược đồ bảng phase\_records}
+\input{appendix_phase_records.tex}
+
+\end{document}

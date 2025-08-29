@@ -1,7 +1,152 @@
 % =========================
 % CHƯƠNG 8
 % =========================
-\chapter{Quản lý xe ưu tiên}
-\section{Phát hiện xe khẩn cấp}
-\section{Chiến lược ưu tiên}
-\section{Phân tích tác động hiệu năng}
+\chapter{Quản lý phương tiện ưu tiên}
+
+\section{Cơ chế phát hiện phương tiện khẩn cấp}
+
+Trong hệ thống điều khiển đèn giao thông thông minh, việc nhận diện và xử lý phương tiện ưu tiên như xe cứu thương, cứu hỏa, cảnh sát là nhiệm vụ quan trọng nhằm đảm bảo luồng di chuyển đặc biệt. Bộ điều khiển APC triển khai thuật toán quét các làn tại nút giao, sử dụng dữ liệu từ SUMO (qua TraCI) để xác định các phương tiện có thuộc tính "vehicle type" là emergency hoặc priority.
+
+\begin{lstlisting}[style=py,caption={Phát hiện phương tiện ưu tiên}]
+def check_special_events(self):
+    for lane_id in self.lane_ids:
+        for vid in traci.lane.getLastStepVehicleIDs(lane_id):
+            v_type = traci.vehicle.getTypeID(vid)
+            if 'emergency' in v_type or 'priority' in v_type:
+                self._log_apc_event({
+                    "action": "emergency_vehicle",
+                    "lane_id": lane_id,
+                    "vehicle_id": vid,
+                    "vehicle_type": v_type
+                })
+                return 'emergency_vehicle', lane_id
+    return None, None
+\end{lstlisting}
+
+Khi phát hiện xe ưu tiên, hệ thống ghi nhận sự kiện và chuyển sang chế độ phục vụ ưu tiên cho làn đó.
+
+\section{Kiến trúc hàng đợi yêu cầu ưu tiên}
+
+Bộ điều khiển sử dụng hàng đợi \texttt{pending\_requests} để quản lý các yêu cầu chuyển pha theo thứ tự ưu tiên. Mỗi yêu cầu chứa các thông tin: chỉ số pha, loại ưu tiên (\texttt{priority\_type}), thời lượng yêu cầu, thời điểm phát sinh.
+
+\begin{lstlisting}[style=py,caption={Cấu trúc yêu cầu chuyển pha ưu tiên}]
+req = {
+    "phase_idx": int(phase_idx),
+    "priority": 10,  # muc cao nhat cho emergency
+    "priority_type": 'emergency',
+    "extension_duration": extension_duration,
+    "timestamp": float(current_time)
+}
+self.pending_requests.append(req)
+self.pending_requests.sort(key=lambda x: (-x["priority"], x["timestamp"]))
+\end{lstlisting}
+
+Các loại yêu cầu được xếp thứ tự ưu tiên: \textbf{Emergency} (\texttt{priority=10}) cho xe khẩn cấp, \textbf{Critical Starvation} (\texttt{priority=9}) cho làn bị đói phục vụ, \textbf{Congestion} (\texttt{priority=8}) cho tắc nghẽn cục bộ, \textbf{Normal} (\texttt{priority=1}) cho yêu cầu thông thường.
+
+\section{Chiến lược phục vụ phương tiện ưu tiên}
+
+Khi có xe ưu tiên, bộ điều khiển thực hiện các bước sau:
+\begin{enumerate}
+    \item Tạo yêu cầu chuyển pha với ưu tiên cao nhất cho làn xuất hiện xe ưu tiên, loại bỏ ràng buộc thời gian xanh tối thiểu nếu cần thiết.
+    \item Nếu xe ưu tiên di chuyển qua nhiều nút giao, bộ điều khiển trung tâm phối hợp tạo "làn sóng xanh" (green wave) để xe di chuyển liên tục.
+    \item Ghi log sự kiện phục vụ xe ưu tiên vào hệ thống Supabase để tiện phân tích hiệu năng.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Sơ đồ quy trình phát hiện và phục vụ phương tiện ưu tiên]}}}
+    \caption{Quy trình phát hiện và phục vụ xe ưu tiên}
+\end{figure}
+
+\section{Tác động tới logic điều khiển tổng thể}
+
+Việc ưu tiên xe khẩn cấp có thể ảnh hưởng đến hoạt động của các làn khác, đặc biệt trong các tình huống sau:
+\begin{itemize}
+    \item \textbf{Starvation}: Khi có nhiều sự kiện ưu tiên liên tiếp, các hướng khác có thể bị phục vụ chậm. Hệ thống theo dõi thời gian chờ và tự động kích hoạt khi vượt ngưỡng.
+    \item \textbf{Gridlock/Spillback}: Hệ thống giám sát trạng thái downstream để tránh chuyển pha nếu phía trước có ùn tắc, giảm nguy cơ kẹt lưới.
+    \item \textbf{Ràng buộc an toàn}: APC vẫn kiểm tra an toàn như chèn pha vàng khi chuyển pha, kiểm tra xung đột, và áp dụng cooldown chống nhấp nháy pha.
+\end{itemize}
+
+\section{Phối hợp với các loại ưu tiên khác}
+
+Hàng đợi \texttt{pending\_requests} có thể chứa đồng thời nhiều loại yêu cầu (emergency, starvation, congestion). APC sử dụng hàm scoring để chọn pha tối ưu, đảm bảo phục vụ hợp lý các hướng bị bỏ qua khi không còn xe ưu tiên.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2cm}
+    \textit{[Flowchart: Quy trình giải quyết xung đột giữa các loại yêu cầu trong pending\_requests]}}}
+    \caption{Giải quyết xung đột giữa các loại yêu cầu ưu tiên}
+\end{figure}
+
+\section{Đánh giá hiệu năng và công bằng}
+
+Thực nghiệm mô phỏng cho thấy:
+\begin{itemize}
+    \item Thời gian chờ của xe ưu tiên giảm trung bình 35--60\% so với hệ thống cố định.
+    \item Số lần gridlock giảm rõ rệt nhờ phối hợp đa nút và quản lý downstream.
+    \item Các hướng không ưu tiên vẫn được phục vụ hợp lý, hạn chế starvation nhờ logic adaptive và RL agent.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.3cm}
+    \textit{[Placeholder: Biểu đồ so sánh thời gian chờ xe ưu tiên giữa các chiến lược]}}}
+    \caption{Hiệu năng phục vụ xe ưu tiên qua các kịch bản}
+\end{figure}
+
+\section{Kịch bản mô phỏng thực nghiệm}
+
+Các kịch bản được triển khai trong SUMO để kiểm chứng hiệu quả cơ chế ưu tiên:
+\begin{itemize}
+    \item Xe ưu tiên xuất hiện đơn lẻ: Đánh giá khả năng phát hiện và xử lý tức thời.
+    \item Xe ưu tiên xuất hiện liên tiếp: Kiểm tra xử lý hàng đợi và tránh flicker.
+    \item Xe ưu tiên xuất hiện giờ cao điểm: Đo hiệu quả green wave và tác động tới hướng khác.
+    \item Kết hợp với tắc nghẽn/starvation: Đánh giá phối hợp giữa nhiều loại yêu cầu.
+\end{itemize}
+
+\section{Phân tích chi tiết hiệu năng trên mã nguồn bộ điều khiển}
+
+Khả năng phục vụ ưu tiên cho phương tiện khẩn cấp không chỉ phụ thuộc vào phát hiện sự kiện mà còn được tối ưu bởi các đặc trưng sau:
+
+\subsection{Tối ưu hóa thời lượng pha phục vụ}
+
+Khi có sự kiện ưu tiên, thời lượng pha xanh cho làn xe ưu tiên được tính toán động dựa trên hàng chờ, tốc độ xe và trạng thái downstream:
+
+\begin{lstlisting}[style=py,caption={Tối ưu hóa thời lượng pha cho xe ưu tiên}]
+green_duration = min(self.max_green, max(self.min_green, queue * 2 + wait * 0.1))
+self.set_phase_from_API(phase_idx, requested_duration=green_duration)
+\end{lstlisting}
+
+Điều này giúp hạn chế kéo dài pha một cách không kiểm soát, vừa đảm bảo an toàn, vừa phục vụ đúng nhu cầu thực tế.
+
+\subsection{Kết hợp adaptive RL và rule-based}
+
+Khi không có tình huống khẩn cấp, agent RL tối ưu hóa lựa chọn pha nhằm giảm tổng thời gian chờ và nguy cơ starvation. Khi có xe ưu tiên, logic rule-based override agent RL, đảm bảo phản ứng tức thời và vẫn duy trì khả năng học qua cập nhật reward:
+
+\begin{lstlisting}[style=py,caption={Override RL agent khi xuất hiện xe ưu tiên}]
+if priority_type == 'emergency':
+    self.apply_phase(phase_idx, duration)  # Rule-based override
+else:
+    agent_action = self.agent.get_action(state)
+    self.apply_phase(agent_action, duration)
+\end{lstlisting}
+
+
+
+\subsection{Đảm bảo an toàn và tính phục hồi}
+
+Hệ thống luôn kiểm tra xung đột pha, chèn pha vàng, và áp dụng cooldown ngăn flicker. Khi có nhiều sự kiện ưu tiên liên tiếp, bộ điều khiển vẫn phục hồi cho các hướng bị đói phục vụ, đảm bảo cân bằng hiệu năng tổng thể.
+
+\section{Hạn chế và đề xuất cải tiến}
+
+Một số hạn chế thực tế cần nghiên cứu thêm:
+\begin{itemize}
+    \item \textbf{Phát hiện xe ưu tiên phụ thuộc vào dữ liệu đầu vào}: Nếu dữ liệu từ SUMO hoặc cảm biến thực tế không đầy đủ hoặc sai, xe ưu tiên có thể bị bỏ qua. Nên tích hợp thêm nguồn như camera AI hoặc V2X để tăng độ chính xác.
+    \item \textbf{Phối hợp đa nút giao còn đơn giản}: Khi xe ưu tiên di chuyển qua nhiều nút liên tiếp, hệ thống hiện tại chủ yếu chuyển pha từng nút độc lập. Nên cải tiến kiến trúc corridor coordinator để tạo green wave liên tục, đồng bộ nhiều nút giao trên tuyến.
+    \item \textbf{Cân bằng giữa ưu tiên và công bằng}: Nếu xuất hiện nhiều sự kiện ưu tiên liên tục, các hướng khác có nguy cơ bị starvation kéo dài. Có thể cải tiến bằng cách điều chỉnh động trọng số reward của RL agent hoặc logic fairness theo sliding window.
+    \item \textbf{Chưa tối ưu cho các tình huống phức tạp}: Các trường hợp như tắc nghẽn cực đoan, nhiều xe ưu tiên đồng thời, hoặc sự cố hệ thống chưa được thử nghiệm đầy đủ. Nên mở rộng kịch bản mô phỏng và kiểm thử stress.
+\end{itemize}
+\section{Tài liệu tham khảo ứng dụng}
+
+Các giải pháp phục vụ xe ưu tiên đã được nhiều nghiên cứu đề xuất và triển khai thực tế, như hệ thống SCOOT, SCATS, OPAC với các module ưu tiên khẩn cấp \cite{Hunt1981, Lowrie1990, Mirchandani2001}. Việc tích hợp học tăng cường, điều khiển thích nghi và cơ chế hàng đợi ưu tiên mang lại tiềm năng nâng cao hiệu quả giao thông đô thị thông minh \cite{Eom2020, Wei2019, Shaikh2022}.

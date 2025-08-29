@@ -1,100 +1,57 @@
 % =========================
-% CHƯƠNG 2
+% CHƯƠNG 2 - GIỚI THIỆU
 % =========================
 \chapter{Giới thiệu}
 
 \section{Bài toán nghiên cứu}
-\subsection{Thách thức tắc nghẽn giao thông đô thị}
-Trong bối cảnh đô thị hoá nhanh chóng, hệ thống giao thông thành phố
- ngày càng chịu áp lực lớn bởi lưu lượng phương tiện gia tăng. Ùn tắc giao
- thông dẫn đến nhiều hệ quả tiêu cực như lãng phí thời gian, tiêu hao nhiên
- liệu, tăng phát thải khí nhà kính, và gây căng thẳng cho người tham gia
- giao thông. Việc quản lý luồng phương tiện tại các nút giao thông vì thế trở
- thành một thách thức trọng yếu trong quy hoạch đô thị thông minh \cite{Eom2020}.
 
-\subsection{Hạn chế của hệ thống đèn tín hiệu cố định}
- Các hệ thống đèn tín hiệu truyền thống thường dựa trên chu kỳ cố định,
- được thiết kế sẵn dựa trên dữ liệu trung bình lịch sử. Tuy nhiên, phương
- pháp này không thể thích ứng với sự biến động liên tục của giao thông thực
- tế. Điều này dễ dẫn đến các tình trạng bất cập: pha đèn xanh bị lãng phí khi
- lưu lượng thấp, trong khi ở hướng lưu lượng cao lại hình thành hàng chờ dài.
- Ngoài ra, cơ chế cố định không phản ứng kịp với các tình huống bất thường
- như tai nạn hoặc tăng đột biến lưu lượng \cite{Eom2020}.
+\subsection{Tác động của ùn tắc giao thông đô thị}
+Ùn tắc giao thông là vấn đề phổ biến tại các trung tâm đô thị, gây tổn thất về thời gian, nhiên liệu và môi trường, đồng thời giảm chất lượng dịch vụ giao thông. Sự biến động theo thời gian và không đồng đều giữa các hướng khiến các giải pháp cố định khó đáp ứng được yêu cầu thực tế, đặc biệt trong giờ cao điểm hoặc khi xuất hiện sự kiện bất thường.
 
-\subsection{Yêu cầu ưu tiên cho xe khẩn cấp}
-Một vấn đề quan trọng khác trong quản lý tín hiệu giao thông là đảm bảo ưu
- tiên cho các phương tiện khẩn cấp như xe cứu thương, cứu hỏa và cảnh sát.
- Nếu không có cơ chế điều chỉnh kịp thời, xe khẩn cấp sẽ bị cản trở bởi tín
- hiệu đèn đỏ, làm chậm trễ việc tiếp cận hiện trường. Do đó, hệ thống điều
-khiển thông minh cần có khả năng phát hiện và điều chỉnh pha tín hiệu nhằm
- tạo "làn sóng xanh" cho xe khẩn cấp di chuyển an toàn và nhanh chóng.
+\subsection{Giới hạn của điều khiển thời gian cố định}
+Các hệ thống điều khiển tín hiệu truyền thống dựa trên chu kỳ cố định (fixed‑time) thường được thiết kế theo mẫu lưu lượng trung bình. Nhược điểm chính là thiếu khả năng thích ứng với biến động thực tế: khi lưu lượng giảm, thời gian xanh có thể bị lãng phí; khi lưu lượng tăng, hàng chờ dễ hình thành và kéo dài. Các phương pháp semi/fully‑actuated cải thiện phần nào nhưng vẫn bị hạn chế bởi các tham số cố định và khả năng tối ưu trên mạng lưới lớn.
 
-\subsection{Vấn đề điều khiển rẽ trái an toàn}
- Một trong những nguyên nhân thường xuyên gây ùn tắc và tai nạn tại nút
- giao là xung đột giữa dòng rẽ trái và dòng đi thẳng đối diện. Trong mô hình
- tín hiệu cố định, pha rẽ trái thường không được xử lý linh hoạt, dẫn đến tình
- trạng xe rẽ trái bị kẹt, gây cản trở dòng chính và hình thành ùn tắc cục bộ.
- Vì vậy, cần có một cơ chế phát hiện rẽ trái bị chặn và tự động chèn thêm
- pha bảo vệ để đảm bảo an toàn cũng như tối ưu hóa lưu lượng.
+\subsection{Yêu cầu ưu tiên cho phương tiện khẩn cấp}
+Một yêu cầu thiết yếu trong quản lý tín hiệu là đảm bảo phục vụ phương tiện ưu tiên (xe cứu thương, cứu hỏa, cảnh sát). Hệ thống cần phát hiện kịp thời và điều chỉnh pha sao cho phương tiện ưu tiên được thông suốt, đồng thời giảm thiểu tác động tiêu cực lên lưu lượng chung.
 
-\section{Mục tiêu và phạm vi}
-Mục tiêu là phát triển bộ điều khiển lai \gls{apc}–\gls{rl} tự điều chỉnh pha theo trạng thái, ưu tiên khẩn cấp, quản lý tắc nghẽn và rẽ trái bảo vệ; đồng bộ dữ liệu thực nghiệm lên Supabase.
+\subsection{Vấn đề rẽ trái và xung đột pha}
+Xung đột giữa luồng rẽ trái và luồng đi thẳng đối diện là nguyên nhân phổ biến dẫn tới tắc nghẽn cục bộ và nguy cơ tai nạn. Thiết kế pha rẽ trái cố định thường không linh hoạt khi điều kiện thay đổi, do đó cần cơ chế phát hiện rẽ trái bị chặn và tạo pha bảo vệ động để giải phóng luồng.
+
+\section{Mục tiêu nghiên cứu}
+
+Mục tiêu chính của luận văn là phát triển một hệ thống điều khiển đèn giao thông lai, kết hợp bộ điều khiển pha thích nghi (APC) với học tăng cường (RL), nhằm:
+\begin{itemize}
+    \item Tăng khả năng thích ứng với biến động lưu lượng thời gian thực,
+    \item Giảm thời gian chờ trung bình và độ dài hàng chờ,
+    \item Hỗ trợ ưu tiên phương tiện khẩn cấp và xử lý rẽ trái bị chặn,
+    \item Đảm bảo tính an toàn (chèn pha vàng, ngăn xung đột) và khả năng phục hồi khi mất kết nối với hệ thống lưu trữ.
+\end{itemize}
 
 \section{Phạm vi và giới hạn}
-Hệ thống được kiểm chứng trong \textbf{môi trường mô phỏng} và \textbf{tối ưu cho một nút giao duy nhất}. Chưa có cơ chế điều phối đa nút giao. Agent RL hiện dùng \textbf{Q-learning cơ bản} với không gian trạng thái rời rạc, còn hạn chế về khả năng khái quát và dự đoán. Các hướng mở rộng gồm \textit{Deep RL}, dự báo lưu lượng ngắn hạn (RNN/LSTM), và phối hợp đa Agent.
 
-\section{Cấu trúc tài liệu}
-
-Luận văn được cấu trúc thành 16 chương chính và các phụ lục, được tổ chức theo logic từ tổng quan đến chi tiết, từ lý thuyết đến thực nghiệm. Cấu trúc này nhằm trình bày một cách hệ thống và toàn diện về hệ thống điều khiển đèn giao thông thông minh được phát triển.
-
-\subsection*{Phần I: Giới thiệu và cơ sở lý thuyết (Chương 1-3)}
-
-\begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Chương 1: Tổng quan dự án} -- Trình bày bối cảnh nghiên cứu, vấn đề cần giải quyết, các thành tựu chính đạt được và tóm tắt công nghệ được sử dụng trong dự án.
-    
-    \item \textbf{Chương 2: Giới thiệu} -- Phân tích chi tiết bài toán nghiên cứu, các thách thức của hệ thống giao thông đô thị, hạn chế của phương pháp điều khiển truyền thống và yêu cầu xử lý tình huống khẩn cấp.
-    
-    \item \textbf{Chương 3: Tổng quan tài liệu} -- Khảo sát các nghiên cứu liên quan từ phương pháp điều khiển cố định, hệ thống thích nghi đến ứng dụng học máy và phương pháp lai trong điều khiển tín hiệu. Chương này xác định khoảng trống nghiên cứu và định vị đóng góp của luận văn.
+Công trình được thực nghiệm trong môi trường mô phỏng SUMO và tập trung chính vào tối ưu cho một nút giao hoặc cụm nút nhỏ. Những giới hạn chính bao gồm:
+\begin{itemize}
+    \item Sử dụng Q‑learning rời rạc cho tác tử RL (chưa triển khai Deep RL cho không gian trạng thái liên tục).
+    \item Kết quả dựa trên dữ liệu mô phỏng; việc chuyển sang triển khai thực tế (sim‑to‑real) yêu cầu bổ sung domain randomization và tích hợp cảm biến thực.
+    \item Khả năng điều phối đa nút ở mức sơ khai; cần mở rộng thêm để xử lý mạng lưới lớn với độ trễ giao tiếp thực.
 \end{itemize}
 
-\subsection*{Phần II: Thiết kế và phát triển hệ thống (Chương 4-10)}
+\section{Đóng góp chính}
 
-\begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Chương 4: Kiến trúc hệ thống} -- Mô tả thiết kế tổng thể, sơ đồ các thành phần, luồng dữ liệu và điểm tích hợp giữa các module. Chương này cũng trình bày chi tiết về công nghệ và công cụ được sử dụng bao gồm SUMO, TraCI, Python và Supabase.
-    
-    \item \textbf{Chương 5: Điều khiển pha thích nghi (APC)} -- Giải thích nguyên lý hoạt động của bộ điều khiển APC, bao gồm thuật toán điều chỉnh pha động, cơ chế phát hiện và xử lý tắc nghẽn, cũng như quản lý pha rẽ trái bảo vệ để đảm bảo an toàn giao thông.
-    
-    \item \textbf{Chương 6: Thành phần học tăng cường} -- Trình bày kiến trúc Agent Q-learning cải tiến, thiết kế không gian trạng thái, hành động và hàm thưởng. Chương này phân tích cơ chế học và cập nhật chính sách dựa trên phản hồi từ môi trường.
-    
-    \item \textbf{Chương 7: Chiến lược điều khiển lai} -- Mô tả cách tích hợp APC và RL thành một hệ thống thống nhất, cơ chế phối hợp giữa điều khiển dựa trên luật và học máy, cùng với chiến lược giải quyết xung đột khi hai phương pháp đưa ra quyết định khác nhau.
-    
-    \item \textbf{Chương 8: Quản lý xe ưu tiên} -- Chi tiết hóa cơ chế phát hiện và xử lý phương tiện khẩn cấp, thuật toán tạo "làn sóng xanh" và phân tích tác động của việc ưu tiên đến hiệu năng tổng thể của hệ thống.
-    
-    \item \textbf{Chương 9: Quản lý dữ liệu} -- Trình bày kiến trúc lưu trữ trên đám mây với Supabase, cơ chế đồng bộ Q-table, hệ thống ghi log sự kiện và các API để truy vấn và phân tích dữ liệu thời gian thực.
-    
-    \item \textbf{Chương 10: Chi tiết triển khai} -- Cung cấp hướng dẫn cài đặt, cấu hình tham số hệ thống, cấu trúc mã nguồn và các best practices trong quá trình phát triển và triển khai.
+Luận văn đóng góp những điểm chính sau:
+\begin{itemize}
+    \item Mô hình lai APC–RL kết hợp quy tắc an toàn và cơ chế học để điều chỉnh thời lượng pha theo reward đa mục tiêu.
+    \item Cơ chế quản lý yêu cầu ưu tiên (pending requests) cho phép phục vụ xe khẩn cấp, starvation và congestion theo thứ tự ưu tiên.
+    \item Kiến trúc lưu trữ lai (local pickle cho Q‑table và Supabase cho log/state) đảm bảo khả năng tái tạo, phân tích và phục hồi.
+    \item Bộ công cụ đánh giá trong SUMO cho phép so sánh với baseline fixed‑time và phân tích các kịch bản congestion, priority và blocked left.
 \end{itemize}
 
-\subsection*{Phần III: Thực nghiệm và đánh giá (Chương 11-13)}
-
-\begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Chương 11: Mô hình thí nghiệm} -- Mô tả thiết lập môi trường mô phỏng SUMO, cấu hình mạng lưới đường và nút giao, định nghĩa các kịch bản kiểm thử với mức độ phức tạp khác nhau.
-    
-    \item \textbf{Chương 12: Đánh giá hiệu năng và so sánh} -- Trình bày các metrics đánh giá (thời gian chờ, độ dài hàng chờ, thông lượng), so sánh định lượng với hệ thống cố định và phân tích đường cong học tập của Agent RL.
-    
-    \item \textbf{Chương 13: Kết quả và thảo luận} -- Tổng hợp các phát hiện chính, phân tích hành vi hệ thống trong điều kiện khác nhau, thảo luận về ưu điểm, hạn chế và các yếu tố ảnh hưởng đến hiệu năng.
+\section{Cấu trúc chương tiếp theo}
+Tài liệu được tổ chức như sau:
+\begin{itemize}
+    \item Chương 3: Tổng quan tài liệu liên quan và khoảng trống nghiên cứu.
+    \item Chương 4–7: Thiết kế hệ thống, APC, thành phần RL và chiến lược điều khiển lai.
+    \item Chương 8–10: Quản lý phương tiện ưu tiên, quản lý dữ liệu và chi tiết triển khai.
+    \item Chương 11–13: Thiết lập thí nghiệm, đánh giá hiệu năng và thảo luận kết quả.
+    \item Chương 14–16: Trực quan hóa, hướng phát triển tương lai và kết luận.
 \end{itemize}
-
-\subsection*{Phần IV: Công cụ và triển vọng (Chương 14-16)}
-
-\begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Chương 14: Trực quan hóa và giám sát} -- Giới thiệu dashboard theo dõi thời gian thực, các công cụ phân tích và visualization để đánh giá hiệu năng hệ thống một cách trực quan.
-    
-    \item \textbf{Chương 15: Hướng phát triển tương lai} -- Đề xuất các cải tiến tiềm năng: mở rộng sang điều phối đa nút giao, tích hợp Deep Reinforcement Learning, giao tiếp V2I, dự báo lưu lượng với mạng LSTM và triển khai trên nền tảng đám mây quy mô lớn.
-    
-    \item \textbf{Chương 16: Kết luận} -- Tóm tắt toàn diện kết quả nghiên cứu, nhấn mạnh đóng góp khoa học và thực tiễn, đánh giá tác động đến lĩnh vực quản lý giao thông thông minh và đưa ra khuyến nghị cho nghiên cứu tương lai.
-\end{itemize}
-
-\subsection*{Phần V: Phụ lục và tài liệu tham khảo}
-
-Các phụ lục bao gồm mã nguồn chi tiết của hệ thống, hướng dẫn cài đặt và cấu hình môi trường, dữ liệu thí nghiệm và kịch bản mô phỏng, cùng với bảng thuật ngữ chuyên ngành. Phần tài liệu tham khảo liệt kê đầy đủ các nguồn được trích dẫn trong luận văn theo chuẩn IEEE.

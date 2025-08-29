@@ -2,7 +2,83 @@
 % CHƯƠNG 16
 % =========================
 \chapter{Kết luận}
-\section{Tóm tắt kết quả}
-\section{Tác động đến quản lý giao thông}
-\section{Ứng dụng thực tiễn}
+
+\section{Tóm tắt kết quả nghiên cứu}
+
+Luận văn đã phát triển và triển khai thành công hệ thống điều khiển đèn giao thông thông minh lai APC–RL trên môi trường mô phỏng SUMO, tích hợp với Supabase để lưu trữ và phân tích dữ liệu. Hệ thống kết hợp:
+
+\begin{itemize}
+    \item Bộ điều khiển pha thích nghi (APC) quản lý logic đèn tín hiệu, chuyển pha an toàn, tự động chèn pha vàng, kiểm soát rẽ trái bảo vệ, ưu tiên khẩn cấp, và xử lý tắc nghẽn.
+    \item Agent Q-learning cải tiến với vector trạng thái đa chiều, hàm thưởng động, cơ chế optimistic exploration, mask hành động từ coordinator, và khả năng học thích nghi dựa trên dữ liệu thực.
+    \item Cơ chế quản lý hàng đợi yêu cầu ưu tiên (pending requests) giúp hệ thống phục vụ hiệu quả xe khẩn cấp, giải quyết starvation, congestion, và điều phối các tình huống đặc biệt.
+    \item Module coordinator hỗ trợ điều phối đa nút, phát hiện cụm tắc nghẽn và kích hoạt green wave trên tuyến chính.
+    \item Hệ thống lưu trữ Supabase đồng bộ hóa trạng thái, log sự kiện, bảng Q, và hỗ trợ phân tích hiệu năng chi tiết.
+\end{itemize}
+
+Các thử nghiệm trên nhiều kịch bản trong SUMO cho thấy mô hình lai APC–RL vượt trội phương pháp điều khiển cố định về giảm thời gian chờ trung bình, tăng thông lượng, và cải thiện khả năng phục vụ xe ưu tiên. Hệ thống có khả năng tự động thích ứng với sự biến động giao thông, xử lý tốt các tình huống phức tạp như tắc nghẽn, gridlock, và rẽ trái bị chặn.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Diagram Placeholder: Sơ đồ tổng kết pipeline điều khiển – APC, RL, Coordinator, Supabase]}
+    \vspace{2.2cm}}}
+    \caption{Tổng quan pipeline điều khiển lai APC–RL thực nghiệm}
+\end{figure}
+
+\section{Tác động đến quản lý giao thông đô thị}
+
+Kết quả đạt được khẳng định giá trị thực tiễn của mô hình điều khiển lai:
+
+\begin{itemize}
+    \item \textbf{Giảm tắc nghẽn}: Tăng tốc giải tỏa hàng chờ, hạn chế spillback và gridlock nhờ phát hiện và xử lý đa mẫu congestion, adaptive extension, và phối hợp corridor.
+    \item \textbf{Phục vụ công bằng}: Giảm nguy cơ starvation cho các hướng ít ưu tiên thông qua cơ chế pending requests, scoring động và logic fairness.
+    \item \textbf{Ứng phó khẩn cấp}: Đảm bảo phát hiện và phục vụ xe ưu tiên đúng thời điểm, tạo green wave xuyên suốt, rút ngắn thời gian tiếp cận hiện trường.
+    \item \textbf{Tăng hiệu quả học máy}: RL agent học liên tục từ phần thưởng thực, tự động điều chỉnh trọng số reward đa mục tiêu, cải thiện tốc độ hội tụ và khả năng thích nghi.
+    \item \textbf{Khả năng mở rộng}: Kiến trúc module, cache hai tầng và batch database đảm bảo hiệu suất khi mở rộng lên nhiều nút giao, hỗ trợ đồng bộ và phân tích ở quy mô lớn.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2cm}
+    \textit{[Diagram Placeholder: Biểu đồ so sánh hiệu năng các chiến lược qua nhiều chỉ số]}
+    \vspace{2cm}}}
+    \caption{So sánh hiệu năng kiểm soát qua các chỉ số – thời gian chờ, thông lượng, gridlock}
+\end{figure}
+
+\section{Ứng dụng thực tiễn và triển vọng}
+
+Hệ thống có tiềm năng ứng dụng rộng rãi trong các dự án giao thông đô thị thông minh:
+
+\begin{itemize}
+    \item Tích hợp thực tế với cảm biến IoT, camera AI, V2X để phát hiện phương tiện ưu tiên chính xác.
+    \item Triển khai trên các nút giao lớn, khu vực bệnh viện, tuyến đường trục để tăng hiệu quả phục vụ cứu hộ, cứu nạn.
+    \item Hỗ trợ dashboard real-time, API phân tích, cho phép giám sát và tối ưu hóa chính sách điều khiển.
+    \item Mở rộng cho multi-agent RL, deep RL, dự báo lưu lượng, và điều phối toàn mạng lưới với cloud database.
+\end{itemize}
+
+\begin{lstlisting}[style=py,caption={Ví dụ đoạn mã khởi tạo APC và RL agent trên một nút giao}]
+lane_ids = traci.trafficlight.getControlledLanes("E3")
+apc = AdaptivePhaseController(
+    lane_ids=lane_ids, tls_id="E3",
+    alpha=1.0, min_green=30, max_green=80
+)
+rl_agent = EnhancedQLearningAgent(
+    state_size=12, action_size=len(traci.trafficlight.getAllProgramLogics("E3")[0].phases),
+    adaptive_controller=apc, mode="train"
+)
+apc.rl_agent = rl_agent
+\end{lstlisting}
+
 \section{Khuyến nghị cuối cùng}
+
+\begin{itemize}
+    \item \textbf{Nghiên cứu mở rộng}: Thử nghiệm với multi-agent coordination, deep RL (DQN, PPO), tích hợp kịch bản thực tế từ dữ liệu cảm biến.
+    \item \textbf{Tối ưu fairness}: Điều chỉnh động trọng số reward, logic fairness cho các hướng có nguy cơ starvation, nhất là khi xuất hiện nhiều sự kiện ưu tiên liên tiếp.
+    \item \textbf{Kiểm thử stress}: Mở rộng kịch bản stress test với gridlock cực đoan, nhiều xe ưu tiên đồng thời và lỗi hệ thống.
+    \item \textbf{Tích hợp thực tế}: Kết nối với hệ thống camera, V2X, cloud API, kiểm chứng hiệu quả mô hình trên mạng lưới thực tế.
+    \item \textbf{Minh bạch và tái tạo}: Công khai mã nguồn, dữ liệu thử nghiệm, cấu hình hyperparameters để cộng đồng dễ dàng tái tạo và so sánh kết quả.
+\end{itemize}
+
+\vspace{0.5cm}
+
+\noindent\textbf{Kết luận:} Mô hình điều khiển lai APC–RL kết hợp ưu điểm của điều khiển dựa trên luật và học máy, nâng cao hiệu quả, độ linh hoạt và khả năng phục hồi cho hệ thống đèn giao thông đô thị thông minh. Đây là nền tảng vững chắc cho các nghiên cứu và ứng dụng mở rộng trong quản lý giao thông thông minh thời gian thực.

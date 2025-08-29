@@ -2,6 +2,124 @@
 % CHƯƠNG 9
 % =========================
 \chapter{Quản lý dữ liệu}
-\section{Tích hợp Supabase}
-\section{Lưu trữ Q-Table}
-\section{Hệ thống ghi log sự kiện}
+
+\section{Kiến trúc và cơ chế lưu trữ dữ liệu}
+
+Quản lý dữ liệu là nền tảng giúp hệ thống điều khiển đèn giao thông thông minh vận hành liên tục, minh bạch và có khả năng phân tích, tái tạo mô phỏng cũng như cải tiến thuật toán học tăng cường. Hệ thống sử dụng mô hình lưu trữ lai kết hợp Supabase (cloud database) và local file (pickle), đảm bảo đồng bộ trạng thái, log sự kiện, lịch sử điều chỉnh pha và Q-table của agent RL.
+
+\subsection{Tích hợp Supabase: pipeline dữ liệu và tối ưu vận hành}
+
+Supabase đóng vai trò là hệ quản trị dữ liệu trung tâm, lưu trữ trạng thái điều khiển, lịch sử pha, và toàn bộ sự kiện mô phỏng từ môi trường SUMO. Kết nối được thực hiện qua thư viện \texttt{supabase-py} sử dụng writer bất đồng bộ (\texttt{PatchedAsyncSupabaseWriter}), cho phép chèn dữ liệu theo đợt, giảm độ trễ và tránh quá tải hệ database.
+
+Các bảng chính của Supabase gồm:
+\begin{itemize}
+    \item \textbf{\texttt{apc\_states}}: Lưu trạng thái toàn cục của bộ điều khiển, gồm cấu hình pha, hàng đợi sự kiện, thông số kiểm soát, trạng thái RL agent.
+    \item \textbf{\texttt{phase\_records}}: Ghi lại lịch sử chi tiết mọi lần điều chỉnh pha, gồm thời lượng thực tế, delta-t, reward RL, trạng thái logic và loại sự kiện.
+    \item \textbf{\texttt{simulation\_events}}: Nhật ký mọi sự kiện đặc biệt như chuyển pha khẩn cấp, bảo vệ rẽ trái, chuyển yellow, congestion...
+\end{itemize}
+
+Dữ liệu được buffer cục bộ, flush định kỳ hoặc khi đạt ngưỡng của 1 đợt. Nếu ghi thất bại (do mất kết nối hoặc lỗi mạng), hệ thống tự động retry với chiến lược exponential backoff, đảm bảo dữ liệu không bị mất. Nếu Supabase offline, hệ thống chuyển sang chế độ log cục bộ để bảo toàn dữ liệu.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.2cm}
+    \textit{[Sơ đồ pipeline ghi log trạng thái APC, phase\_records, simulation\_events từ bộ điều khiển lên Supabase]}
+    \vspace{2.2cm}}}
+    \caption{Luồng dữ liệu từ bộ điều khiển lên Supabase cloud}
+\end{figure}
+
+\begin{lstlisting}[style=py,caption={Khởi tạo writer, buffer, batch và retry khi ghi trạng thái lên Supabase}]
+self.supabase = supabase
+self._db_writer = PatchedAsyncSupabaseWriter(self, interval=60.0, max_batch=100)
+self._db_writer.start()
+
+def _save_apc_state_supabase(self):
+    if self.supabase_available:
+        self._pending_db_ops.append(self.apc_state.copy())
+    else:
+        logger.info(f"[Supabase] Offline mode - state not saved for {self.tls_id}")
+\end{lstlisting}
+
+\subsection{Quy trình lưu trữ và đồng bộ Q-Table của tác tử RL}
+
+Q-Table là bộ nhớ giá trị của tác tử học tăng cường (RL agent), quy định quyết định tối ưu cho từng trạng thái và hành động trong hệ thống điều khiển. Để đảm bảo khả năng tái tạo, tiếp tục quá trình học sau mỗi lần mô phỏng, cũng như minh bạch hóa kết quả, hệ thống sử dụng cơ chế lưu trữ Q-Table tại local dưới dạng file pickle (.pkl). Việc này giúp serialize/deserialize nhanh và an toàn, đồng thời cho phép agent RL khôi phục trạng thái học từ các lần chạy trước.
+
+\textbf{Mã nguồn lưu và phục hồi Q-Table:}
+\begin{lstlisting}[style=py,caption={Lưu và phục hồi Q-Table bằng pickle}]
+def save_model(self, filepath=None, adaptive_params=None):
+    filepath = filepath or self.q_table_file
+    model_data = {
+        'q_table': {k: v.tolist() for k, v in self.q_table.items()},
+        'training_data': self.training_data,
+        'params': {...},
+        'metadata': {...}
+    }
+    with open(filepath, 'wb') as f:
+        pickle.dump(model_data, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+def load_model(self, filepath=None):
+    filepath = filepath or self.q_table_file
+    with open(filepath, 'rb') as f:
+        data = pickle.load(f)
+    self.q_table = {k: np.array(v) for k, v in data.get('q_table', {}).items()}
+\end{lstlisting}
+
+Việc ghi Q-Table vào file được thực hiện định kỳ sau mỗi episode hoặc khi số lượng mẫu huấn luyện đủ lớn. Ngược lại, khi khởi động phiên học mới, agent RL sẽ tải lại Q-Table cũ để tiếp tục tối ưu hóa mà không mất dữ liệu học từ các phiên trước.
+
+Ngoài ra, trạng thái các pha đèn cũng được đồng bộ với Supabase để đảm bảo toàn bộ lịch sử điều chỉnh được ghi nhận đầy đủ, giúp phân tích hiệu quả chiến lược điều khiển.
+
+\begin{lstlisting}[style=py,caption={Đồng bộ trạng thái pha với Supabase}]
+self.apc_state["phases"].append({
+    "phase_idx": idx,
+    "duration": float(phase.duration),
+    "base_duration": float(phase.duration),
+    "state": phase.state,
+    "extended_time": 0.0
+})
+self._save_apc_state_supabase()
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Sơ đồ quy trình: agent RL ghi Q-Table ra file pickle local, đồng bộ trạng thái pha lên Supabase]}
+    \vspace{2cm}}}
+    \caption{Quy trình lưu trữ và đồng bộ Q-Table cùng trạng thái hệ thống}
+\end{figure}
+\subsection{Hệ thống ghi log sự kiện điều khiển}
+
+Ghi log sự kiện là thành phần then chốt giúp hệ thống truy vết đầy đủ quá trình vận hành, phục vụ phân tích offline, kiểm thử chức năng và cải tiến thuật toán điều khiển. Mọi sự kiện quan trọng như chuyển pha, kích hoạt ưu tiên, protected left, emergency, congestion... đều được ghi lại với timestamp, loại sự kiện, trạng thái hệ thống, weights, bonus, penalty và thông tin traffic.
+
+\begin{lstlisting}[style=py,caption={Ghi log sự kiện lên Supabase}]
+def _log_apc_event(self, event):
+    event["timestamp"] = datetime.datetime.now().isoformat()
+    event["sim_time"] = traci.simulation.getTime()
+    event["tls_id"] = self.tls_id
+    event["weights"] = self.weights.tolist()
+    event["bonus"] = getattr(self, "last_bonus", 0)
+    event["penalty"] = getattr(self, "last_penalty", 0)
+    self.apc_state["events"].append(event)
+    self._save_apc_state_supabase()
+    self.log_event_to_supabase(event)
+\end{lstlisting}
+
+Các sự kiện được buffer cục bộ, flush theo batch, retry tối đa 6 lần nếu gặp lỗi. Nếu Supabase không khả dụng, log vẫn được lưu local giúp hệ thống phục hồi dễ dàng.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
+    \textit{[Sơ đồ pipeline sự kiện: pending\_requests, phase\_records, APC events → Supabase]}
+    \vspace{2cm}}}
+    \caption{Pipeline ghi log sự kiện từ bộ điều khiển lên Supabase}
+\end{figure}
+
+\subsection{Tối ưu hiệu suất lưu trữ}
+
+Hệ thống áp dụng các kỹ thuật tối ưu như index composite cho truy vấn nhanh, JSONB cho flexibility, batch insert giảm round-trip, row-level security đảm bảo bảo mật, write-behind cache tăng throughput.
+
+\begin{lstlisting}[style=sql,caption={Tối ưu index và security policy}]
+CREATE INDEX idx_apc_states_tls_type ON apc_states(tls_id, state_type);
+ALTER TABLE apc_states ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Enable all operations for authenticated users" 
+    ON apc_states FOR ALL USING (auth.role() = 'authenticated');
+\end{lstlisting}

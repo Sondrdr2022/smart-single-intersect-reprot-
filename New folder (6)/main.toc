@@ -1,0 +1,218 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {chapter}{Danh mục từ viết tắt và thuật ngữ chuyên ngành}{viii}{Doc-Start}%
+\contentsline {chapter}{Tóm tắt}{x}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Tổng quan dự án}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Giới thiệu dự án}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Thành tựu chính}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Tóm tắt cải thiện hiệu năng}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Tổng quan công nghệ sử dụng}{2}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Giới thiệu}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Bài toán nghiên cứu}{4}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Tác động của ùn tắc giao thông đô thị}{4}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Giới hạn của điều khiển thời gian cố định}{4}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Yêu cầu ưu tiên cho phương tiện khẩn cấp}{4}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Vấn đề rẽ trái và xung đột pha}{4}{subsection.2.1.4}%
+\contentsline {section}{\numberline {2.2}Mục tiêu nghiên cứu}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Phạm vi và giới hạn}{5}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Đóng góp chính}{5}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Cấu trúc chương tiếp theo}{6}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Tổng quan tài liệu}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Phương pháp điều khiển giao thông truyền thống}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Hệ thống điều khiển thích nghi, học tăng cường và phương pháp lai}{7}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Khoảng trống nghiên cứu}{8}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Kết luận chương}{8}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Kiến trúc hệ thống}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Thiết kế tổng thể}{9}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Sơ đồ thành phần hệ thống}{9}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Luồng dữ liệu và tích hợp}{10}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Các thành phần cốt lõi}{10}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}UniversalSmartTrafficController}{10}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}AdaptivePhaseController (APC)}{10}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}EnhancedQLearningAgent}{11}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Giao tiếp SUMO–TraCI}{11}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Công nghệ sử dụng}{11}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Python và thư viện}{11}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Mô phỏng giao thông SUMO}{11}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Tích hợp API TraCI}{11}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Cấu hình Supabase}{11}{subsection.4.4.4}%
+\contentsline {subsubsection}{Bảng apc\_states}{12}{section*.4}%
+\contentsline {subsubsection}{Bảng phase\_records}{12}{section*.5}%
+\contentsline {subsubsection}{Bảng simulation\_events}{13}{section*.7}%
+\contentsline {subsubsection}{Tối ưu hiệu suất database}{13}{section*.8}%
+\contentsline {subsubsection}{Chiến lược đồng bộ dữ liệu}{13}{section*.9}%
+\contentsline {chapter}{\numberline {5}Điều khiển pha thích nghi (APC)}{14}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Nguyên lý thiết kế và kiến trúc}{14}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Bộ điều khiển pha thích nghi (APC)}{15}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Khởi tạo và cấu hình hệ thống}{15}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Cấu trúc dữ liệu và tham số điều khiển}{16}{subsection.5.1.3}%
+\contentsline {subsubsection}{Tham số thời gian}{17}{section*.12}%
+\contentsline {subsubsection}{Tham số điều khiển thích ứng}{17}{section*.13}%
+\contentsline {paragraph}{Cập nhật mục tiêu reward động (\(R_{target}\)):}{17}{section*.14}%
+\contentsline {subsubsection}{Ngưỡng phát hiện sự kiện}{17}{section*.15}%
+\contentsline {subsubsection}{Cấu trúc dữ liệu chính}{17}{section*.16}%
+\contentsline {subsection}{\numberline {5.1.4}Tích hợp với TraCI và SUMO}{18}{subsection.5.1.4}%
+\contentsline {subsubsection}{Cơ chế Subscription}{18}{section*.18}%
+\contentsline {subsubsection}{Logic Cache System}{19}{section*.19}%
+\contentsline {subsubsection}{Safe Control Wrappers}{19}{section*.20}%
+\contentsline {section}{\numberline {5.2}Quản lý logic pha đèn tín hiệu}{20}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Cơ chế cache và tối ưu truy xuất}{20}{subsection.5.2.1}%
+\contentsline {subsubsection}{Cache cục bộ APC}{20}{section*.21}%
+\contentsline {subsubsection}{Shared cache ở Controller level}{21}{section*.22}%
+\contentsline {subsubsection}{Cache invalidation strategy}{22}{section*.24}%
+\contentsline {subsection}{\numberline {5.2.2}Điều khiển chuyển pha an toàn}{23}{subsection.5.2.2}%
+\contentsline {subsubsection}{Kiểm tra chỉ số pha hợp lệ}{23}{section*.25}%
+\contentsline {subsubsection}{Áp dụng pha theo nhiều tầng:}{23}{section*.26}%
+\contentsline {subsubsection}{Đảm bảo pha đèn xanh tối thiểu}{24}{section*.28}%
+\contentsline {subsection}{\numberline {5.2.3}Chèn pha đèn vàng tự động}{24}{subsection.5.2.3}%
+\contentsline {subsubsection}{Tạo pha vàng động}{26}{section*.29}%
+\contentsline {subsection}{\numberline {5.2.4}Xử lý và ngăn chặn xung đột pha}{27}{subsection.5.2.4}%
+\contentsline {subsubsection}{Ma trận phát hiện xung đột}{27}{section*.31}%
+\contentsline {subsubsection}{Rate limiting for logic mutations}{28}{section*.32}%
+\contentsline {subsubsection}{Quy tắc thiết lập pha đèn}{28}{section*.33}%
+\contentsline {subsubsection}{Cơ chế phục hồi}{28}{section*.35}%
+\contentsline {section}{\numberline {5.3}Điều chỉnh thời lượng pha động}{30}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Thuật toán điều chỉnh delta-t}{30}{subsection.5.3.1}%
+\contentsline {paragraph}{Công thức điều chỉnh thời lượng pha động:}{30}{section*.36}%
+\contentsline {subsection}{\numberline {5.3.2}Cơ chế extension và cập nhật remaining time}{32}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Ràng buộc \texttt {min\_green} và \texttt {max\_green}}{33}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Tính toán thời lượng tối ưu theo nhu cầu}{33}{subsection.5.3.4}%
+\contentsline {section}{\numberline {5.4}Hệ thống quản lý yêu cầu ưu tiên}{35}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Cấu trúc hàng đợi yêu cầu phân cấp}{35}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Xử lý yêu cầu theo mức độ ưu tiên}{35}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Cơ chế gom nhiều yêu cầu và xử lý hàng loạt}{36}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Giải quyết xung đột giữa các yêu cầu}{37}{subsection.5.4.4}%
+\contentsline {section}{\numberline {5.5}Phát hiện và xử lý tắc nghẽn}{38}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Thuật toán nhận diện tắc nghẽn giao thông}{38}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Tổng hợp nhiều yếu tố để xác định mức độ nghiêm trọng}{39}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Dự báo và phòng ngừa tắc nghẽn}{40}{subsection.5.5.3}%
+\contentsline {subsection}{\numberline {5.5.4}Kích hoạt chế độ tắc nghẽn}{41}{subsection.5.5.4}%
+\contentsline {section}{\numberline {5.6}Quản lý rẽ trái bảo vệ thông minh}{42}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Phát hiện blocked left turn với xung đột}{42}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Tạo pha protected left động}{43}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}Cơ chế memory và guard deadline}{44}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.4}Tối ưu thời lượng protected left phase}{45}{subsection.5.6.4}%
+\contentsline {section}{\numberline {5.7}Xử lý tình huống khẩn cấp}{46}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Phát hiện phương tiện ưu tiên}{46}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Emergency rebalancing khi mất cân bằng lưu lượng}{46}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}Xử lý starvation và ùn tắc nghiêm trọng}{47}{subsection.5.7.3}%
+\contentsline {subsection}{\numberline {5.7.4}Cơ chế cooldown và chống nhấp nháy pha (flicker)}{48}{subsection.5.7.4}%
+\contentsline {chapter}{\numberline {6}Thành phần học tăng cường}{49}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Kiến trúc Agent Q-learning cải tiến}{49}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Cơ chế học}{50}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Thiết kế vector trạng thái}{51}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Thiết kế hàm thưởng}{52}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Chiến lược điều khiển lai}{54}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Khung tích hợp}{54}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Luồng điều khiển}{54}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Giải quyết xung đột}{55}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Quản lý phương tiện ưu tiên}{57}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Cơ chế phát hiện phương tiện khẩn cấp}{57}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Kiến trúc hàng đợi yêu cầu ưu tiên}{57}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Chiến lược phục vụ phương tiện ưu tiên}{58}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Tác động tới logic điều khiển tổng thể}{58}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Phối hợp với các loại ưu tiên khác}{59}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Đánh giá hiệu năng và công bằng}{59}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Kịch bản mô phỏng thực nghiệm}{59}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Phân tích chi tiết hiệu năng trên mã nguồn bộ điều khiển}{60}{section.8.8}%
+\contentsline {subsection}{\numberline {8.8.1}Tối ưu hóa thời lượng pha phục vụ}{60}{subsection.8.8.1}%
+\contentsline {subsection}{\numberline {8.8.2}Kết hợp adaptive RL và rule-based}{60}{subsection.8.8.2}%
+\contentsline {subsection}{\numberline {8.8.3}Đảm bảo an toàn và tính phục hồi}{60}{subsection.8.8.3}%
+\contentsline {section}{\numberline {8.9}Hạn chế và đề xuất cải tiến}{61}{section.8.9}%
+\contentsline {section}{\numberline {8.10}Tài liệu tham khảo ứng dụng}{61}{section.8.10}%
+\contentsline {chapter}{\numberline {9}Quản lý dữ liệu}{62}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Kiến trúc và cơ chế lưu trữ dữ liệu}{62}{section.9.1}%
+\contentsline {subsection}{\numberline {9.1.1}Tích hợp Supabase: pipeline dữ liệu và tối ưu vận hành}{62}{subsection.9.1.1}%
+\contentsline {subsection}{\numberline {9.1.2}Quy trình lưu trữ và đồng bộ Q-Table của tác tử RL}{63}{subsection.9.1.2}%
+\contentsline {subsection}{\numberline {9.1.3}Hệ thống ghi log sự kiện điều khiển}{64}{subsection.9.1.3}%
+\contentsline {subsection}{\numberline {9.1.4}Tối ưu hiệu suất lưu trữ}{65}{subsection.9.1.4}%
+\contentsline {chapter}{\numberline {10}Chi tiết triển khai}{66}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Cài đặt và cấu hình}{66}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Cài đặt môi trường}{66}{subsection.10.1.1}%
+\contentsline {section}{\numberline {10.2}Tham số cấu hình}{67}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Cấu trúc mã nguồn}{67}{section.10.3}%
+\contentsline {subsection}{\numberline {10.3.1}Sơ đồ kiến trúc module}{68}{subsection.10.3.1}%
+\contentsline {subsection}{\numberline {10.3.2}Các lớp chính}{68}{subsection.10.3.2}%
+\contentsline {subsection}{\numberline {10.3.3}Luồng điều khiển chính}{68}{subsection.10.3.3}%
+\contentsline {subsection}{\numberline {10.3.4}Ví dụ code: Khởi tạo APC và RL agent}{69}{subsection.10.3.4}%
+\contentsline {subsection}{\numberline {10.3.5}Ví dụ code: Quản lý hàng đợi yêu cầu ưu tiên}{69}{subsection.10.3.5}%
+\contentsline {subsection}{\numberline {10.3.6}Ví dụ code: Điều chỉnh thời lượng pha động}{70}{subsection.10.3.6}%
+\contentsline {subsection}{\numberline {10.3.7}Ví dụ code: Chèn pha vàng tự động}{70}{subsection.10.3.7}%
+\contentsline {subsection}{\numberline {10.3.8}Ví dụ code: Tích hợp Supabase batch writer}{71}{subsection.10.3.8}%
+\contentsline {subsection}{\numberline {10.3.9}Diagram: Chu trình điều khiển tổng quát}{71}{subsection.10.3.9}%
+\contentsline {chapter}{\numberline {11}Mô hình thí nghiệm}{72}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Môi trường mô phỏng}{72}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}Thiết lập topology và logic đèn bằng NETEDIT}{72}{subsection.11.1.1}%
+\contentsline {subsection}{\numberline {11.1.2}Tích hợp các file cấu hình vào mô phỏng SUMO}{73}{subsection.11.1.2}%
+\contentsline {subsection}{\numberline {11.1.3}Tích hợp TraCI và các thành phần mô phỏng}{73}{subsection.11.1.3}%
+\contentsline {section}{\numberline {11.2}Cấu hình cơ bản}{74}{section.11.2}%
+\contentsline {subsection}{\numberline {11.2.1}Cấu hình mạng lưới giao thông}{74}{subsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.2.2}Cấu hình file mô phỏng SUMO}{75}{subsection.11.2.2}%
+\contentsline {subsection}{\numberline {11.2.3}Cấu hình tích hợp bộ điều khiển}{75}{subsection.11.2.3}%
+\contentsline {section}{\numberline {11.3}Thí nghiệm kiểm soát}{75}{section.11.3}%
+\contentsline {subsection}{\numberline {11.3.1}Tình huống giả lập}{75}{subsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.3.2}Quy trình thực nghiệm}{76}{subsection.11.3.2}%
+\contentsline {subsection}{\numberline {11.3.3}Tích hợp dashboard trực quan hóa}{76}{subsection.11.3.3}%
+\contentsline {chapter}{\numberline {12}Đánh giá hiệu năng và so sánh}{78}{chapter.12}%
+\contentsline {section}{\numberline {12.1}Các chỉ số đánh giá}{78}{section.12.1}%
+\contentsline {section}{\numberline {12.2}So sánh định lượng và định tính}{78}{section.12.2}%
+\contentsline {subsection}{\numberline {12.2.1}So sánh định lượng giữa hai chế độ}{78}{subsection.12.2.1}%
+\contentsline {paragraph}{Bảng tổng hợp chỉ số chính:}{80}{table.caption.80}%
+\contentsline {paragraph}{Phân tích biểu đồ:}{80}{section*.81}%
+\contentsline {paragraph}{Ảnh động học mô phỏng:}{80}{figure.caption.83}%
+\contentsline {subsection}{\numberline {12.2.2}So sánh định tính}{80}{subsection.12.2.2}%
+\contentsline {section}{\numberline {12.3}Đánh giá theo kịch bản}{81}{section.12.3}%
+\contentsline {subsection}{\numberline {12.3.1}Kịch bản 1: Lưu lượng cao giờ cao điểm}{81}{subsection.12.3.1}%
+\contentsline {subsection}{\numberline {12.3.2}Kịch bản 2: Xuất hiện ùn tắc cực đoan}{81}{subsection.12.3.2}%
+\contentsline {subsection}{\numberline {12.3.3}Phân tích chi tiết bằng mã nguồn}{81}{subsection.12.3.3}%
+\contentsline {section}{\numberline {12.4}Phân tích khả năng điều chỉnh pha}{82}{section.12.4}%
+\contentsline {paragraph}{Nhận xét:}{82}{section*.87}%
+\contentsline {section}{\numberline {12.5}Kết luận so sánh}{83}{section.12.5}%
+\contentsline {chapter}{\numberline {13}Kết quả và thảo luận}{84}{chapter.13}%
+\contentsline {section}{\numberline {13.1}Phát hiện chính}{84}{section.13.1}%
+\contentsline {section}{\numberline {13.2}Phân tích hành vi hệ thống}{85}{section.13.2}%
+\contentsline {subsection}{\numberline {13.2.1}Luồng điều khiển ưu tiên}{85}{subsection.13.2.1}%
+\contentsline {subsection}{\numberline {13.2.2}Quản lý rẽ trái bảo vệ}{85}{subsection.13.2.2}%
+\contentsline {subsection}{\numberline {13.2.3}Quản lý tắc nghẽn và metering}{86}{subsection.13.2.3}%
+\contentsline {subsection}{\numberline {13.2.4}Tối ưu hóa thời lượng pha động}{87}{subsection.13.2.4}%
+\contentsline {subsection}{\numberline {13.2.5}Đồng bộ sự kiện và trạng thái lên Supabase}{88}{subsection.13.2.5}%
+\contentsline {section}{\numberline {13.3}Hạn chế và thách thức}{88}{section.13.3}%
+\contentsline {chapter}{\numberline {14}Trực quan hóa và giám sát}{90}{chapter.14}%
+\contentsline {section}{\numberline {14.1}Bảng điều khiển thời gian thực}{90}{section.14.1}%
+\contentsline {subsection}{\numberline {14.1.1}Kiến trúc và chức năng chính}{90}{subsection.14.1.1}%
+\contentsline {subsection}{\numberline {14.1.2}Các nhóm chức năng}{90}{subsection.14.1.2}%
+\contentsline {subsection}{\numberline {14.1.3}Luồng dữ liệu}{91}{subsection.14.1.3}%
+\contentsline {section}{\numberline {14.2}Phân tích dữ liệu hậu kỳ}{91}{section.14.2}%
+\contentsline {section}{\numberline {14.3}Đồng bộ và mở rộng}{91}{section.14.3}%
+\contentsline {chapter}{\numberline {15}Hướng phát triển tương lai}{92}{chapter.15}%
+\contentsline {section}{\numberline {15.1}Điều phối đa nút giao}{92}{section.15.1}%
+\contentsline {section}{\numberline {15.2}Tích hợp học tăng cường sâu}{92}{section.15.2}%
+\contentsline {section}{\numberline {15.3}Giao tiếp xe-hạ tầng (V2I)}{93}{section.15.3}%
+\contentsline {section}{\numberline {15.4}Dự báo giao thông}{93}{section.15.4}%
+\contentsline {section}{\numberline {15.5}Mở rộng dựa trên điện toán đám mây}{94}{section.15.5}%
+\contentsline {chapter}{\numberline {16}Kết luận}{95}{chapter.16}%
+\contentsline {section}{\numberline {16.1}Tóm tắt kết quả nghiên cứu}{95}{section.16.1}%
+\contentsline {section}{\numberline {16.2}Tác động đến quản lý giao thông đô thị}{96}{section.16.2}%
+\contentsline {section}{\numberline {16.3}Ứng dụng thực tiễn và triển vọng}{97}{section.16.3}%
+\contentsline {section}{\numberline {16.4}Khuyến nghị cuối cùng}{97}{section.16.4}%
+\contentsline {chapter}{Tài liệu tham khảo}{99}{section*.101}%
+\contentsline {chapter}{\numberline {A}Tài liệu mã nguồn}{102}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Tài liệu mã nguồn}{103}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Cấu trúc tổng thể mã nguồn}{103}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Luồng dữ liệu và vòng lặp điều khiển}{103}{section.B.2}%
+\contentsline {section}{\numberline {B.3}Các thuật toán chính và đặc trưng trong mã nguồn}{104}{section.B.3}%
+\contentsline {subsection}{\numberline {B.3.1}Điều chỉnh pha động theo reward}{104}{subsection.B.3.1}%
+\contentsline {subsection}{\numberline {B.3.2}Quản lý logic pha đèn và cache}{104}{subsection.B.3.2}%
+\contentsline {subsection}{\numberline {B.3.3}Quản lý hàng đợi yêu cầu chuyển pha}{105}{subsection.B.3.3}%
+\contentsline {subsection}{\numberline {B.3.4}Phát hiện và xử lý rẽ trái bảo vệ động}{105}{subsection.B.3.4}%
+\contentsline {subsection}{\numberline {B.3.5}Cập nhật Q-table và học tăng cường}{105}{subsection.B.3.5}%
+\contentsline {subsection}{\numberline {B.3.6}Chiến lược chọn hành động epsilon-greedy và phối hợp với coordinator}{106}{subsection.B.3.6}%
+\contentsline {subsection}{\numberline {B.3.7}Ghi log và đồng bộ dữ liệu lên Supabase}{106}{subsection.B.3.7}%
+\contentsline {section}{\numberline {B.4}Đặc điểm kỹ thuật và kinh nghiệm triển khai}{107}{section.B.4}%
+\contentsline {section}{\numberline {B.5}Liên hệ các chương khác}{107}{section.B.5}%
+\contentsline {section}{\numberline {B.6}Hướng dẫn đọc mã nguồn}{108}{section.B.6}%
+\contentsline {section}{\numberline {B.7}Ví dụ chèn mã nguồn chính}{108}{section.B.7}%
+\contentsline {section}{\numberline {B.8}Tài liệu tham khảo liên quan mã nguồn}{108}{section.B.8}%
+\contentsline {section}{\numberline {B.9}Ghi chú triển khai thực tế}{108}{section.B.9}%
+\contentsline {section}{\numberline {B.10}Kết luận}{109}{section.B.10}%
+\contentsline {chapter}{\numberline {C}Phụ lục: Lược đồ bảng \texttt {phase\_records}}{110}{appendix.C}%
+\contentsline {chapter}{Phụ lục: Lược đồ bảng phase\_records}{110}{section*.103}%

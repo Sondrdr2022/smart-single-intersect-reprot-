@@ -1,5 +1,186 @@
-\appendix
 \chapter{Tài liệu mã nguồn}
-% Đảm bảo đã thêm \usepackage{listings} và cấu hình style trong phần preamble
-% Ví dụ chèn file mã nguồn chính:
-% \lstinputlisting[style=py,caption={Bộ điều khiển Lane7b.py}]{Lane7b.py}
+
+\section{Cấu trúc tổng thể mã nguồn}
+
+Hệ thống điều khiển đèn giao thông thông minh được triển khai chủ yếu trong file mã nguồn \texttt{Lane7b.py}, với cấu trúc module hóa theo các thành phần kiến trúc đã trình bày ở các chương trước. Mã nguồn sử dụng Python 3.8+, tích hợp với thư viện \texttt{traci} (SUMO), Supabase SDK, và các module nội bộ như \texttt{scheduler}, \texttt{traffic\_light\_display}.
+
+\begin{description}[leftmargin=2em,style=nextline]
+    \item[\textbf{AdaptivePhaseController}] Bộ điều khiển pha thích nghi (APC) cho từng nút giao, chịu trách nhiệm quản lý logic pha đèn, điều chỉnh thời lượng động, xử lý ưu tiên, phát hiện tắc nghẽn, rẽ trái bảo vệ và tích hợp với database Supabase.
+    \item[\textbf{EnhancedQLearningAgent}] Agent Q-learning nâng cao, phối hợp với APC để tối ưu lựa chọn pha dựa trên trạng thái giao thông, history phần thưởng và các ràng buộc từ coordinator.
+    \item[\textbf{UniversalSmartTrafficController}] Bộ điều phối trung tâm, khởi tạo nhiều APC, tổng hợp dữ liệu mạng lưới, thực hiện các chiến lược điều phối đa nút giao, quản lý logic cache và tương tác với coordinator.
+    \item[\textbf{Các hàm tiện ích}] Safe phase switching, logic cache, ghi log sự kiện, xử lý truy vấn Supabase, quản lý hàng đợi yêu cầu, kiểm tra xung đột pha, v.v.
+\end{description}
+
+\section{Luồng dữ liệu và vòng lặp điều khiển}
+
+\textbf{Pipeline dữ liệu} được tổ chức theo chu trình closed-loop như sau:
+\begin{enumerate}
+    \item TraCI đọc trạng thái mô phỏng từ SUMO: số xe, tốc độ, hàng chờ, trạng thái pha đèn.
+    \item UniversalSmartTrafficController tổng hợp dữ liệu, cập nhật logic cache, phân tích trạng thái toàn cục.
+    \item APC tại từng nút giao nhận dữ liệu, tính toán phần thưởng, phát hiện sự kiện đặc biệt (emergency, congestion, protected left).
+    \item RL Agent (EnhancedQLearningAgent) mã hóa trạng thái thành vector, thực hiện Q-learning để chọn hành động (phase index), áp dụng epsilon-greedy và coordinator mask.
+    \item APC thực hiện chuyển pha an toàn, tự động chèn pha vàng nếu cần, cập nhật activation state, đồng bộ remaining time.
+    \item Kết quả và phần thưởng được ghi log vào Supabase (bảng \texttt{apc\_states}, \texttt{phase\_records}, \texttt{simulation\_events}) để phục vụ phân tích và học lâu dài.
+    \item Hiển thị dữ liệu thực tế qua \texttt{SmartIntersectionTrafficDisplay}.
+\end{enumerate}
+
+\section{Các thuật toán chính và đặc trưng trong mã nguồn}
+
+\subsection{Điều chỉnh pha động theo reward}
+
+Thuật toán điều chỉnh thời lượng pha xanh dựa trên reward tổng hợp:
+\begin{lstlisting}[style=py,caption={Thuật toán điều chỉnh delta-t}]
+raw_delta_t = self.alpha * (R - self.R_target)
+delta_t = s * np.tanh(raw_delta_t / s)
+delta_t_star = np.clip(delta_t, delta_t_min, delta_t_max)
+if abs(raw_delta_t) > self.large_delta_t:
+    penalty = abs(raw_delta_t) - self.large_delta_t
+\end{lstlisting}
+
+\subsection{Quản lý logic pha đèn và cache}
+
+Cơ chế cache hai tầng giúp giảm overhead giao tiếp với SUMO và đảm bảo nhất quán logic:
+\begin{lstlisting}[style=py,caption={Lấy logic pha với cache}]
+def _get_logic(self):
+    now = traci.simulation.getTime()
+    controller = getattr(self, "controller", None)
+    # Neu co cache o controller thi uu tien
+    if controller and hasattr(controller, "tl_logic_cache"):
+        entry = controller.tl_logic_cache.get(self.tls_id)
+        if entry and (now - entry.get("at", -1)) <= self._logic_cache_ttl:
+            return entry.get("logic")
+        logic = get_current_logic(self.tls_id)
+        controller.tl_logic_cache[self.tls_id] = {"logic": logic, "at": now}
+        return logic
+    # Neu khong, dung cache rieng tai APC
+    if self._logic_cache is None or now - self._logic_cache_at > self._logic_cache_ttl:
+        self._logic_cache = get_current_logic(self.tls_id)
+        self._logic_cache_at = now
+    return self._logic_cache
+\end{lstlisting}
+
+\subsection{Quản lý hàng đợi yêu cầu chuyển pha}
+
+Cấu trúc hàng đợi ưu tiên cho phép xử lý đồng thời nhiều loại yêu cầu:
+\begin{lstlisting}[style=py,caption={Thêm yêu cầu vào hàng đợi}]
+def request_phase_change(self, phase_idx, priority_type='normal', extension_duration=None):
+    req = {
+        "phase_idx": int(phase_idx),
+        "priority": int(priority_order.get(priority_type, 1)),
+        "priority_type": str(priority_type),
+        "extension_duration": float(extension_duration) if extension_duration else None,
+        "timestamp": float(traci.simulation.getTime())
+    }
+    self.pending_requests.append(req)
+    self.pending_requests.sort(key=lambda x: (-x["priority"], x["timestamp"]))
+\end{lstlisting}
+
+\subsection{Phát hiện và xử lý rẽ trái bảo vệ động}
+
+Tự động tạo/kích hoạt pha phục vụ rẽ trái khi phát hiện blockage:
+\begin{lstlisting}[style=py,caption={Tạo pha protected left động}]
+def create_protected_left_phase_for_lane(self, left_lane):
+    indices = [i for i, link in enumerate(controlled_links) if link[0][0] == left_lane]
+    protected_state = ''.join('G' if i in indices else 'r' for i in range(len(controlled_links)))
+    # Kiem tra ton tai, neu khong thi them moi hoac ghi de
+\end{lstlisting}
+
+\subsection{Cập nhật Q-table và học tăng cường}
+
+Agent RL cập nhật Q-table theo quy tắc Q-learning:
+\begin{lstlisting}[style=py,caption={Cập nhật Q-table}]
+def update_q_table(self, state, action, reward, next_state, tl_id=None, ...):
+    sk, nsk = self._state_to_key(state, tl_id), self._state_to_key(next_state, tl_id)
+    for k in [sk, nsk]:
+        if k not in self.q_table or len(self.q_table[k]) < self.max_action_space:
+            arr = np.full(self.max_action_space, self.optimistic_init)
+            self.q_table[k] = arr
+    q, nq = self.q_table[sk][action], np.max(self.q_table[nsk][:self.max_action_space])
+    new_q = q + self.learning_rate * (reward + self.discount_factor * nq - q)
+    self.q_table[sk][action] = new_q
+\end{lstlisting}
+
+\subsection{Chiến lược chọn hành động epsilon-greedy và phối hợp với coordinator}
+
+Agent sử dụng chiến lược chọn hành động động, có thể bị override bởi coordinator khi cần điều phối đa nút:
+\begin{lstlisting}[style=py,caption={Epsilon-greedy và phối hợp coordinator}]
+if self.mode == "train" and np.random.rand() < self.epsilon:
+    valid_idxs = np.where(mask)[0]
+    suggested_phase = int(np.random.choice(valid_idxs)) if len(valid_idxs) > 0 else 0
+else:
+    suggested_phase = int(np.argmax(masked_qs))
+if self.coordinator is not None and tl_id is not None:
+    if not self.coordinator.should_allow_phase(tl_id, suggested_phase):
+        suggested_phase = self.coordinator.get_next_phase(tl_id)
+return suggested_phase
+\end{lstlisting}
+
+\subsection{Ghi log và đồng bộ dữ liệu lên Supabase}
+
+Mọi sự kiện, trạng thái và điều chỉnh pha đều được ghi log vào Supabase để phục vụ phân tích hiệu năng:
+\begin{lstlisting}[style=py,caption={Ghi log sự kiện vào Supabase}]
+def _log_apc_event(self, event):
+    event["timestamp"] = datetime.datetime.now().isoformat()
+    event["sim_time"] = traci.simulation.getTime()
+    event["tls_id"] = self.tls_id
+    self.apc_state["events"].append(event)
+    self._save_apc_state_supabase()
+    self.log_event_to_supabase(event)
+\end{lstlisting}
+
+\section{Đặc điểm kỹ thuật và kinh nghiệm triển khai}
+
+\begin{itemize}
+    \item \textbf{Kiểm tra chỉ số pha an toàn}: Mọi chỉ số pha đều được kiểm tra và clamp trước khi chuyển, tránh crash khi logic động hoặc bị thay đổi bởi RL agent.
+    \item \textbf{Chèn pha vàng thông minh}: Hệ thống tự động phát hiện khi cần pha vàng, tạo động nếu chưa tồn tại để đảm bảo an toàn chuyển trạng thái.
+    \item \textbf{Tối ưu cache}: Logic cache hai tầng (controller/APC) giúp giảm overhead khi mạng lưới lớn và logic pha thay đổi liên tục.
+    \item \textbf{Cơ chế cooldown}: Ngăn hiện tượng nhấp nháy pha (flicker), đảm bảo thời gian xanh tối thiểu trừ các trường hợp ưu tiên đặc biệt.
+    \item \textbf{Batch write và retry logic}: Dữ liệu đồng bộ lên Supabase theo lô, có cơ chế retry/backoff, đảm bảo không mất dữ liệu ngay cả khi kết nối không ổn định.
+    \item \textbf{Khả năng mở rộng}: Module UniversalSmartTrafficController cho phép quản lý nhiều nút giao, sẵn sàng tích hợp corridor coordinator cho các dự án multi-agent và green wave.
+    \item \textbf{Trực quan hóa real-time}: Module display cung cấp giao diện theo dõi trạng thái, sự kiện và hiệu năng hệ thống trực tiếp từ dữ liệu mô phỏng.
+\end{itemize}
+
+\section{Liên hệ các chương khác}
+
+Chương này là phần tài liệu thực thi của các khái niệm, kiến trúc và thuật toán đã trình bày ở các chương 4--8:
+\begin{itemize}
+    \item \textbf{Kiến trúc hệ thống} (Chương 4): Tổ chức module, pipeline dữ liệu, các điểm tích hợp API.
+    \item \textbf{Điều khiển pha thích nghi} (Chương 5): Các thuật toán điều chỉnh pha, quản lý logic đèn, phát hiện sự kiện đặc biệt.
+    \item \textbf{Học tăng cường} (Chương 6): Q-table, vector trạng thái, chiến lược học và cập nhật, reward shaping.
+    \item \textbf{Chiến lược điều khiển lai} (Chương 7): Phối hợp RL và rule-based, hàng đợi yêu cầu, giải quyết xung đột ưu tiên.
+    \item \textbf{Quản lý phương tiện ưu tiên} (Chương 8): Phát hiện xe khẩn cấp, phục vụ ưu tiên, log sự kiện, phối hợp đa nút giao.
+    \item \textbf{Quản lý dữ liệu} (Chương 9): Đồng bộ trạng thái, ghi log, batch write lên Supabase.
+\end{itemize}
+
+\section{Hướng dẫn đọc mã nguồn}
+
+Để nghiên cứu hoặc cải tiến hệ thống, khuyến nghị các bước sau:
+\begin{enumerate}
+    \item Đọc qua các class chính trong \texttt{Lane7b.py}: \texttt{AdaptivePhaseController}, \texttt{EnhancedQLearningAgent}, \texttt{UniversalSmartTrafficController}.
+    \item Theo dõi pipeline dữ liệu và vòng lặp \texttt{control\_step()} tại hai lớp APC và controller để hiểu logic điều khiển thực tế.
+    \item Kiểm tra các phương thức quản lý logic pha, hàng đợi yêu cầu, phát hiện sự kiện và các thuật toán reward/delta-t.
+    \item Xem các hàm ghi log và đồng bộ Supabase để nắm quy trình lưu trữ và phân tích hiệu năng.
+    \item Đọc các đoạn mã tạo/kích hoạt pha rẽ trái bảo vệ, emergency rebalancing, congestion handling để hiểu cách xử lý các tình huống đặc biệt.
+\end{enumerate}
+
+\section{Ví dụ chèn mã nguồn chính}
+
+Ví dụ chèn file mã nguồn chính vào phụ lục (tham khảo):
+\begin{lstlisting}[style=py,caption={Bộ điều khiển Lane7b.py}]{Lane7b.py}
+# [da trinh bay chi tiet o phan tren, co the chen toan bo hoac tung class rieng biet]
+\end{lstlisting}
+
+\section{Tài liệu tham khảo liên quan mã nguồn}
+
+Nhiều thuật toán, cấu trúc và best practice trong mã nguồn được xây dựng dựa trên các nghiên cứu thực tiễn và bài toán công nghiệp như: SCOOT, SCATS, OPAC, các giải pháp RL trong SUMO, Supabase cloud database, và các kỹ thuật adaptive control hiện đại \cite{Hunt1981, Lowrie1990, Mirchandani2001, Eom2020, Wei2019, Shaikh2022}.
+
+\section{Ghi chú triển khai thực tế}
+
+- Đảm bảo cài đặt đầy đủ các thư viện phụ thuộc: \texttt{traci}, \texttt{supabase-py}, \texttt{numpy}, \texttt{pandas}, \texttt{matplotlib}.
+- Chạy mô phỏng với SUMO version >= 1.22.0 để đảm bảo tương thích các API.
+- Cấu hình kết nối Supabase đúng thông tin \texttt{SUPABASE\_URL}, \texttt{SUPABASE\_KEY}.
+- Có thể mở rộng hệ thống sang multi-agent, green wave, deep RL với minimal refactor do kiến trúc module hóa rõ ràng.
+
+\section{Kết luận}
+
+Module mã nguồn của hệ thống điều khiển đèn giao thông thông minh là thực thi hóa các nguyên lý, kiến trúc và chiến lược đã trình bày ở các chương lý thuyết. Việc tổ chức code rõ ràng, cấu trúc dữ liệu linh hoạt, pipeline luồng dữ liệu và cơ chế log/sync hiệu quả đảm bảo mã nguồn vừa dễ bảo trì, vừa dễ mở rộng cho các dự án giao thông đô thị thông minh quy mô lớn.

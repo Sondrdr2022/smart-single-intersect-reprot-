@@ -2,6 +2,150 @@
 % CHƯƠNG 11
 % =========================
 \chapter{Mô hình thí nghiệm}
+
 \section{Môi trường mô phỏng}
+
+Hệ thống được kiểm thử trên môi trường mô phỏng vi mô SUMO (Simulation of Urban Mobility) phiên bản 1.22.0, cho phép quan sát trạng thái chi tiết của từng phương tiện, làn đường, và logic đèn giao thông. Việc sử dụng SUMO giúp kiểm tra hiệu năng bộ điều khiển trong các kịch bản giao thông đa dạng, với khả năng tùy biến topology mạng lưới, cấu hình traffic demand, và mô phỏng các sự kiện đặc biệt như xe ưu tiên hoặc tắc nghẽn cục bộ.
+
+\subsection{Thiết lập topology và logic đèn bằng NETEDIT}
+
+Quá trình tạo môi trường mô phỏng bắt đầu bằng việc sử dụng NETEDIT -- công cụ thiết kế mạng lưới trực quan của SUMO. NETEDIT cho phép người dùng:
+\begin{itemize}
+    \item Vẽ các tuyến đường, làn rẽ trái/phải, nút giao thông
+    \item Thiết lập logic đèn tín hiệu: khai báo các pha (xanh/vàng/đỏ), trạng thái, thời lượng
+    \item Kiểm tra trực quan các xung đột rẽ trái, kiểm tra khả năng phục vụ các hướng
+    \item Xuất các file cấu hình: \texttt{.net.xml}, \texttt{.tlLogic.xml}, \texttt{.sumocfg}, \texttt{.rou.xml}
+\end{itemize}
+Việc này giúp đảm bảo topology mô phỏng sát với thực tế, logic đèn đáp ứng yêu cầu kiểm thử, và giảm thiểu lỗi cấu hình thủ công.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
+    \textit{[Placeholder ảnh: Ảnh chụp màn hình giao diện NETEDIT khi thiết kế nút giao, logic đèn, topology]}
+    \vspace{3cm}}}
+    \caption{Thiết lập mô hình thí nghiệm và logic đèn bằng NETEDIT}
+    \label{fig:netedit_setup}
+\end{figure}
+
+\subsection{Tích hợp các file cấu hình vào mô phỏng SUMO}
+
+Sau khi hoàn thành thiết kế trên NETEDIT, các file cấu hình được xuất ra gồm:
+\begin{itemize}
+    \item \texttt{net.xml}: Topology mạng lưới (các làn, nút, tuyến)
+    \item \texttt{rou.xml}: Luồng xe, tỷ lệ xuất hiện các loại phương tiện (thường, ưu tiên)
+    \item \texttt{tlLogic.xml} hoặc \texttt{add.xml}: Logic đèn tín hiệu, chuỗi pha
+    \item \texttt{sumocfg}: Liên kết các file trên thành mô hình tổng thể để chạy mô phỏng
+\end{itemize}
+Các file này là đầu vào cho bộ điều khiển Python, đảm bảo quá trình kiểm thử bám sát kịch bản thực tế.
+\subsection{Tích hợp TraCI và các thành phần mô phỏng}
+
+Giao tiếp giữa Python và SUMO được thực hiện qua giao thức TraCI, cho phép bộ điều khiển truy vấn trạng thái real-time, gửi lệnh điều chỉnh pha đèn và thu thập dữ liệu phục vụ đào tạo RL agent. Các thành phần mô phỏng bao gồm:
+
+\begin{itemize}
+    \item \textbf{Network topology}: Mô hình các nút giao, tuyến đường, làn rẽ trái/phải, điểm vào/ra.
+    \item \textbf{Traffic demand}: Cấu hình luồng xe, tần suất xuất hiện, loại phương tiện (thường, ưu tiên).
+    \item \textbf{Logic đèn tín hiệu}: Chuỗi các pha, trạng thái xanh/vàng/đỏ, thời lượng cơ sở.
+    \item \textbf{Event injection}: Tích hợp kịch bản xuất hiện xe ưu tiên, sự kiện tắc nghẽn, thay đổi topology.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
+    \textit{[Placeholder ảnh: Sơ đồ set up giả lập SUMO - các thành phần, kết nối TraCI, điểm tích hợp event injection]}
+    \vspace{3cm}}}
+    \caption{Set up mô phỏng SUMO với tích hợp TraCI, event injection}
+    \label{fig:sumo_setup_traci}
+\end{figure}
+
 \section{Cấu hình cơ bản}
+
+Cấu hình thí nghiệm được thiết kế để kiểm chứng hiệu quả, độ linh hoạt, và khả năng phục hồi của bộ điều khiển thông minh trong các kịch bản thực tế.
+
+\subsection{Cấu hình mạng lưới giao thông}
+
+\begin{itemize}
+    \item \textbf{Nút giao cơ bản}: 4 hướng, mỗi hướng gồm làn đi thẳng, rẽ trái, rẽ phải.
+    \item \textbf{Thiết lập logic đèn}: 8–12 pha, đảm bảo đủ cho các hướng, có pha bảo vệ rẽ trái, chèn pha vàng.
+    \item \textbf{Traffic demand}: Dòng xe ngẫu nhiên, các burst lưu lượng giờ cao điểm, xuất hiện xe ưu tiên định kỳ.
+    \item \textbf{Tham số mô phỏng}: 
+        \begin{itemize}
+            \item Thời gian mô phỏng: 1000–5000 bước
+            \item Tỷ lệ xe ưu tiên: 2–5\%
+            \item Cấu hình min\_green, max\_green, cycle\_length phù hợp với thực tế
+        \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.5cm}
+    \textit{[Placeholder ảnh: Ảnh chụp màn hình set up SUMO - topology nút giao 4 hướng, traffic demand, cấu hình logic đèn]}
+    \vspace{2.5cm}}}
+    \caption{Ảnh set up topology mạng lưới, traffic demand, logic đèn}
+    \label{fig:sumo_network_config}
+\end{figure}
+
+\subsection{Cấu hình file mô phỏng SUMO}
+
+File cấu hình \texttt{.sumocfg}, \texttt{.net.xml}, \texttt{.rou.xml}, \texttt{.add.xml} được thiết lập như sau:
+
+\begin{itemize}
+    \item \texttt{net.xml}: Định nghĩa topology mạng lưới, các làn, nút giao, kết nối.
+    \item \texttt{rou.xml}: Định nghĩa luồng xe, loại phương tiện, tần suất xuất hiện.
+    \item \texttt{add.xml}: Logic đèn tín hiệu, chuỗi pha, trạng thái, thời lượng.
+    \item \texttt{sumocfg}: Tổng hợp các file trên, tham số thời gian mô phỏng.
+\end{itemize}
+
+\subsection{Cấu hình tích hợp bộ điều khiển}
+
+\begin{itemize}
+    \item Khởi tạo UniversalSmartTrafficController với danh sách nút giao, làn, logic đèn.
+    \item Cấu hình các tham số min\_green, max\_green, alpha, threshold tắc nghẽn.
+    \item Giao tiếp TraCI: subscription các biến trạng thái (queue, speed, waiting), điều khiển pha.
+    \item Ghi log Supabase: đồng bộ sự kiện, reward, trạng thái APC.
+\end{itemize}
+
 \section{Thí nghiệm kiểm soát}
+
+Các thí nghiệm kiểm soát được thiết kế để đánh giá hiệu năng hệ thống trong các tình huống đặc biệt và kịch bản thực tế:
+
+\subsection{Tình huống giả lập}
+
+\begin{itemize}
+    \item \textbf{Xuất hiện xe ưu tiên và chuyển trạng thái giao thông:} Ở giai đoạn đầu của quá trình mô phỏng, xe ưu tiên được đưa vào mạng lưới giao thông ngay từ đầu. Sau đó, hệ thống sẽ lần lượt gia tăng lưu lượng phương tiện, từ trạng thái thông thoáng chuyển dần sang tình trạng tắc nghẽn để kiểm tra khả năng phản ứng và phục vụ của bộ điều khiển thông minh trong các điều kiện thay đổi đột ngột.
+    \item \textbf{Kiểm thử adaptive RL}: Đánh giá thời gian chờ, độ dài hàng chờ, tần suất gridlock, phục hồi sau tắc nghẽn.
+    \item \textbf{Kịch bản xuất hiện xe ưu tiên}: Đo thời gian phục vụ xe ưu tiên, kiểm tra hiệu quả thiết lập green wave và đánh giá ảnh hưởng tới các hướng giao thông khác.
+    \item \textbf{Kịch bản tắc nghẽn cục bộ}: Kích hoạt chế độ congestion mode, đo thời gian giải tỏa, đánh giá khả năng phối hợp corridor giữa các nút giao.
+    \item \textbf{Kịch bản rẽ trái bị chặn}: Phát hiện trường hợp rẽ trái bị cản trở, tạo pha rẽ trái bảo vệ động và đo hiệu quả giải tỏa dòng xe.
+    \item \textbf{Kịch bản starvation}: Đánh giá khả năng phục hồi phục vụ các hướng giao thông bị bỏ qua hoặc ưu tiên thấp trong quá trình điều phối.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
+    \textit{[Placeholder ảnh: Ảnh chụp màn hình set up SUMO với traffic burst, xe ưu tiên, congestion, blocked left]}
+    \vspace{3cm}}}
+    \caption{Ảnh set up các kịch bản kiểm thử trong mô phỏng SUMO}
+    \label{fig:sumo_test_scenarios}
+\end{figure}
+
+\subsection{Quy trình thực nghiệm}
+
+\begin{enumerate}
+    \item Chạy mô phỏng với cấu hình traffic demand, logic đèn, tham số mặc định.
+    \item Theo dõi trạng thái thực tế qua SUMO GUI, dashboard, log sự kiện lên Supabase.
+    \item Thu thập dữ liệu về thời gian chờ, độ dài hàng chờ, số lần gridlock, số lần phục vụ xe ưu tiên, hiệu quả protected left.
+    \item Phân tích kết quả, so sánh với baseline, đánh giá theo từng kịch bản.
+\end{enumerate}
+
+\subsection{Tích hợp dashboard trực quan hóa}
+
+Dữ liệu sự kiện, trạng thái và hiệu năng được trực quan hóa qua dashboard (SmartIntersectionTrafficDisplay), giúp đánh giá kết quả mô phỏng theo thời gian thực.
+
+\begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
+    \textit{[Placeholder ảnh: Ảnh dashboard trực quan hóa trạng thái mô phỏng SUMO, các chỉ số hiệu năng]}
+    \vspace{3cm}}}
+    \caption{Dashboard trực quan hóa kết quả thí nghiệm mô phỏng SUMO}
+    \label{fig:sumo_dashboard}
+\end{figure}
