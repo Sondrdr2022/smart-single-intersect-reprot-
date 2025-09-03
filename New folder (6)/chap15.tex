@@ -12,10 +12,9 @@ Hiện tại, bộ điều khiển mới chỉ quản lý một nút giao đơn 
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Sơ đồ mở rộng điều phối multi-intersection, greenwave]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.85\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-032726.png}
     \caption{Ý tưởng kiến trúc điều phối đa nút giao thông}
+    \label{fig:multi_intersection_greenwave}
 \end{figure}
 
 \section{Tích hợp học tăng cường sâu}
@@ -24,9 +23,7 @@ Các nghiên cứu gần đây~\cite{Wei2019,Li2016,Liang2019,Genders2016,Gao201
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Minh họa kiến trúc agent RL sâu và buffer]}
-    \vspace{2cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-033419.png}
     \caption{Kiến trúc agent RL sâu}
 \end{figure}
 
@@ -34,34 +31,13 @@ Các nghiên cứu gần đây~\cite{Wei2019,Li2016,Liang2019,Genders2016,Gao201
 
 Giao tiếp hai chiều giữa phương tiện và hạ tầng (V2I) là hướng phát triển quan trọng để nâng cao khả năng thích ứng và phục vụ ưu tiên~\cite{Michailidis2023,Chamberlain2017}. Tích hợp V2X sẽ giúp bộ điều khiển nhận diện xe khẩn cấp, cập nhật trạng thái giao thông thực tế từ phương tiện, và phối hợp điều khiển hiệu quả hơn.
 
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Sơ đồ giao tiếp V2I, data flow giữa xe và controller]}
-    \vspace{2cm}}}
-    \caption{Ý tưởng giao tiếp hai chiều giữa xe và hạ tầng}
-\end{figure}
+
 
 \section{Dự báo giao thông}
 
 Dự báo giao thông ngắn hạn giúp nâng cao chất lượng điều khiển tín hiệu~\cite{Li2016,Wei2019,Zhao2020,Lopez2018}. Tích hợp các mô hình RNN/LSTM sẽ cho phép bộ điều khiển dự báo hàng chờ, tốc độ, lưu lượng dựa trên dữ liệu thời gian thực, từ đó điều chỉnh chính sách linh hoạt hơn.
 
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Pipeline ý tưởng dự báo traffic bằng LSTM]}
-    \vspace{2cm}}}
-    \caption{Ý tưởng pipeline dự báo traffic}
-\end{figure}
 
 \section{Mở rộng dựa trên điện toán đám mây}
 
 Điện toán đám mây cho phép lưu trữ, phân tích dữ liệu lớn và đồng bộ trạng thái hệ thống~\cite{Lopez2018}. Trong tương lai, hệ thống có thể mở rộng lưu trữ hàng triệu sự kiện, trạng thái bộ điều khiển, phục vụ phân tích hiệu năng và giám sát thời gian thực từ xa. Các kỹ thuật như bảo mật cấp dòng, batch retry logic, local cache~\cite{Wei2019} sẽ đảm bảo an toàn và phục hồi khi mất kết nối.
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Kiến trúc cloud Supabase, dashboard, API]}
-    \vspace{2cm}}}
-    \caption{Ý tưởng kiến trúc điện toán đám mây cho hệ thống}
-\end{figure}

@@ -3,35 +3,26 @@
 % =========================
 \chapter{Kết quả và thảo luận}
 
-\section{Phát hiện chính}
+\section{Tổng quan kết quả thực nghiệm}
 
-Các kết quả thực nghiệm trên mô phỏng SUMO với bộ điều khiển UniversalSmartTrafficController cho thấy hệ thống APC–RL đạt hiệu quả vượt trội so với phương pháp điều khiển cố định truyền thống:
+Các thử nghiệm trên môi trường mô phỏng SUMO với bộ điều khiển UniversalSmartTrafficController đã chứng minh hiệu quả vượt trội của mô hình lai APC–RL so với phương pháp điều khiển cố định truyền thống. Các chỉ số chính cho thấy sự cải thiện rõ nét về giảm thời gian chờ, hạn chế tắc nghẽn, phục vụ ưu tiên và tối ưu hóa phục vụ rẽ trái.
 
 \begin{itemize}
-    \item \textbf{Giảm thời gian chờ trung bình}: Thời gian chờ trung bình của phương tiện giảm 30–60\% tùy kịch bản, đặc biệt rõ rệt trong các pha cao điểm và khi có hiện tượng tắc nghẽn cục bộ.
-    \item \textbf{Hạn chế gridlock và spillback}: Số lần xuất hiện gridlock và spillback giảm mạnh nhờ cơ chế phát hiện sớm và phối hợp giữa các nút giao. Bộ điều khiển chủ động điều chỉnh pha, thực hiện metering upstream để ngăn lan truyền ùn tắc.
-    \item \textbf{Phục vụ xe ưu tiên hiệu quả}: Xe cứu thương/cảnh sát được nhận diện và ưu tiên qua hàng đợi yêu cầu, thời gian chờ giảm trung bình 40–70\% so với baseline. Kết quả này giữ vững ngay cả trong giờ cao điểm hoặc khi xuất hiện nhiều sự kiện ưu tiên liên tiếp.
-    \item \textbf{Rẽ trái bảo vệ động}: Cơ chế phát hiện và phục vụ rẽ trái bị chặn giúp hạn chế các pha xung đột, giảm nguy cơ tắc nghẽn và tăng hiệu quả luồng giao thông.
-    \item \textbf{Tối ưu hóa thời lượng pha}: Hệ thống điều chỉnh linh hoạt thời lượng pha dựa trên reward đa mục tiêu, đảm bảo phục vụ các hướng có queue lớn mà vẫn giữ công bằng cho toàn bộ nút giao.
-    \item \textbf{Học tăng cường thích nghi}: Agent RL liên tục cập nhật Q-table, trọng số reward, và epsilon để thích ứng với trạng thái thực tế của mạng lưới. Việc optimistic initialization giúp agent khám phá các pha mới, tránh overfitting với kịch bản cục bộ.
+    \item \textbf{Giảm thời gian chờ trung bình}: APC–RL giảm 30–60\% thời gian chờ cho phương tiện, đặc biệt trong giờ cao điểm và khi xảy ra congestion.
+    \item \textbf{Kiểm soát tắc nghẽn hiệu quả}: Số lần gridlock và spillback giảm mạnh nhờ cơ chế phát hiện và phối hợp metering upstream/downstream.
+    \item \textbf{Phục vụ xe ưu tiên}: Xe cứu thương/cảnh sát được nhận diện và phục vụ kịp thời, thời gian chờ giảm 40–70\% so với baseline.
+    \item \textbf{Rẽ trái bảo vệ động}: Hệ thống phát hiện blocked left, tự động tạo pha protected left, giảm xung đột và nguy cơ tắc nghẽn cục bộ.
+    \item \textbf{Tối ưu hóa thời lượng pha}: APC điều chỉnh thời lượng pha động linh hoạt theo reward, đảm bảo phục vụ các hướng có hàng chờ lớn và cân bằng phục vụ.
+    \item \textbf{Học tăng cường thích nghi}: RL agent liên tục cập nhật Q-table, trọng số reward, epsilon, giúp thích nghi với trạng thái giao thông biến động.
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Biểu đồ so sánh thời gian chờ, số lần gridlock/spillback giữa APC–RL và baseline]}
-    \vspace{2.5cm}}}
-    \caption{So sánh hiệu năng giữa APC–RL và điều khiển cố định}
-    \label{fig:performance_comparison}
-\end{figure}
 
 \section{Phân tích hành vi hệ thống}
 
-Phân tích log sự kiện, hàng đợi yêu cầu và dữ liệu Supabase cho thấy hệ thống có khả năng thích ứng tốt với trạng thái giao thông động và phức tạp:
+Dữ liệu log sự kiện, hàng đợi yêu cầu và trạng thái trên Supabase cho thấy hệ thống có khả năng thích ứng mạnh mẽ và phản ứng kịp thời với các trạng thái giao thông động.
 
-\subsection{Luồng điều khiển ưu tiên}
+\subsection{Quy trình phục vụ ưu tiên}
 
-Khi xuất hiện xe khẩn cấp, hàm \texttt{check\_special\_events()} của APC tự động tạo yêu cầu chuyển pha ưu tiên:
+Khi phát hiện xe khẩn cấp, hàm \texttt{check\_special\_events()} tự động tạo yêu cầu chuyển pha ưu tiên và override mọi ràng buộc thời gian xanh tối thiểu:
 
 \begin{lstlisting}[style=py,caption={Phát hiện và phục vụ xe ưu tiên}]
 def check_special_events(self):
@@ -45,17 +36,16 @@ def check_special_events(self):
     return None, None
 \end{lstlisting}
 
-Các yêu cầu được xếp vào \texttt{pending\_requests} với priority cao nhất, override mọi ràng buộc thời gian xanh tối thiểu.
+Các yêu cầu được xếp vào hàng đợi ưu tiên với priority cao nhất, đảm bảo phản ứng tức thời.
 
-\subsection{Quản lý rẽ trái bảo vệ}
+\subsection{Xử lý rẽ trái bảo vệ động}
 
-Khi phát hiện blocked left turn (queue lớn, tốc độ thấp, downstream nghẽn), hệ thống kích hoạt hoặc tạo pha dedicated protected left:
+Khi phát hiện blocked left (queue lớn, tốc độ thấp, downstream nghẽn), hệ thống tự động tạo hoặc kích hoạt pha protected left:
 
 \begin{lstlisting}[style=py,caption={Tạo pha protected left động}]
 def create_protected_left_phase_for_lane(self, left_lane):
-    # ... xAc DInh link indices ...
     protected_state = ''.join('G' if i in left_link_indices else 'r' for i in range(len(controlled_links)))
-    # Neu chua co, append hoac overwrite phase
+    # Neu chua co, them hoac ghi de pha
     # ... cap nhat logic va invalidate cache ...
     return safe_new_idx
 \end{lstlisting}
@@ -63,22 +53,21 @@ def create_protected_left_phase_for_lane(self, left_lane):
 \begin{figure}[H]
     \centering
     \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Placeholder: Flowchart xử lý blocked left turn và phục vụ pha bảo vệ]}
+    \textit{[Flowchart xử lý blocked left turn và phục vụ protected left]}
     \vspace{2cm}}}
     \caption{Quy trình phát hiện và giải quyết rẽ trái bị chặn}
     \label{fig:left_turn_flow}
 \end{figure}
 
-\subsection{Quản lý tắc nghẽn và metering}
+\subsection{Kiểm soát congestion và metering}
 
-Khi phát hiện congestion hoặc spillback theo hàm \texttt{detect\_congestion\_patterns()}, hệ thống chủ động điều chỉnh pha tại nút giao downstream, đồng thời phối hợp metering upstream để hạn chế luồng xe vào điểm nghẽn.
+Hệ thống chủ động phát hiện congestion/spillback, kích hoạt chế độ congestion mode, điều chỉnh pha và phối hợp metering upstream để giảm nguy cơ gridlock:
 
 \begin{lstlisting}[style=py,caption={Phát hiện congestion và phản ứng}]
 def detect_congestion_patterns(self):
     for lane_id in self.lane_ids:
         queue_length = traci.lane.getLastStepHaltingNumber(lane_id)
         lane_length = traci.lane.getLength(lane_id)
-        # Spillback detection
         if queue_length > 0.5 * (lane_length / 7.5):
             congestion_types['spillback'] = True
         # Gridlock detection
@@ -88,16 +77,14 @@ def detect_congestion_patterns(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Placeholder: Diagram phối hợp metering upstream khi congestion]}
-    \vspace{2cm}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-031742.png}
     \caption{Phối hợp điều chỉnh pha khi phát hiện congestion/spillback}
     \label{fig:congestion_metering_flow}
 \end{figure}
 
-\subsection{Tối ưu hóa thời lượng pha động}
+\subsection{Tối ưu hóa thời lượng pha bằng RL}
 
-Reward được tính toán đa thành phần; agent RL sử dụng hàm update\_q\_table để cập nhật chính sách chọn pha và thời lượng:
+Reward được tính đa thành phần; agent RL cập nhật Q-table, chọn pha và thời lượng tối ưu theo trạng thái thực tế:
 
 \begin{lstlisting}[style=py,caption={Cập nhật Q-table và chọn pha}]
 def update_q_table(self, state, action, reward, next_state, tl_id=None, ...):
@@ -110,16 +97,14 @@ def update_q_table(self, state, action, reward, next_state, tl_id=None, ...):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Placeholder: Sơ đồ pipeline chọn pha và tối ưu hóa thời lượng dựa trên reward]}
-    \vspace{2cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-032115.png}
     \caption{Pipeline cập nhật quyết định RL agent}
     \label{fig:rl_decision_pipeline}
 \end{figure}
 
-\subsection{Đồng bộ sự kiện và trạng thái lên Supabase}
+\subsection{Đồng bộ sự kiện và trạng thái}
 
-Mỗi lần thay đổi pha, phục vụ ưu tiên, hoặc phát hiện congestion, hệ thống đều ghi event log lên Supabase:
+Mỗi lần thay đổi pha, phục vụ ưu tiên, hoặc phát hiện congestion, hệ thống đều ghi event log lên Supabase để phân tích hiệu năng:
 
 \begin{lstlisting}[style=py,caption={Ghi log sự kiện lên Supabase}]
 self._log_apc_event({
@@ -130,30 +115,16 @@ self._log_apc_event({
 })
 \end{lstlisting}
 
-Phân tích dữ liệu này cho phép đánh giá chi tiết hiệu năng, phát hiện điểm nghẽn và tối ưu hóa chính sách RL.
+\section{Các hạn chế và thách thức}
 
-\section{Hạn chế và thách thức}
-
-Mặc dù hệ thống APC–RL đạt hiệu quả cao trong môi trường mô phỏng, vẫn tồn tại một số hạn chế thực tế và kỹ thuật:
+Mặc dù APC–RL chứng minh hiệu quả trong môi trường mô phỏng, vẫn tồn tại các thách thức:
 
 \begin{itemize}
-    \item \textbf{Phụ thuộc vào mô phỏng}: Hiệu năng bị ảnh hưởng bởi độ chính xác của mô hình SUMO, chưa kiểm thử trên nhiều môi trường khác nhau hoặc dữ liệu thực tế.
-    \item \textbf{Khả năng mở rộng}: Hệ thống hiện tối ưu cho một nút giao hoặc nhóm nhỏ, chưa thử nghiệm trên mạng lưới nhiều nút với độ trễ giao tiếp thực.
-    \item \textbf{Thiếu domain randomization}: Mô hình chưa huấn luyện với biến động cảm biến, mất gói tin, hoặc các trường hợp lỗi hệ thống.
-    \item \textbf{Chưa tích hợp cảm biến thực tế}: Việc phát hiện xe ưu tiên và trạng thái giao thông phụ thuộc hoàn toàn vào dữ liệu mô phỏng.
-    \item \textbf{Ràng buộc an toàn}: Một số tình huống đặc biệt như gridlock cực đoan, hoặc xung đột pha phức tạp vẫn có thể xảy ra nếu cấu hình mạng chưa được kiểm thử đủ rộng.
-    \item \textbf{Overfitting và khả năng chuyển giao}: Agent RL có nguy cơ quá khớp với kịch bản mô phỏng cụ thể, cần nghiên cứu thêm về sim-to-real gap.
-    \item \textbf{Đánh giá thống kê}: Cần thiết lập quy trình kiểm thử đa lần với seed khác nhau, tính confidence intervals và kiểm định thống kê để xác nhận ý nghĩa các kết quả.
-    \item \textbf{Chưa có điều phối đa nút giao thông}: Việc tạo green wave liên tục hoặc phối hợp toàn tuyến mới ở mức sơ khai, cần mở rộng ImprovedCorridorCoordinator và thử nghiệm với mạng lưới thực tế hơn.
+    \item \textbf{Phụ thuộc mô phỏng}: Hiệu năng bị giới hạn bởi độ chính xác dữ liệu SUMO, chưa thử nghiệm trên dữ liệu thực tế.
+    \item \textbf{Khả năng mở rộng}: Hệ thống mới tối ưu cho một nút giao hoặc nhóm nhỏ, chưa xử lý mạng lưới lớn với độ trễ thực tế.
+    \item \textbf{Chưa tích hợp cảm biến thực}: Việc phát hiện xe ưu tiên và trạng thái giao thông phụ thuộc hoàn toàn vào dữ liệu mô phỏng.
+    \item \textbf{Ràng buộc an toàn}: Một số trường hợp gridlock cực đoan, xung đột pha phức tạp vẫn có thể xảy ra nếu cấu hình mạng chưa kiểm thử đủ rộng.
+    \item \textbf{Overfitting và sim-to-real gap}: RL agent có thể quá khớp với kịch bản cụ thể, cần nghiên cứu thêm về khả năng chuyển giao thực tế.
+    \item \textbf{Đánh giá thống kê}: Cần kiểm thử đa lần với seed khác nhau, tính confidence intervals và kiểm định ý nghĩa thống kê.
+    \item \textbf{Điều phối đa nút giao}: Phối hợp green wave hoặc corridor mới ở mức sơ khai, cần mở rộng ImprovedCorridorCoordinator.
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}
-    \textit{[Placeholder: Sơ đồ tổng hợp các hạn chế và hướng cải tiến]}
-    \vspace{2cm}}}
-    \caption{Các thách thức và hạn chế của hệ thống APC–RL}
-    \label{fig:system_limitations}
-\end{figure}
-
-\noindent\textbf{Tóm lại}, bộ điều khiển APC–RL mang lại hiệu quả vượt trội về giảm tắc nghẽn, phục vụ ưu tiên và thích nghi với trạng thái giao thông động. Tuy nhiên, để ứng dụng thực tế, cần giải quyết các thách thức về mở rộng, tích hợp cảm biến, kiểm thử đa môi trường và đảm bảo an toàn tuyệt đối.

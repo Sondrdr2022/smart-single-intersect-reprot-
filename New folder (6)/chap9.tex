@@ -22,9 +22,7 @@ Dữ liệu được buffer cục bộ, flush định kỳ hoặc khi đạt ng�
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.2cm}
-    \textit{[Sơ đồ pipeline ghi log trạng thái APC, phase\_records, simulation\_events từ bộ điều khiển lên Supabase]}
-    \vspace{2.2cm}}}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-012153.png}
     \caption{Luồng dữ liệu từ bộ điều khiển lên Supabase cloud}
 \end{figure}
 
@@ -81,10 +79,9 @@ self._save_apc_state_supabase()
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Sơ đồ quy trình: agent RL ghi Q-Table ra file pickle local, đồng bộ trạng thái pha lên Supabase]}
-    \vspace{2cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-012659.png}
     \caption{Quy trình lưu trữ và đồng bộ Q-Table cùng trạng thái hệ thống}
+    \label{fig:qtable_sync_diagram}
 \end{figure}
 \subsection{Hệ thống ghi log sự kiện điều khiển}
 
@@ -107,9 +104,7 @@ Các sự kiện được buffer cục bộ, flush theo batch, retry tối đa 6
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2cm}
-    \textit{[Sơ đồ pipeline sự kiện: pending\_requests, phase\_records, APC events → Supabase]}
-    \vspace{2cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-09-03-013137.png}
     \caption{Pipeline ghi log sự kiện từ bộ điều khiển lên Supabase}
 \end{figure}
 

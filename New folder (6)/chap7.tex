@@ -9,9 +9,7 @@ Chiến lược điều khiển lai của hệ thống được xây dựng dự
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Sơ đồ kiến trúc khung chiến lược điều khiển lai: Universal Controller, APC, RL agent, rule-based logic]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-075601.png}
     \caption{Khung tích hợp chiến lược điều khiển lai}
     \label{fig:hybrid_control_framework}
 \end{figure}
@@ -40,13 +38,10 @@ def control_step(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.2cm}
-    \textit{[Placeholder: Flowchart luồng điều khiển lai: kiểm tra ưu tiên, RL agent, phase execution, logging]}
-    \vspace{2.2cm}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-075846.png}
     \caption{Flowchart luồng điều khiển của hệ thống lai}
     \label{fig:hybrid_control_flow}
 \end{figure}
-
 \section{Giải quyết xung đột}
 
 Giải quyết xung đột là vấn đề trọng tâm trong hệ thống điều khiển lai, đặc biệt khi các cơ chế ưu tiên (emergency, starvation, congestion) có thể cạnh tranh hoặc xung đột với học tăng cường. Bộ điều khiển sử dụng hàng đợi yêu cầu (pending requests) có thứ tự ưu tiên rõ ràng để phân loại và xử lý từng trường hợp. Khi xuất hiện xung đột giữa các loại ưu tiên, hệ thống sẽ đánh giá mức độ quan trọng và chọn pha phù hợp nhất, đảm bảo an toàn giao thông và tối ưu hoá hiệu năng.
@@ -75,9 +70,7 @@ def request_phase_change(self, phase_idx, priority_type='normal', extension_dura
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.2cm}
-    \textit{[Placeholder: Sơ đồ hàng đợi ưu tiên giải quyết xung đột: emergency, starvation, RL agent]}
-    \vspace{2.2cm}}}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-080210.png}
     \caption{Quy trình giải quyết xung đột ưu tiên trong điều khiển lai}
     \label{fig:hybrid_conflict_resolution}
 \end{figure}

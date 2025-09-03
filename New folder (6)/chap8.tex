@@ -5,7 +5,7 @@
 
 \section{Cơ chế phát hiện phương tiện khẩn cấp}
 
-Trong hệ thống điều khiển đèn giao thông thông minh, việc nhận diện và xử lý phương tiện ưu tiên như xe cứu thương, cứu hỏa, cảnh sát là nhiệm vụ quan trọng nhằm đảm bảo luồng di chuyển đặc biệt. Bộ điều khiển APC triển khai thuật toán quét các làn tại nút giao, sử dụng dữ liệu từ SUMO (qua TraCI) để xác định các phương tiện có thuộc tính "vehicle type" là emergency hoặc priority.
+Trong hệ thống điều khiển đèn giao thông thông minh, việc nhận diện và xử lý phương tiện ưu tiên như xe cứu thương, cứu hỏa, cảnh sát là nhiệm vụ quan trọng nhằm đảm bảo luồng di chuyển đặc biệt. Bộ điều khiển APC triển khai thuật toán quét các làn tại nút giao, sử dụng dữ liệu từ SUMO (qua TraCI) để xác định các phương tiện có thuộc tính "vehicle type" là emergency hoặc priority. Quy trình phát hiện này đã được minh họa chi tiết trong Chương~5 (xem Hình~\ref{fig:priority_queue_diagram}).
 
 \begin{lstlisting}[style=py,caption={Phát hiện phương tiện ưu tiên}]
 def check_special_events(self):
@@ -27,7 +27,14 @@ Khi phát hiện xe ưu tiên, hệ thống ghi nhận sự kiện và chuyển 
 
 \section{Kiến trúc hàng đợi yêu cầu ưu tiên}
 
-Bộ điều khiển sử dụng hàng đợi \texttt{pending\_requests} để quản lý các yêu cầu chuyển pha theo thứ tự ưu tiên. Mỗi yêu cầu chứa các thông tin: chỉ số pha, loại ưu tiên (\texttt{priority\_type}), thời lượng yêu cầu, thời điểm phát sinh.
+Bộ điều khiển sử dụng hàng đợi \texttt{pending\_requests} để quản lý các yêu cầu chuyển pha theo thứ tự ưu tiên. Cấu trúc và nguyên lý hoạt động của priority queue này đã được trình bày và minh họa trong Chương~5 (Hình~\ref{fig:priority_queue_diagram}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-014910.png}
+    \caption{Cấu trúc hàng đợi yêu cầu phân cấp cho APC (trích dẫn Chương 5)}
+    \label{fig:priority_queue_diagram}
+\end{figure}
 
 \begin{lstlisting}[style=py,caption={Cấu trúc yêu cầu chuyển pha ưu tiên}]
 req = {
@@ -52,11 +59,13 @@ Khi có xe ưu tiên, bộ điều khiển thực hiện các bước sau:
     \item Ghi log sự kiện phục vụ xe ưu tiên vào hệ thống Supabase để tiện phân tích hiệu năng.
 \end{enumerate}
 
+Quy trình xử lý yêu cầu ưu tiên này đã được minh họa bằng flowchart ở Chương 5 (xem Hình~\ref{fig:priority_request_flow}).
+
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Sơ đồ quy trình phát hiện và phục vụ phương tiện ưu tiên]}}}
-    \caption{Quy trình phát hiện và phục vụ xe ưu tiên}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-015606.png}
+    \caption{Quy trình xử lý yêu cầu ưu tiên (trích dẫn Chương 5)}
+    \label{fig:priority_request_flow}
 \end{figure}
 
 \section{Tác động tới logic điều khiển tổng thể}
@@ -72,38 +81,14 @@ Việc ưu tiên xe khẩn cấp có thể ảnh hưởng đến hoạt động 
 
 Hàng đợi \texttt{pending\_requests} có thể chứa đồng thời nhiều loại yêu cầu (emergency, starvation, congestion). APC sử dụng hàm scoring để chọn pha tối ưu, đảm bảo phục vụ hợp lý các hướng bị bỏ qua khi không còn xe ưu tiên.
 
-\begin{figure}[H]
-    \centering
-    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2cm}
-    \textit{[Flowchart: Quy trình giải quyết xung đột giữa các loại yêu cầu trong pending\_requests]}}}
-    \caption{Giải quyết xung đột giữa các loại yêu cầu ưu tiên}
-\end{figure}
-
-\section{Đánh giá hiệu năng và công bằng}
-
-Thực nghiệm mô phỏng cho thấy:
-\begin{itemize}
-    \item Thời gian chờ của xe ưu tiên giảm trung bình 35--60\% so với hệ thống cố định.
-    \item Số lần gridlock giảm rõ rệt nhờ phối hợp đa nút và quản lý downstream.
-    \item Các hướng không ưu tiên vẫn được phục vụ hợp lý, hạn chế starvation nhờ logic adaptive và RL agent.
-\end{itemize}
+Quy trình giải quyết xung đột giữa các loại yêu cầu đã được trình bày và minh họa ở Chương 5 (Hình~\ref{fig:conflict_resolution_flow}), có thể tham khảo trực tiếp.
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.3cm}
-    \textit{[Placeholder: Biểu đồ so sánh thời gian chờ xe ưu tiên giữa các chiến lược]}}}
-    \caption{Hiệu năng phục vụ xe ưu tiên qua các kịch bản}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-023338.png}
+    \caption{Quy trình giải quyết xung đột yêu cầu ưu tiên (trích dẫn Chương 5)}
+    \label{fig:conflict_resolution_flow}
 \end{figure}
-
-\section{Kịch bản mô phỏng thực nghiệm}
-
-Các kịch bản được triển khai trong SUMO để kiểm chứng hiệu quả cơ chế ưu tiên:
-\begin{itemize}
-    \item Xe ưu tiên xuất hiện đơn lẻ: Đánh giá khả năng phát hiện và xử lý tức thời.
-    \item Xe ưu tiên xuất hiện liên tiếp: Kiểm tra xử lý hàng đợi và tránh flicker.
-    \item Xe ưu tiên xuất hiện giờ cao điểm: Đo hiệu quả green wave và tác động tới hướng khác.
-    \item Kết hợp với tắc nghẽn/starvation: Đánh giá phối hợp giữa nhiều loại yêu cầu.
-\end{itemize}
 
 \section{Phân tích chi tiết hiệu năng trên mã nguồn bộ điều khiển}
 
@@ -132,8 +117,6 @@ else:
     self.apply_phase(agent_action, duration)
 \end{lstlisting}
 
-
-
 \subsection{Đảm bảo an toàn và tính phục hồi}
 
 Hệ thống luôn kiểm tra xung đột pha, chèn pha vàng, và áp dụng cooldown ngăn flicker. Khi có nhiều sự kiện ưu tiên liên tiếp, bộ điều khiển vẫn phục hồi cho các hướng bị đói phục vụ, đảm bảo cân bằng hiệu năng tổng thể.
@@ -147,6 +130,7 @@ Một số hạn chế thực tế cần nghiên cứu thêm:
     \item \textbf{Cân bằng giữa ưu tiên và công bằng}: Nếu xuất hiện nhiều sự kiện ưu tiên liên tục, các hướng khác có nguy cơ bị starvation kéo dài. Có thể cải tiến bằng cách điều chỉnh động trọng số reward của RL agent hoặc logic fairness theo sliding window.
     \item \textbf{Chưa tối ưu cho các tình huống phức tạp}: Các trường hợp như tắc nghẽn cực đoan, nhiều xe ưu tiên đồng thời, hoặc sự cố hệ thống chưa được thử nghiệm đầy đủ. Nên mở rộng kịch bản mô phỏng và kiểm thử stress.
 \end{itemize}
+
 \section{Tài liệu tham khảo ứng dụng}
 
 Các giải pháp phục vụ xe ưu tiên đã được nhiều nghiên cứu đề xuất và triển khai thực tế, như hệ thống SCOOT, SCATS, OPAC với các module ưu tiên khẩn cấp \cite{Hunt1981, Lowrie1990, Mirchandani2001}. Việc tích hợp học tăng cường, điều khiển thích nghi và cơ chế hàng đợi ưu tiên mang lại tiềm năng nâng cao hiệu quả giao thông đô thị thông minh \cite{Eom2020, Wei2019, Shaikh2022}.

@@ -579,7 +579,7 @@ Nếu giá trị \(\text{raw\_}\Delta t\) vượt quá ngưỡng an toàn \(\Del
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-100758.png}
+    \includegraphics[width=0.3\linewidth]{Untitled diagram _ Mermaid Chart-2025-08-22-100758.png}
     \caption{Pipeline chuyển đổi phần thưởng thành điều chỉnh thời lượng pha}
     \label{fig:dynamic_timing_pipeline}
 \end{figure}
@@ -673,9 +673,7 @@ Các yêu cầu được sắp xếp giảm dần theo \texttt{priority}, nếu 
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{3cm}
-    \textit{[Diagram Placeholder: Sơ đồ cấu trúc hàng đợi yêu cầu phân cấp với các type priority và flow xử lý]}
-    \vspace{3cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-014910.png}
     \caption{Cấu trúc hàng đợi yêu cầu phân cấp cho APC}
     \label{fig:priority_queue_diagram}
 \end{figure}
@@ -695,9 +693,7 @@ Hệ thống sử dụng hàm \texttt{select\_best\_phase\_from\_requests()} đ�
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}
-    \textit{[Flowchart Placeholder: Quy trình xử lý yêu cầu theo mức độ ưu tiên, từ kiểm tra emergency đến chuyển pha]}
-    \vspace{3cm}}}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-015606.png}
     \caption{Quy trình xử lý yêu cầu ưu tiên}
     \label{fig:priority_request_flow}
 \end{figure}
@@ -715,9 +711,7 @@ Cơ chế này đảm bảo:
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Diagram Placeholder: Sơ đồ stacked requests và batch processing trong hàng đợi APC]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-020832.png}
     \caption{Cơ chế stacked requests và batch processing}
     \label{fig:stacked_requests_diagram}
 \end{figure}
@@ -737,13 +731,10 @@ Nếu xảy ra xung đột giữa các yêu cầu cùng loại, APC sẽ sử d�
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.8\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Flowchart Placeholder: Quy trình giải quyết xung đột giữa các yêu cầu, từ classification đến conflict resolution]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.8\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-023338.png}
     \caption{Quy trình giải quyết xung đột yêu cầu ưu tiên}
     \label{fig:conflict_resolution_flow}
 \end{figure}
-
 \vspace{0.5cm}
 
 \noindent\textbf{Tóm lại:} Hệ thống quản lý yêu cầu ưu tiên trong APC giúp đảm bảo mọi tình huống đặc biệt đều được xử lý kịp thời, tăng hiệu quả điều khiển đèn giao thông, giảm nguy cơ tắc nghẽn và cải thiện công bằng cho các hướng giao thông.
@@ -793,9 +784,7 @@ def detect_congestion_patterns(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.75\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Flowchart phát hiện các kiểu congestion pattern]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-025458.png}
     \caption{Sơ đồ phát hiện các kiểu congestion pattern}
     \label{fig:congestion_patterns_diagram}
 \end{figure}
@@ -828,9 +817,7 @@ def calculate_congestion_severity(self, lane_id):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Sơ đồ tổng hợp các yếu tố tính severity]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-030128.png}
     \caption{Tổng hợp các yếu tố tính chỉ số severity}
     \label{fig:severity_factors_diagram}
 \end{figure}
@@ -852,9 +839,7 @@ def predict_congestion(self, lane_id, horizon=30):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Sơ đồ pipeline dự báo và phòng ngừa tắc nghẽn]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-030547.png}
     \caption{Pipeline dự báo tắc nghẽn và quyết định phòng ngừa}
     \label{fig:congestion_forecast_diagram}
 \end{figure}
@@ -876,13 +861,10 @@ def activate_congestion_mode(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.65\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Flowchart kích hoạt và kiểm soát congestion mode]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.65\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-031010.png}
     \caption{Quy trình kích hoạt và kiểm soát congestion mode}
     \label{fig:congestion_mode_diagram}
 \end{figure}
-
 \section{Quản lý rẽ trái bảo vệ thông minh}
 
 \subsection{Phát hiện blocked left turn với xung đột}
@@ -916,14 +898,13 @@ def detect_blocked_left_turn_with_conflict(self):
     return None, False
 \end{lstlisting}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Sơ đồ phát hiện blocked left turn và kiểm tra xung đột]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.3\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-031424.png}
     \caption{Quy trình phát hiện và xác nhận blocked left turn}
     \label{fig:blocked_left_detection_diagram}
 \end{figure}
+\clearpage
 
 \subsection{Tạo pha protected left động}
 
@@ -951,18 +932,17 @@ def create_protected_left_phase_for_lane(self, left_lane):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Flowchart tạo hoặc kích hoạt pha protected left động]}
-    \vspace{2.5cm}}}
-    \caption{Quy trình tạo/kích hoạt pha protected left động}
+    \includegraphics[width=0.3\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-031748.png}
+    \caption{Quy trình tạo hoặc kích hoạt pha protected left động}
     \label{fig:protected_left_phase_diagram}
 \end{figure}
+\clearpage
 
 \subsection{Cơ chế memory và guard deadline}
 
-Để tránh việc kích hoạt quá lâu, APC sử dụng bộ nhớ trạng thái blocked và guard deadline:
+Để tránh việc duy trì pha protected left quá lâu, hệ thống APC sử dụng bộ nhớ trạng thái bị blocked và deadline bảo vệ như sau:
 
-\begin{lstlisting}[style=py,caption={Cơ chế memory và guard deadline}]
+\begin{lstlisting}[style=py,caption={Cơ chế lưu trạng thái blocked và đặt guard deadline}]
 self.blocked_left_memory[lane_id] = min(self.blocked_left_memory.get(lane_id, 0) + 1, 100)
 self.blocked_focus_lane = lane_id
 self.blocked_guard_deadline = current_time + max(2*self.min_green, 15.0)
@@ -970,34 +950,30 @@ self.blocked_guard_deadline = current_time + max(2*self.min_green, 15.0)
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Sơ đồ memory/guard deadline cho quản lý protected left]}
-    \vspace{2.5cm}}}
-    \caption{Cơ chế memory và guard deadline cho pha rẽ trái bảo vệ}
+    \includegraphics[width=0.3\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-032039.png}
+    \caption{Cơ chế bộ nhớ và guard deadline cho pha rẽ trái bảo vệ}
     \label{fig:protected_left_memory_diagram}
 \end{figure}
+\clearpage
 
 \subsection{Tối ưu thời lượng protected left phase}
 
-Thời lượng protected left phase được tối ưu dựa trên queue, waiting time, downstream và max\_green:
+Thời lượng pha protected left được tính toán tối ưu dựa trên độ dài hàng chờ, thời gian chờ, trạng thái downstream và tham số max\_green:
 
-\begin{lstlisting}[style=py,caption={Tối ưu thời lượng protected left phase}]
+\begin{lstlisting}[style=py,caption={Tối ưu hóa thời lượng pha protected left}]
 queue = traci.lane.getLastStepHaltingNumber(left_lane)
 wait = traci.lane.getWaitingTime(left_lane)
 green_duration = min(self.max_green, max(self.min_green, queue * 2 + wait * 0.1))
 self.set_phase_from_API(phase_idx, requested_duration=green_duration)
 \end{lstlisting}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Placeholder: Flowchart tối ưu thời lượng protected left phase]}
-    \vspace{2.5cm}}}
+    \includegraphics[width=0.7\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-032611.png}
     \caption{Quy trình tối ưu thời lượng protected left phase}
     \label{fig:protected_left_duration_diagram}
 \end{figure}
-
-\vspace{0.5cm}
+\clearpage
 
 
 % ================================
@@ -1028,8 +1004,7 @@ def check_special_events(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Sơ đồ phát hiện phương tiện ưu tiên và kích hoạt chế độ ưu tiên]}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-032828.png}
     \caption{Quy trình phát hiện và xử lý phương tiện ưu tiên}
 \end{figure}
 
@@ -1058,11 +1033,11 @@ def emergency_rebalance_phases(self):
     return False
 \end{lstlisting}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Quy trình phát hiện và xử lý mất cân bằng lưu lượng]}}}
-    \caption{Sơ đồ emergency rebalancing khi xảy ra lane imbalance}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-033117.png}
+    \caption{Quy trình phát hiện và xử lý mất cân bằng lưu lượng (emergency rebalancing khi xảy ra lane imbalance)}
+    \label{fig:emergency_rebalance_flow}
 \end{figure}
 
 \subsection{Xử lý starvation và ùn tắc nghiêm trọng}
@@ -1081,8 +1056,7 @@ for lane in self.lane_ids:
 
 \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Quy trình phát hiện starvation và xử lý congestion]}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-033310.png}
     \caption{Cơ chế xử lý starvation và ùn tắc nghiêm trọng}
 \end{figure}
 
@@ -1099,9 +1073,9 @@ if now - getattr(self, "_last_logic_mutation", -1e9) < LOGIC_MUTATION_COOLDOWN_S
     return False
 \end{lstlisting}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \fbox{\parbox{0.7\textwidth}{\centering\vspace{2.5cm}
-    \textit{[Sơ đồ cơ chế cooldown và chống flicker]}}}
+    \includegraphics[width=0.5\textwidth]{Untitled diagram _ Mermaid Chart-2025-08-29-033500.png}
     \caption{Quy trình cooldown để ngăn chặn hiện tượng flicker pha}
+    \label{fig:cooldown_flicker_diagram}
 \end{figure}
